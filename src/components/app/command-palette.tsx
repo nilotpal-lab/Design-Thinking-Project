@@ -43,14 +43,6 @@ const DEFAULT_ITEMS: SearchItem[] = [
     badge: 'AI Engine',
   },
   {
-    id: 'nav-case-study',
-    title: 'Design Thinking Case Study',
-    subtitle: 'CA1 20/20 rubric evaluation, empathy map & 5-stage innovation paper',
-    category: 'navigation',
-    href: '/case-study',
-    badge: 'Academic',
-  },
-  {
     id: 'nav-faculty',
     title: 'Faculty Presence Tracker',
     subtitle: 'Locate professors lecturing right now & find office cabins',

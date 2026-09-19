@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import {
   ArrowRight,
-  BookOpen,
   Calendar,
   CheckCircle2,
   Clock,
@@ -79,16 +78,16 @@ export default async function LandingPage() {
               AI Matcher
             </Link>
             <Link
-              href="/case-study"
-              className="rounded-lg px-3 py-1.5 text-xs font-semibold text-zinc-900 transition-colors hover:bg-surface-sunken dark:text-white dark:hover:bg-white/[0.04]"
-            >
-              Case Study (20/20)
-            </Link>
-            <Link
               href="/faculty"
               className="rounded-lg px-3 py-1.5 text-xs font-medium text-zinc-500 transition-colors hover:bg-surface-sunken hover:text-ink dark:text-zinc-400 dark:hover:bg-white/[0.04] dark:hover:text-zinc-200"
             >
               Faculty
+            </Link>
+            <Link
+              href="/events"
+              className="rounded-lg px-3 py-1.5 text-xs font-medium text-zinc-500 transition-colors hover:bg-surface-sunken hover:text-ink dark:text-zinc-400 dark:hover:bg-white/[0.04] dark:hover:text-zinc-200"
+            >
+              Events
             </Link>
           </nav>
 
@@ -105,7 +104,7 @@ export default async function LandingPage() {
           {/* Subtle Eyebrow Badge */}
           <div className="inline-flex items-center gap-2 rounded-full border border-line bg-surface-sunken/80 px-3 py-1 text-[11px] font-medium text-zinc-600 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-zinc-300">
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-            <span>Jain (Deemed-to-be University) · Design Thinking CA1</span>
+            <span>Jain (Deemed-to-be University) · Smart Campus Intelligence</span>
           </div>
 
           {/* Headline */}
@@ -138,11 +137,11 @@ export default async function LandingPage() {
             </Link>
 
             <Link
-              href="/case-study"
+              href="/match"
               className="inline-flex h-10 items-center gap-2 rounded-lg border border-line bg-surface px-4 text-xs font-semibold text-ink transition-all hover:bg-surface-sunken active:scale-[0.98] dark:border-white/[0.08] dark:bg-[#111113] dark:hover:bg-white/[0.04]"
             >
-              <BookOpen className="h-3.5 w-3.5 text-zinc-500 dark:text-zinc-400" />
-              <span>CA1 Case Study</span>
+              <Sparkles className="h-3.5 w-3.5 text-zinc-500 dark:text-zinc-400" />
+              <span>AI Space Matcher</span>
             </Link>
           </div>
 
@@ -165,17 +164,17 @@ export default async function LandingPage() {
           </div>
         </div>
 
-        {/* Problem Metrics Grid (Stage 1 Research) */}
+        {/* Problem Metrics Grid */}
         <section className="mt-24 border-t border-line/60 pt-16 dark:border-white/[0.06]">
           <div className="text-center">
             <span className="font-mono text-[11px] font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
-              Stage 1 · Empathy & User Research
+              Campus Research & Findings
             </span>
             <h2 className="mt-2 text-2xl font-bold tracking-tight text-ink sm:text-3xl">
               The Reality of Campus Hallway Congestion
             </h2>
             <p className="mx-auto mt-2 max-w-xl text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
-              Survey data gathered from 120+ engineering students at Jain University during the Empathize phase.
+              Survey data gathered from 120+ engineering students at Jain University during study hours.
             </p>
           </div>
 
@@ -315,73 +314,6 @@ export default async function LandingPage() {
           </div>
         </section>
 
-        {/* 5 Stages of Design Thinking Framework */}
-        <section className="mt-24 border-t border-line/60 pt-16 dark:border-white/[0.06]">
-          <div className="text-center">
-            <span className="font-mono text-[11px] font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
-              Methodology
-            </span>
-            <h2 className="mt-2 text-2xl font-bold tracking-tight text-ink sm:text-3xl">
-              The 5-Stage Design Thinking Process
-            </h2>
-            <p className="mx-auto mt-2 max-w-xl text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
-              Evaluated under the 20/20 CA1 Academic Rubric for 3rd Semester B.Tech.
-            </p>
-          </div>
-
-          <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
-            <div className="rounded-xl border border-line bg-surface p-4 dark:border-white/[0.08] dark:bg-[#111113]">
-              <span className="font-mono text-[11px] font-bold text-zinc-400">01</span>
-              <h3 className="mt-1 text-sm font-bold text-ink">Empathize</h3>
-              <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
-                120+ student surveys & campus hallway observation logs.
-              </p>
-            </div>
-
-            <div className="rounded-xl border border-line bg-surface p-4 dark:border-white/[0.08] dark:bg-[#111113]">
-              <span className="font-mono text-[11px] font-bold text-zinc-400">02</span>
-              <h3 className="mt-1 text-sm font-bold text-ink">Define</h3>
-              <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
-                POV & HMW statements tackling underutilized academic capacity.
-              </p>
-            </div>
-
-            <div className="rounded-xl border border-line bg-surface p-4 dark:border-white/[0.08] dark:bg-[#111113]">
-              <span className="font-mono text-[11px] font-bold text-zinc-400">03</span>
-              <h3 className="mt-1 text-sm font-bold text-ink">Ideate</h3>
-              <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
-                SCAMPER analysis prioritizing automatic timetable synchronization.
-              </p>
-            </div>
-
-            <div className="rounded-xl border border-line bg-surface p-4 dark:border-white/[0.08] dark:bg-[#111113]">
-              <span className="font-mono text-[11px] font-bold text-zinc-400">04</span>
-              <h3 className="mt-1 text-sm font-bold text-ink">Prototype</h3>
-              <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
-                Full-stack Next.js web application deployed with real timetable data.
-              </p>
-            </div>
-
-            <div className="rounded-xl border border-line bg-surface p-4 dark:border-white/[0.08] dark:bg-[#111113]">
-              <span className="font-mono text-[11px] font-bold text-zinc-400">05</span>
-              <h3 className="mt-1 text-sm font-bold text-ink">Test</h3>
-              <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
-                94% task completion rate and 4.8/5 student usability score.
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-6 text-center">
-            <Link
-              href="/case-study"
-              className="inline-flex items-center gap-2 text-xs font-semibold text-ink hover:underline dark:text-white"
-            >
-              <span>Read complete 20/20 Case Study Documentation</span>
-              <ArrowRight className="h-3 w-3" />
-            </Link>
-          </div>
-        </section>
-
         {/* Featured Campus Spaces Preview */}
         <section className="mt-24 border-t border-line/60 pt-16 dark:border-white/[0.06]">
           <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
@@ -460,7 +392,7 @@ export default async function LandingPage() {
             Start Exploring Campus Spaces
           </h2>
           <p className="mx-auto mt-2 max-w-md text-xs text-zinc-500 dark:text-zinc-400">
-            Check real-time room occupancy, verify professor cabins, or inspect the CA1 Design Thinking case study.
+            Check real-time room occupancy, find available power sockets, or locate professor office cabins.
           </p>
           <div className="mt-5 flex flex-wrap justify-center gap-3">
             <Link
@@ -471,10 +403,10 @@ export default async function LandingPage() {
               <ArrowRight className="h-3.5 w-3.5" />
             </Link>
             <Link
-              href="/case-study"
+              href="/map"
               className="inline-flex h-9 items-center gap-2 rounded-lg border border-line bg-surface px-4 text-xs font-semibold text-ink transition-all hover:bg-surface-sunken active:scale-[0.98] dark:border-white/[0.08] dark:bg-surface-sunken"
             >
-              <span>View Case Study</span>
+              <span>View Floor Map</span>
             </Link>
           </div>
         </section>

@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
-  BookOpen,
   CalendarClock,
   Flag,
   Map,
@@ -20,7 +19,6 @@ const NAV = [
   { href: '/spaces', label: 'Spaces', icon: Waypoints },
   { href: '/map', label: 'Floor Map', icon: Map },
   { href: '/match', label: 'AI Matcher', icon: Sparkles },
-  { href: '/case-study', label: 'Case Study (20/20)', icon: BookOpen },
   { href: '/faculty', label: 'Faculty', icon: User },
   { href: '/events', label: 'Events', icon: CalendarClock },
   { href: '/report', label: 'Reports', icon: Flag },
