@@ -11,33 +11,46 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     data: { user },
   } = await supabase.auth.getUser();
 
+  const formattedDate = new Intl.DateTimeFormat('en-IN', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+  }).format(new Date());
+
   return (
-    <div className="flex min-h-dvh">
+    <div className="flex min-h-dvh bg-canvas antialiased ambient-glow">
       <Sidebar />
       <div className="flex min-w-0 flex-1 flex-col">
-        {/* bg-surface (not /90): token vars are plain hex, opacity modifiers silently no-op */}
-        <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-line bg-surface px-4 md:px-6">
+        {/* Glassmorphic Top Header */}
+        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-line/80 bg-surface/80 px-4 backdrop-blur-xl md:px-8 dark:border-white/[0.08] dark:bg-[#09090b]/80">
           <div className="flex items-center gap-3">
             {/* Mobile brand (sidebar hidden below md) */}
-            <span className="flex h-8 w-8 items-center justify-center rounded bg-accent text-sm font-semibold text-white md:hidden">
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent text-sm font-bold text-white shadow-glow-accent md:hidden">
               ◧
             </span>
-            <span className="hidden text-sm text-ink-tertiary md:block">
-              {new Intl.DateTimeFormat('en-IN', {
-                weekday: 'long',
-                day: 'numeric',
-                month: 'short',
-              }).format(new Date())}
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+              </span>
+              <span className="hidden text-[13px] font-medium text-ink-secondary md:inline-block">
+                Live Timetable
+              </span>
+              <span className="hidden text-ink-tertiary md:inline-block">·</span>
+              <span className="font-mono text-[13px] font-medium text-ink-secondary">
+                {formattedDate}
+              </span>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
+
+          <div className="flex items-center gap-2.5">
             <ThemeToggle />
             <UserChip />
           </div>
         </header>
 
-        {/* pb for the mobile bottom nav bar */}
-        <main className="mx-auto w-full max-w-[1200px] flex-1 px-4 pb-24 pt-6 md:px-6 md:pb-10">
+        {/* Main Content Area */}
+        <main className="mx-auto w-full max-w-[1280px] flex-1 px-4 pb-28 pt-8 md:px-8 md:pb-12">
           {children}
         </main>
       </div>

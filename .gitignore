@@ -46,3 +46,8 @@ playwright/.cache/
 .DS_Store
 Thumbs.db
 *.swp
+
+# Chat transcripts & local scratch
+freebuff-chat-*.md
+*.chat.md
+

@@ -1,14 +1,11 @@
 import Link from 'next/link';
+import { ArrowUpDown, CheckCircle2, Clock, Filter, Sparkles, Zap } from 'lucide-react';
 
 import { RoomCard } from '@/components/spaces/room-card';
+import { Card } from '@/components/ui/card';
 import { getLiveRooms } from '@/server/queries/rooms';
-import { cn, ROOM_CATEGORY_LABEL, WING_LABEL } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 
-/**
- * Filters live in the URL (DESIGN §3) — every option is a plain link, so the
- * view is shareable in a WhatsApp group, works without JS, and the back
- * button behaves. 52 rows filter in memory; a database would be premature.
- */
 type Search = {
   floor?: string;
   status?: string;
@@ -41,10 +38,10 @@ function Chip({
       href={href}
       aria-current={active ? 'true' : undefined}
       className={cn(
-        'inline-flex h-8 items-center rounded border px-3 text-[13px] transition-colors duration-instant',
+        'inline-flex h-8 items-center rounded-xl px-3.5 text-[13px] font-medium transition-all duration-instant ease-spring',
         active
-          ? 'border-accent bg-accent-subtle font-medium text-accent'
-          : 'border-line bg-surface text-ink-secondary hover:border-line-strong hover:text-ink',
+          ? 'bg-accent text-white shadow-sm shadow-accent/20 dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.2)]'
+          : 'border border-line/80 bg-surface/80 text-ink-secondary hover:border-line-strong hover:bg-surface hover:text-ink dark:border-white/10 dark:bg-surface/60',
       )}
     >
       {children}
@@ -66,7 +63,9 @@ export default async function SpacesPage({
   const rooms = await getLiveRooms();
 
   const floors = [...new Set(rooms.map((r) => r.floor_level))].sort((a, b) => a - b);
-  const categories = [...new Set(rooms.map((r) => r.category))].sort();
+  const freeRooms = rooms.filter((r) => r.status === 'free');
+  const soonRooms = rooms.filter((r) => r.status === 'soon');
+  const busyRooms = rooms.filter((r) => r.status === 'busy');
 
   let filtered = rooms;
   if (floor !== 'all') filtered = filtered.filter((r) => String(r.floor_level) === floor);
@@ -83,62 +82,116 @@ export default async function SpacesPage({
   }
 
   return (
-    <div className="space-y-5">
-      <div>
-        <h1 className="text-[22px] font-semibold leading-7 tracking-[-0.01em]">Spaces</h1>
-        <p className="mt-0.5 text-[13px] text-ink-secondary">
-          {rooms.filter((r) => r.status === 'free').length} of {rooms.length} rooms free right now
-          · derived from today&apos;s timetable
-        </p>
+    <div className="space-y-8">
+      {/* Hero Bento Section */}
+      <div className="relative overflow-hidden rounded-3xl border border-line/80 bg-surface/80 p-6 shadow-e2 backdrop-blur-xl md:p-8 dark:border-white/10 dark:bg-[#121215]/80 dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08)]">
+        <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-accent/10 blur-3xl dark:bg-accent/15" />
+
+        <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-center">
+          <div className="max-w-2xl space-y-2">
+            <div className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent-subtle px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-accent dark:text-accent-hover">
+              <Sparkles className="h-3.5 w-3.5" />
+              <span>Campus Space Reimagined</span>
+            </div>
+            <h1 className="text-3xl font-extrabold tracking-tight text-ink md:text-4xl">
+              Find a seat, not a fight.
+            </h1>
+            <p className="text-[14px] leading-relaxed text-ink-secondary md:text-[15px]">
+              Live availability across {rooms.length} rooms & labs at Jain University. Calibrated
+              with real-time class timetables and verified student reports.
+            </p>
+          </div>
+
+          {/* KPI Stats Pill Row */}
+          <div className="grid grid-cols-3 gap-3">
+            <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-3.5 text-center dark:bg-emerald-500/10">
+              <p className="font-mono text-2xl font-black text-emerald-600 dark:text-emerald-400">
+                {freeRooms.length}
+              </p>
+              <p className="mt-0.5 text-[11px] font-semibold text-ink-secondary">Free now</p>
+            </div>
+            <div className="rounded-2xl border border-amber-500/20 bg-amber-500/5 p-3.5 text-center dark:bg-amber-500/10">
+              <p className="font-mono text-2xl font-black text-amber-600 dark:text-amber-400">
+                {soonRooms.length}
+              </p>
+              <p className="mt-0.5 text-[11px] font-semibold text-ink-secondary">Free soon</p>
+            </div>
+            <div className="rounded-2xl border border-rose-500/20 bg-rose-500/5 p-3.5 text-center dark:bg-rose-500/10">
+              <p className="font-mono text-2xl font-black text-rose-600 dark:text-rose-400">
+                {busyRooms.length}
+              </p>
+              <p className="mt-0.5 text-[11px] font-semibold text-ink-secondary">In session</p>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Filter bar — URL state, plain links */}
-      <div className="flex flex-wrap items-center gap-2" role="group" aria-label="Filters">
-        <Chip active={floor === 'all'} href={buildHref(params, { floor: undefined })}>
-          All floors
-        </Chip>
-        {floors.map((f) => (
-          <Chip key={f} active={floor === String(f)} href={buildHref(params, { floor: String(f) })}>
-            Floor {f}
+      {/* Filter & Sorting Controls */}
+      <div className="space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <Filter className="h-4 w-4 text-ink-tertiary" />
+            <span className="text-[13px] font-semibold uppercase tracking-wider text-ink-tertiary">
+              Filters
+            </span>
+          </div>
+          <span className="text-[13px] font-medium text-ink-secondary">
+            Showing <span className="font-bold text-ink">{filtered.length}</span> of {rooms.length} spaces
+          </span>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2" role="group" aria-label="Filters">
+          <Chip active={floor === 'all'} href={buildHref(params, { floor: undefined })}>
+            All Floors
           </Chip>
-        ))}
-        <span className="mx-1 h-5 w-px bg-line" aria-hidden />
-        <Chip active={status === 'all'} href={buildHref(params, { status: undefined })}>
-          Any status
-        </Chip>
-        <Chip active={status === 'free'} href={buildHref(params, { status: 'free' })}>
-          Free now
-        </Chip>
-        <Chip active={status === 'soon'} href={buildHref(params, { status: 'soon' })}>
-          Free soon
-        </Chip>
-        <Chip active={status === 'busy'} href={buildHref(params, { status: 'busy' })}>
-          In session
-        </Chip>
-        <span className="mx-1 h-5 w-px bg-line" aria-hidden />
-        <Chip
-          active={sort === 'free'}
-          href={buildHref(params, { sort: sort === 'free' ? undefined : 'free' })}
-        >
-          Sort: free first
-        </Chip>
+          {floors.map((f) => (
+            <Chip key={f} active={floor === String(f)} href={buildHref(params, { floor: String(f) })}>
+              Floor {f}
+            </Chip>
+          ))}
+          <span className="mx-1 h-5 w-px bg-line/80 dark:bg-white/10" aria-hidden />
+          <Chip active={status === 'all'} href={buildHref(params, { status: undefined })}>
+            Any Status
+          </Chip>
+          <Chip active={status === 'free'} href={buildHref(params, { status: 'free' })}>
+            <span className="mr-1.5 inline-block h-2 w-2 rounded-full bg-emerald-500" />
+            Free Now
+          </Chip>
+          <Chip active={status === 'soon'} href={buildHref(params, { status: 'soon' })}>
+            <span className="mr-1.5 inline-block h-2 w-2 rounded-full bg-amber-500" />
+            Free Soon
+          </Chip>
+          <Chip active={status === 'busy'} href={buildHref(params, { status: 'busy' })}>
+            <span className="mr-1.5 inline-block h-2 w-2 rounded-full bg-rose-500" />
+            In Session
+          </Chip>
+          <span className="mx-1 h-5 w-px bg-line/80 dark:bg-white/10" aria-hidden />
+          <Chip
+            active={sort === 'free'}
+            href={buildHref(params, { sort: sort === 'free' ? undefined : 'free' })}
+          >
+            <ArrowUpDown className="mr-1.5 h-3.5 w-3.5" />
+            Sort: Free First
+          </Chip>
+        </div>
       </div>
 
+      {/* Spaces Grid */}
       {filtered.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-line bg-surface p-10 text-center">
-          <p className="text-[15px] font-medium">No rooms match these filters</p>
+        <Card className="rounded-3xl border-dashed p-12 text-center">
+          <p className="text-[16px] font-semibold text-ink">No spaces match the selected filters</p>
           <p className="mt-1 text-[13px] text-ink-secondary">
-            Try clearing the floor or status filter — there are {rooms.length} rooms across campus.
+            Try adjusting your floor or status filter to see all {rooms.length} available rooms.
           </p>
           <Link
             href="/spaces"
-            className="mt-4 inline-flex h-9 items-center rounded bg-accent px-4 text-sm font-medium text-white hover:bg-accent-hover"
+            className="mt-5 inline-flex h-10 items-center rounded-xl bg-accent px-5 text-sm font-semibold text-white shadow-glow-accent transition-all hover:bg-accent-hover active:scale-95"
           >
-            Clear filters
+            Reset Filters
           </Link>
-        </div>
+        </Card>
       ) : (
-        <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
           {filtered.map((room) => (
             <li key={room.room_id}>
               <RoomCard room={room} />

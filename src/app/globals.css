@@ -3,60 +3,65 @@
 @tailwind utilities;
 
 /* ============================================================================
-   Design tokens — docs/DESIGN.md §2. Single source of truth; Tailwind maps
-   onto these. Light is default; .dark inverts elevation (lighter = higher).
+   JainSpace Design Tokens — Linear / Apple Inspired "Taste-Skill" Foundation
    ========================================================================== */
 
 :root {
-  --canvas: #fafaf9;
+  --canvas: #f8fafc;
   --surface: #ffffff;
   --surface-raised: #ffffff;
-  --surface-sunken: #f4f4f2;
-  --border: #e7e5e4;
-  --border-strong: #d6d3d1;
-  --ink: #1c1917;
-  --ink-secondary: #57534e;
-  --ink-tertiary: #a8a29e;
+  --surface-sunken: #f1f5f9;
+  --border: rgba(226, 232, 240, 0.85);
+  --border-strong: rgba(203, 213, 225, 0.95);
+  --ink: #0f172a;
+  --ink-secondary: #475569;
+  --ink-tertiary: #94a3b8;
 
-  --accent: #4338ca;
-  --accent-hover: #3730a3;
-  --accent-subtle: #eef2ff;
+  --accent: #4f46e5;
+  --accent-hover: #4338ca;
+  --accent-subtle: rgba(79, 70, 229, 0.08);
 
   --status-free: #059669;
   --status-free-bg: #ecfdf5;
   --status-soon: #d97706;
   --status-soon-bg: #fffbeb;
-  --status-busy: #dc2626;
-  --status-busy-bg: #fef2f2;
-  --status-unknown: #78716c;
-  --status-unknown-bg: #f5f5f4;
+  --status-busy: #e11d48;
+  --status-busy-bg: #fff1f2;
+  --status-unknown: #64748b;
+  --status-unknown-bg: #f8fafc;
+
+  --glass-bg: rgba(255, 255, 255, 0.82);
+  --glass-border: rgba(226, 232, 240, 0.7);
+  --glass-highlight: inset 0 1px 0 0 rgba(255, 255, 255, 0.8);
 }
 
 .dark {
-  --canvas: #0c0a09;
-  --surface: #1c1917;
-  --surface-raised: #292524;
-  --surface-sunken: #292524;
-  --border: #292524;
-  --border-strong: #44403c;
-  --ink: #fafaf9;
-  --ink-secondary: #a8a29e;
-  --ink-tertiary: #78716c;
+  --canvas: #09090b;
+  --surface: #121215;
+  --surface-raised: #18181c;
+  --surface-sunken: #151518;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --ink: #f8fafc;
+  --ink-secondary: #94a3b8;
+  --ink-tertiary: #64748b;
 
-  --accent: #818cf8;
-  --accent-hover: #a5b4fc;
-  /* Indigo-950, not -900: active chips render text-accent on this bg and must
-     clear 4.5:1 (accent #818cf8 on #312e81 measured only 3.8:1). */
-  --accent-subtle: #1e1b4b;
+  --accent: #6366f1;
+  --accent-hover: #818cf8;
+  --accent-subtle: rgba(99, 102, 241, 0.14);
 
-  --status-free: #34d399;
-  --status-free-bg: rgba(52, 211, 153, 0.12);
-  --status-soon: #fbbf24;
-  --status-soon-bg: rgba(251, 191, 36, 0.12);
-  --status-busy: #f87171;
-  --status-busy-bg: rgba(248, 113, 113, 0.12);
-  --status-unknown: #a8a29e;
-  --status-unknown-bg: rgba(168, 162, 158, 0.12);
+  --status-free: #10b981;
+  --status-free-bg: rgba(16, 185, 129, 0.12);
+  --status-soon: #f59e0b;
+  --status-soon-bg: rgba(245, 158, 11, 0.12);
+  --status-busy: #f43f5e;
+  --status-busy-bg: rgba(244, 63, 94, 0.12);
+  --status-unknown: #94a3b8;
+  --status-unknown-bg: rgba(148, 163, 184, 0.1);
+
+  --glass-bg: rgba(18, 18, 21, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-highlight: inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
 }
 
 @layer base {
@@ -66,6 +71,7 @@
 
   html {
     color-scheme: light;
+    scroll-behavior: smooth;
   }
   html.dark {
     color-scheme: dark;
@@ -74,14 +80,16 @@
   body {
     background-color: var(--canvas);
     color: var(--ink);
-    font-feature-settings: 'cv11', 'ss01';
+    font-feature-settings: 'cv11', 'ss01', 'cv05';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Focus ring on EVERYTHING interactive — never outline: none (DESIGN §6). */
+  /* Focus ring for accessibility */
   :focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
-    border-radius: 4px;
+    border-radius: 6px;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -96,23 +104,60 @@
 }
 
 @layer utilities {
-  /* Room codes, timestamps, ticket ids */
+  /* Tabular figures for codes, counts & timers */
   .font-mono-tabular {
     font-variant-numeric: tabular-nums;
   }
 
-  /* Live-region pulse for the LiveBadge dot */
+  /* Glassmorphic card styling */
+  .glass-card {
+    background-color: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-highlight), 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+  }
+
+  .dark .glass-card {
+    box-shadow: var(--glass-highlight), 0 8px 32px -4px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Double-Bezel Hardware Container */
+  .double-bezel {
+    position: relative;
+    border-radius: 1.25rem;
+    padding: 0.25rem;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.02) 100%);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+
+  .dark .double-bezel {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.01) 100%);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  }
+
+  /* Pulse animation for live indicators */
   .animate-pulse-dot {
     animation: pulse-dot 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  /* Ambient radial backdrop glow */
+  .ambient-glow {
+    background-image: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.08) 0%, transparent 70%);
+  }
+
+  .dark .ambient-glow {
+    background-image: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 60%);
   }
 }
 
 @keyframes pulse-dot {
-  0%,
-  100% {
+  0%, 100% {
     opacity: 1;
+    transform: scale(1);
   }
   50% {
-    opacity: 0.35;
+    opacity: 0.4;
+    transform: scale(0.9);
   }
 }

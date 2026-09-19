@@ -12,11 +12,6 @@ const CONFIG = {
   unknown: { label: 'No data', icon: CircleHelp, cls: 'unknown' as const },
 } as const;
 
-/**
- * The most-reused element in the app (DESIGN §4). Status is never colour
- * alone: every state pairs an icon + text label, with the optional duration
- * ("free for 1h 45m" / "until 2:30 PM").
- */
 export function StatusPill({
   status,
   freeMinutes,
@@ -33,16 +28,26 @@ export function StatusPill({
 
   const detail =
     status === 'free' && freeMinutes != null
-      ? `for ${formatMinutes(freeMinutes)}`
+      ? `(${formatMinutes(freeMinutes)})`
       : status === 'busy' && occupiedUntil
-        ? `until ${formatTime(occupiedUntil)}`
+        ? `(${formatTime(occupiedUntil)})`
         : null;
 
   return (
-    <Badge variant={c.cls} className={cn('whitespace-nowrap', className)}>
-      <Icon className="h-3.5 w-3.5 shrink-0" aria-hidden />
-      <span>{c.label}</span>
-      {detail && <span className="text-ink-secondary font-mono-tabular">{detail}</span>}
+    <Badge
+      variant={c.cls}
+      className={cn('inline-flex items-center gap-1.5 whitespace-nowrap rounded-lg px-2.5 py-1 text-[11px] normal-case tracking-normal', className)}
+    >
+      {status === 'free' ? (
+        <span className="relative flex h-2 w-2 shrink-0">
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+          <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+        </span>
+      ) : (
+        <Icon className="h-3.5 w-3.5 shrink-0" aria-hidden />
+      )}
+      <span className="font-semibold">{c.label}</span>
+      {detail && <span className="font-mono text-[11px] font-normal opacity-85">{detail}</span>}
     </Badge>
   );
 }

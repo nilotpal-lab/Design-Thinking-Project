@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ArrowLeft, Plug, Projector, Snowflake, Users, Wifi, Monitor } from 'lucide-react';
+import { ArrowLeft, Monitor, Plug, Projector, Snowflake, Sparkles, Users, Wifi } from 'lucide-react';
 
 import { StatusPill } from '@/components/spaces/status-pill';
 import { TodayTimeline } from '@/components/spaces/today-timeline';
@@ -29,188 +29,250 @@ export default async function RoomDetailPage({
     : 'No reports yet';
 
   return (
-    <div className="space-y-5">
+    <div className="mx-auto w-full max-w-4xl space-y-7">
+      {/* Back Button */}
       <Link
         href="/spaces"
-        className="inline-flex items-center gap-1.5 text-[13px] text-ink-secondary transition-colors hover:text-ink"
+        className="inline-flex items-center gap-2 text-sm font-semibold text-ink-secondary transition-colors hover:text-accent dark:hover:text-accent-hover"
       >
-        <ArrowLeft className="h-4 w-4" aria-hidden /> All spaces
+        <ArrowLeft className="h-4 w-4" aria-hidden />
+        <span>Back to All Spaces</span>
       </Link>
 
-      <header className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <p className="font-mono text-[13px] text-ink-secondary">{room.code}</p>
-          <h1 className="mt-0.5 text-[22px] font-semibold leading-7 tracking-[-0.01em]">
-            {room.name}
-          </h1>
-          <p className="mt-1 text-[13px] text-ink-secondary">
-            {ROOM_CATEGORY_LABEL[room.category] ?? room.category} · {room.block_name} ·{' '}
-            {room.floor_label}
-          </p>
+      {/* Room Hero Header */}
+      <div className="relative overflow-hidden rounded-3xl border border-line/80 bg-surface/80 p-6 shadow-e2 backdrop-blur-xl md:p-8 dark:border-white/10 dark:bg-[#121215]">
+        <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-start">
+          <div>
+            <span className="font-mono text-sm font-bold uppercase tracking-wider text-accent dark:text-accent-hover">
+              {room.code}
+            </span>
+            <h1 className="mt-1 text-2xl font-black tracking-tight text-ink md:text-3xl">
+              {room.name}
+            </h1>
+            <p className="mt-1 text-[13px] font-medium text-ink-secondary">
+              {ROOM_CATEGORY_LABEL[room.category] ?? room.category} · {room.block_name} · Floor{' '}
+              {room.floor_level} ({room.floor_label})
+            </p>
+          </div>
+          <StatusPill
+            status={room.status}
+            freeMinutes={room.free_minutes}
+            occupiedUntil={room.occupied_until}
+            className="self-start text-xs"
+          />
         </div>
-        <StatusPill
-          status={room.status}
-          freeMinutes={room.free_minutes}
-          occupiedUntil={room.occupied_until}
-        />
-      </header>
 
-      {/* Current / next session context */}
-      <Card>
-        <CardContent className="p-5">
+        {/* Current / Next occupancy summary banner */}
+        <div className="mt-6 rounded-2xl border border-line/60 bg-surface-sunken/60 p-4 dark:border-white/[0.06] dark:bg-white/[0.02]">
           {room.status === 'busy' && room.current_occupancy_title ? (
             <div>
-              <p className="text-micro uppercase tracking-wide text-ink-tertiary">In session until {room.occupied_until ? room.occupied_until.slice(0,5) : ''}</p>
-              <p className="mt-1 text-[15px] font-medium">{room.current_occupancy_title}</p>
-              <p className="text-[13px] text-ink-secondary">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-rose-600 dark:text-rose-400">
+                In Session · Occupied Until {room.occupied_until ? room.occupied_until.slice(0, 5) : ''}
+              </p>
+              <p className="mt-1 text-base font-bold text-ink">{room.current_occupancy_title}</p>
+              <p className="text-xs text-ink-secondary">
                 {room.current_course_code ? `${room.current_course_code} · ` : ''}
-                {room.current_faculty ?? ''}
+                Faculty: {room.current_faculty ?? 'Instructor'}
               </p>
             </div>
           ) : room.next_occupancy_from ? (
             <div>
-              <p className="text-micro uppercase tracking-wide text-ink-tertiary">
-                Next session at {room.next_occupancy_from.slice(0, 5)}
+              <p className="text-[10px] font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">
+                Next Session At {room.next_occupancy_from.slice(0, 5)}
               </p>
-              <p className="mt-1 text-[15px] font-medium">{room.next_occupancy_title}</p>
-              <p className="text-[13px] text-ink-secondary">
-                {room.free_minutes != null ? `Free for another ${formatMinutes(room.free_minutes)}` : 'Free for the rest of the day'}
+              <p className="mt-1 text-base font-bold text-ink">{room.next_occupancy_title}</p>
+              <p className="text-xs text-ink-secondary">
+                {room.free_minutes != null
+                  ? `Free for another ${formatMinutes(room.free_minutes)}`
+                  : 'Free for the rest of today'}
               </p>
             </div>
           ) : (
             <div>
-              <p className="text-micro uppercase tracking-wide text-ink-tertiary">Rest of today</p>
-              <p className="mt-1 text-[15px] font-medium">Free for the rest of the day</p>
-              <p className="text-[13px] text-ink-secondary">No further sessions scheduled</p>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+                Open Access
+              </p>
+              <p className="mt-1 text-base font-bold text-ink">Free for the rest of today</p>
+              <p className="text-xs text-ink-secondary">
+                No further lecture classes scheduled for today.
+              </p>
             </div>
           )}
-        </CardContent>
+        </div>
+      </div>
+
+      {/* Today Timeline */}
+      <Card className="rounded-3xl p-6 shadow-e1 dark:border-white/10 dark:bg-[#121215]">
+        <h2 className="mb-4 text-base font-bold text-ink">Today&apos;s Class Timetable</h2>
+        {slots.length === 0 ? (
+          <p className="text-sm text-ink-secondary">
+            No scheduled sessions today — the space is open all day for self-study.
+          </p>
+        ) : (
+          <TodayTimeline slots={slots} nowTime={room.as_of_time ?? ''} />
+        )}
       </Card>
 
-      {/* Today timeline */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Today&apos;s schedule</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {slots.length === 0 ? (
-            <p className="text-[13px] text-ink-secondary">
-              No scheduled sessions today — the room is open all day.
-            </p>
-          ) : (
-            <TodayTimeline
-              slots={slots}
-              nowTime={room.as_of_time ?? ''}
-            />
-          )}
-        </CardContent>
-      </Card>
+      {/* Infrastructure Bento Grid */}
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+        <Card className="rounded-3xl p-6 shadow-e1 dark:border-white/10 dark:bg-[#121215]">
+          <h2 className="mb-4 text-base font-bold text-ink">Room Equipment & Amenities</h2>
+          <div className="space-y-3.5 text-[13px] font-medium">
+            <div className="flex items-center justify-between">
+              <span className="flex items-center gap-2.5 text-ink-secondary">
+                <Users className="h-4 w-4 text-accent" />
+                <span>Seating Capacity</span>
+              </span>
+              <span className="font-mono text-sm font-bold text-ink">{room.capacity} seats</span>
+            </div>
 
-      {/* Infrastructure */}
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>The room</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2.5 text-[13px]">
-            <p className="flex items-center gap-2">
-              <Users className="h-4 w-4 text-ink-tertiary" aria-hidden />
-              <span className="font-mono-tabular font-medium">{room.capacity}</span> seats
-            </p>
-            <p className="flex items-center gap-2">
-              <Plug className="h-4 w-4 text-ink-tertiary" aria-hidden />
-              <span className="font-mono-tabular font-medium">{room.sockets_working ?? 0}</span> of{' '}
-              <span className="font-mono-tabular">{room.sockets_total ?? 0}</span> sockets working
-            </p>
-            <p className="flex items-center gap-2">
-              <Snowflake className="h-4 w-4 text-ink-tertiary" aria-hidden />
-              {room.has_ac ? (room.ac_type ?? 'Air conditioned') : 'No AC'}
-            </p>
-            <p className="flex items-center gap-2">
-              <Wifi className="h-4 w-4 text-ink-tertiary" aria-hidden />
-              {room.wifi_band === 'wifi_6e'
-                ? 'Wi-Fi 6E (6GHz)'
-                : room.wifi_band === 'wifi_5'
-                  ? 'Wi-Fi 5'
-                  : 'Wi-Fi (band unspecified)'}
-            </p>
-            <p className="flex items-center gap-2">
-              {room.has_projector ? <Projector className="h-4 w-4 text-ink-tertiary" aria-hidden /> : <Monitor className="h-4 w-4 text-ink-tertiary" aria-hidden />}
-              {[room.has_projector && 'Projector', room.has_smart_board && 'Smart board', room.has_whiteboard && 'Whiteboard']
-                .filter(Boolean)
-                .join(' · ') || 'No display equipment'}
-            </p>
-            {room.comfort_score != null && (
-              <p className="text-ink-secondary">
-                Comfort score <span className="font-mono-tabular font-medium">{room.comfort_score}</span>/10
-              </p>
-            )}
-          </CardContent>
+            <div className="flex items-center justify-between border-t border-line/60 pt-2.5 dark:border-white/[0.06]">
+              <span className="flex items-center gap-2.5 text-ink-secondary">
+                <Plug className="h-4 w-4 text-amber-500" />
+                <span>Power Sockets</span>
+              </span>
+              <span className="font-mono text-sm font-bold text-ink">
+                {room.sockets_working ?? 0} of {room.sockets_total ?? 0} working
+              </span>
+            </div>
+
+            <div className="flex items-center justify-between border-t border-line/60 pt-2.5 dark:border-white/[0.06]">
+              <span className="flex items-center gap-2.5 text-ink-secondary">
+                <Snowflake className="h-4 w-4 text-sky-500" />
+                <span>Air Conditioning</span>
+              </span>
+              <span className="font-semibold text-ink">
+                {room.has_ac ? room.ac_type ?? 'Air Conditioned' : 'No AC'}
+              </span>
+            </div>
+
+            <div className="flex items-center justify-between border-t border-line/60 pt-2.5 dark:border-white/[0.06]">
+              <span className="flex items-center gap-2.5 text-ink-secondary">
+                <Wifi className="h-4 w-4 text-emerald-500" />
+                <span>Campus Wi-Fi</span>
+              </span>
+              <span className="font-semibold text-ink">
+                {room.wifi_band === 'wifi_6e'
+                  ? 'Wi-Fi 6E (High-Speed)'
+                  : room.wifi_band === 'wifi_5'
+                    ? 'Wi-Fi 5'
+                    : 'Campus Wi-Fi'}
+              </span>
+            </div>
+
+            <div className="flex items-center justify-between border-t border-line/60 pt-2.5 dark:border-white/[0.06]">
+              <span className="flex items-center gap-2.5 text-ink-secondary">
+                {room.has_projector ? (
+                  <Projector className="h-4 w-4 text-indigo-500" />
+                ) : (
+                  <Monitor className="h-4 w-4 text-indigo-500" />
+                )}
+                <span>Presentation Gear</span>
+              </span>
+              <span className="font-semibold text-ink">
+                {[
+                  room.has_projector && 'Projector',
+                  room.has_smart_board && 'Smart Board',
+                  room.has_whiteboard && 'Whiteboard',
+                ]
+                  .filter(Boolean)
+                  .join(' · ') || 'None'}
+              </span>
+            </div>
+          </div>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Good to know</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <p className="text-[13px] text-ink-secondary">{crowd} crowd reported right now.</p>
-            <div className="flex flex-wrap gap-1.5" aria-label="Noise vibe">
-              <Badge variant="neutral">{room.noise_vibe === 'silent' ? 'Silent zone' : room.noise_vibe === 'collaborative' ? 'Group-friendly' : room.noise_vibe === 'quick_break' ? 'Quick breaks OK' : 'Moderate noise'}</Badge>
-              {room.is_accessible && <Badge variant="neutral">Step-free access</Badge>}
+        {/* Space Environment & Noise Vibe */}
+        <Card className="rounded-3xl p-6 shadow-e1 dark:border-white/10 dark:bg-[#121215]">
+          <h2 className="mb-4 text-base font-bold text-ink">Space Environment</h2>
+          <div className="space-y-4">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wider text-ink-tertiary">
+                Current Crowd Density
+              </p>
+              <p className="mt-1 text-base font-bold text-ink">{crowd}</p>
             </div>
-            <p className="border-t border-line pt-3 text-[13px] leading-6 text-ink-secondary">
-              Crowd levels come from student check-ins made in the last 90 minutes — the more
-              people report, the more you can trust the number. Be the first to{' '}
-              <Link href="/report" className="text-accent hover:underline">
-                report how it looks
-              </Link>
-              .
-            </p>
-          </CardContent>
+
+            <div className="flex flex-wrap gap-2">
+              <Badge variant="accent">
+                {room.noise_vibe === 'silent'
+                  ? 'Silent Zone'
+                  : room.noise_vibe === 'collaborative'
+                    ? 'Group-Friendly'
+                    : room.noise_vibe === 'quick_break'
+                      ? 'Quick Breaks OK'
+                      : 'Moderate Noise'}
+              </Badge>
+              {room.is_accessible && <Badge variant="neutral">Step-Free Accessible</Badge>}
+            </div>
+
+            {room.comfort_score != null && (
+              <div className="rounded-2xl border border-line/60 bg-surface-sunken/60 p-3.5 dark:border-white/[0.06] dark:bg-white/[0.02]">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold uppercase tracking-wider text-ink-secondary">
+                    Comfort Index
+                  </span>
+                  <span className="font-mono text-base font-extrabold text-accent dark:text-accent-hover">
+                    {room.comfort_score}/10
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
         </Card>
       </div>
 
-      {/* Live layer: check-in + recent reports */}
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>Check in here</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="mb-4 text-[13px] text-ink-secondary">
-              Your report helps the next student find a seat — and lasts 90 minutes.
-            </p>
+      {/* Live Check-in & Recent Activity */}
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+        <Card className="rounded-3xl p-6 shadow-e1 dark:border-white/10 dark:bg-[#121215]">
+          <h2 className="text-base font-bold text-ink">Check In Here</h2>
+          <p className="mt-1 text-xs text-ink-secondary">
+            Your 20-second report updates the live map for fellow students (+15 karma).
+          </p>
+          <div className="mt-5">
             <CheckInForm roomId={room.room_id} roomCode={room.code} />
-          </CardContent>
+          </div>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent reports</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
+        <Card className="rounded-3xl p-6 shadow-e1 dark:border-white/10 dark:bg-[#121215]">
+          <h2 className="text-base font-bold text-ink">Recent Student Reports</h2>
+          <div className="mt-4 space-y-3">
             {feed.length === 0 ? (
-              <p className="text-[13px] text-ink-secondary">
-                No reports in the last 90 minutes. Be the first — it takes 20 seconds.
+              <p className="text-sm text-ink-secondary">
+                No check-ins in the last 90 minutes. Be the first to check in!
               </p>
             ) : (
               feed.map((f) => (
-                <div key={f.id} className="border-b border-line pb-3 last:border-0 last:pb-0">
-                  <p className="flex flex-wrap items-center gap-2 text-[13px]">
-                    <Badge variant={f.crowd_density === 'crowded' || f.crowd_density === 'full' ? 'busy' : f.crowd_density === 'empty' || f.crowd_density === 'light' ? 'free' : 'soon'}>
-                      {f.crowd_density ? (CROWD_LABEL[f.crowd_density] ?? f.crowd_density) : 'no data'}
+                <div
+                  key={f.id}
+                  className="rounded-xl border border-line/60 bg-surface-sunken/40 p-3 dark:border-white/[0.06] dark:bg-white/[0.02]"
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <Badge
+                      variant={
+                        f.crowd_density === 'crowded' || f.crowd_density === 'full'
+                          ? 'busy'
+                          : f.crowd_density === 'empty' || f.crowd_density === 'light'
+                            ? 'free'
+                            : 'soon'
+                      }
+                    >
+                      {f.crowd_density ? (CROWD_LABEL[f.crowd_density] ?? f.crowd_density) : 'Report'}
                     </Badge>
-                    <span className="text-ink-tertiary">{timeAgo(f.created_at)}</span>
-                    {f.is_simulated && <Badge variant="unknown">demo data</Badge>}
+                    <span className="font-mono text-micro text-ink-tertiary">
+                      {timeAgo(f.created_at)}
+                    </span>
+                  </div>
+                  <p className="mt-2 text-[13px] font-medium text-ink">
+                    {f.note ? `“${f.note}”` : 'Checked in and confirmed status.'}
                   </p>
-                  <p className="mt-1 text-[13px] text-ink-secondary">
-                    {f.note ? `“${f.note}”` : 'No note.'}{' '}
-                    <span className="text-ink-tertiary">— {f.display_name ?? 'anonymous'}</span>
+                  <p className="mt-1 text-micro text-ink-tertiary">
+                    by {f.display_name ?? 'Student'}
                   </p>
                 </div>
               ))
             )}
-          </CardContent>
+          </div>
         </Card>
       </div>
     </div>

@@ -1,16 +1,12 @@
 import type { Config } from 'tailwindcss';
 
-/**
- * Tailwind maps onto the CSS-variable tokens in globals.css (DESIGN.md §2).
- * Semantic names (canvas/surface/ink/accent/status) — never raw hex in JSX.
- */
 const config: Config = {
   content: ['./src/**/*.{ts,tsx}'],
   darkMode: 'class',
   theme: {
     extend: {
       fontSize: {
-        micro: ['12px', { lineHeight: '16px', letterSpacing: '0.01em', fontWeight: '500' }],
+        micro: ['11px', { lineHeight: '14px', letterSpacing: '0.04em', fontWeight: '600' }],
       },
       colors: {
         canvas: 'var(--canvas)',
@@ -49,21 +45,28 @@ const config: Config = {
         mono: ['var(--font-geist-mono)', 'ui-monospace', 'SFMono-Regular', 'monospace'],
       },
       borderRadius: {
-        sm: '6px',
-        DEFAULT: '8px',
-        lg: '12px',
-        xl: '16px',
+        sm: '8px',
+        DEFAULT: '12px',
+        lg: '16px',
+        xl: '20px',
+        '2xl': '24px',
+        '3xl': '32px',
       },
       boxShadow: {
-        e1: '0 1px 2px rgb(0 0 0 / 0.04)',
-        e2: '0 4px 12px rgb(0 0 0 / 0.06)',
+        e1: '0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02)',
+        e2: '0 4px 16px -2px rgba(0, 0, 0, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.04)',
+        e3: '0 12px 32px -4px rgba(0, 0, 0, 0.12), 0 4px 12px -2px rgba(0, 0, 0, 0.06)',
+        'glow-accent': '0 0 24px -4px rgba(99, 102, 241, 0.35)',
+        'glow-free': '0 0 20px -4px rgba(16, 185, 129, 0.35)',
       },
       transitionDuration: {
-        instant: '100ms',
-        fast: '150ms',
-        base: '220ms',
+        instant: '120ms',
+        fast: '180ms',
+        base: '280ms',
       },
       transitionTimingFunction: {
+        spring: 'cubic-bezier(0.16, 1, 0.3, 1)',
+        cinematic: 'cubic-bezier(0.32, 0.72, 0, 1)',
         'out-expo': 'cubic-bezier(0.16, 1, 0.3, 1)',
       },
     },

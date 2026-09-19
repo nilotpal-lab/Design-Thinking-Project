@@ -24,9 +24,9 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(function Avatar(
       ref={ref}
       title={name}
       className={cn(
-        'inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full',
-        'bg-accent-subtle text-accent text-micro font-semibold select-none',
-        'dark:text-[#a5b4fc]',
+        'inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full select-none',
+        'bg-gradient-to-tr from-accent/20 to-accent/10 text-accent text-micro font-bold',
+        'ring-1 ring-inset ring-accent/30 dark:text-accent-hover',
         className,
       )}
       {...props}

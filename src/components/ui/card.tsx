@@ -9,7 +9,12 @@ export const Card = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(f
   return (
     <div
       ref={ref}
-      className={cn('rounded-lg border border-line bg-surface shadow-e1', className)}
+      className={cn(
+        'relative rounded-xl border border-line/80 bg-surface shadow-e1',
+        'dark:border-white/[0.08] dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08)]',
+        'transition-all duration-fast ease-spring',
+        className,
+      )}
       {...props}
     />
   );
@@ -26,7 +31,7 @@ export const CardTitle = forwardRef<HTMLHeadingElement, HTMLAttributes<HTMLHeadi
     return (
       <h3
         ref={ref}
-        className={cn('text-[15px] font-semibold leading-6 tracking-[-0.01em]', className)}
+        className={cn('text-[15px] font-semibold leading-6 tracking-[-0.01em] text-ink', className)}
         {...props}
       />
     );
@@ -44,7 +49,7 @@ export function Skeleton({ className }: { className?: string }) {
   return (
     <div
       aria-hidden
-      className={cn('animate-pulse rounded bg-surface-sunken', className)}
+      className={cn('animate-pulse rounded-lg bg-surface-sunken', className)}
     />
   );
 }

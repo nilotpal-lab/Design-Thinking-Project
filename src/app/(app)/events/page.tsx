@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { CalendarDays, CalendarClock, MapPin } from 'lucide-react';
+import { CalendarClock, CalendarDays, MapPin, Sparkles } from 'lucide-react';
 
 import { getEventsOnDay, getUpcomingEvents, type CampusEvent } from '@/server/queries/events';
 import { Badge } from '@/components/ui/badge';
@@ -7,20 +7,17 @@ import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
 export const dynamic = 'force-dynamic';
-export const metadata = { title: 'Campus Events' };
+export const metadata = { title: 'Campus Events & Workshops' };
 
-/* Category chips have no semantic tokens; Tailwind palette tints are the
-   accepted exception for data-viz-style distinctions (solid palette colors,
-   so /15 opacity works — unlike the hex CSS vars). */
 const CATEGORY_STYLE: Record<string, string> = {
-  fest: 'bg-fuchsia-500/15 text-fuchsia-700 dark:text-fuchsia-300',
-  workshop: 'bg-sky-500/15 text-sky-700 dark:text-sky-300',
-  seminar: 'bg-indigo-500/15 text-indigo-700 dark:text-indigo-300',
-  exam: 'bg-red-500/15 text-red-700 dark:text-red-300',
-  club: 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-300',
-  sports: 'bg-orange-500/15 text-orange-700 dark:text-orange-300',
-  cultural: 'bg-purple-500/15 text-purple-700 dark:text-purple-300',
-  other: 'bg-zinc-500/15 text-zinc-700 dark:text-zinc-300',
+  fest: 'bg-fuchsia-500/10 text-fuchsia-700 dark:text-fuchsia-300 ring-1 ring-fuchsia-500/20',
+  workshop: 'bg-sky-500/10 text-sky-700 dark:text-sky-300 ring-1 ring-sky-500/20',
+  seminar: 'bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 ring-1 ring-indigo-500/20',
+  exam: 'bg-rose-500/10 text-rose-700 dark:text-rose-300 ring-1 ring-rose-500/20',
+  club: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 ring-1 ring-emerald-500/20',
+  sports: 'bg-orange-500/10 text-orange-700 dark:text-orange-300 ring-1 ring-orange-500/20',
+  cultural: 'bg-purple-500/10 text-purple-700 dark:text-purple-300 ring-1 ring-purple-500/20',
+  other: 'bg-zinc-500/10 text-zinc-700 dark:text-zinc-300 ring-1 ring-zinc-500/20',
 };
 
 function fmtTime(iso: string): string {
@@ -48,67 +45,78 @@ function fmtDayLabel(iso: string): string {
 
 function EventCard({ ev, dayLabel }: { ev: CampusEvent; dayLabel?: string }) {
   return (
-    <Card className={ev.isCancelled ? 'opacity-60' : ''}>
-      <CardContent className="flex gap-3 p-4">
-        <div className="w-14 shrink-0 text-center">
+    <Card
+      className={cn(
+        'rounded-2xl p-5 shadow-e1 transition-all duration-base hover:border-accent/40 hover:shadow-e2 dark:border-white/10',
+        ev.isCancelled && 'opacity-60',
+      )}
+    >
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
+        {/* Time Stamp Tile */}
+        <div className="flex w-20 shrink-0 flex-col items-center justify-center rounded-xl border border-line/80 bg-surface-sunken/60 py-2 dark:border-white/[0.06] dark:bg-white/[0.02]">
           {ev.allDay ? (
-            <p className="pt-1 text-micro font-semibold uppercase tracking-wide text-ink-tertiary">
-              All day
-            </p>
+            <span className="font-mono text-micro font-extrabold uppercase tracking-wider text-ink-tertiary">
+              All Day
+            </span>
           ) : (
             <>
-              <p className="font-mono text-sm font-semibold">{fmtTime(ev.startsAt)}</p>
+              <span className="font-mono text-sm font-extrabold text-ink">{fmtTime(ev.startsAt)}</span>
               {ev.endsAt && (
-                <p className="font-mono text-micro text-ink-tertiary">{fmtTime(ev.endsAt)}</p>
+                <span className="font-mono text-[11px] font-semibold text-ink-tertiary">
+                  {fmtTime(ev.endsAt)}
+                </span>
               )}
             </>
           )}
         </div>
+
+        {/* Event Content */}
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <p className={`text-[15px] font-medium leading-tight ${ev.isCancelled ? 'line-through' : ''}`}>
+            <h3 className={cn('text-base font-bold text-ink', ev.isCancelled && 'line-through')}>
               {ev.title}
-            </p>
+            </h3>
             <span
               className={cn(
-                'rounded-full px-2 py-0.5 text-micro font-semibold uppercase tracking-wide',
+                'rounded-lg px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider',
                 CATEGORY_STYLE[ev.category] ?? CATEGORY_STYLE.other,
               )}
             >
               {ev.category}
             </span>
-            {ev.isCancelled && <Badge variant="neutral" className="text-micro">cancelled</Badge>}
-            {dayLabel && <span className="text-micro text-ink-tertiary">· {dayLabel}</span>}
+            {ev.isCancelled && <Badge variant="neutral">Cancelled</Badge>}
+            {dayLabel && <span className="font-mono text-micro text-ink-tertiary">· {dayLabel}</span>}
           </div>
+
           {ev.description && (
-            <p className="mt-1 line-clamp-2 text-[13px] text-ink-secondary">{ev.description}</p>
+            <p className="mt-1.5 line-clamp-2 text-[13px] leading-relaxed text-ink-secondary">
+              {ev.description}
+            </p>
           )}
-          <p className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[13px] text-ink-tertiary">
+
+          <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-line/60 pt-3 text-[12px] font-medium text-ink-secondary dark:border-white/[0.06]">
             {ev.venueSlug ? (
-              <span className="inline-flex items-center gap-1">
-                <MapPin className="h-3 w-3" />
-                <Link
-                  href={`/spaces/${ev.venueSlug}`}
-                  className="font-medium text-accent hover:underline"
-                >
+              <span className="inline-flex items-center gap-1.5 text-accent dark:text-accent-hover">
+                <MapPin className="h-3.5 w-3.5" />
+                <Link href={`/spaces/${ev.venueSlug}`} className="font-semibold hover:underline">
                   {ev.venueCode}
                 </Link>
               </span>
             ) : ev.venueText ? (
-              <span className="inline-flex items-center gap-1">
-                <MapPin className="h-3 w-3" /> {ev.venueText}
+              <span className="inline-flex items-center gap-1.5 text-ink-tertiary">
+                <MapPin className="h-3.5 w-3.5" /> {ev.venueText}
               </span>
             ) : null}
-            {ev.organizer && <span>by {ev.organizer}</span>}
-          </p>
+            {ev.organizer && <span className="text-ink-tertiary">Organized by {ev.organizer}</span>}
+          </div>
         </div>
-      </CardContent>
+      </div>
     </Card>
   );
 }
 
 const inputCls =
-  'h-9 rounded border border-line-strong bg-canvas px-2.5 text-sm outline-none focus-visible:ring-2 focus-visible:ring-accent';
+  'h-10 rounded-xl border border-line/80 bg-surface px-3 text-sm font-medium outline-none transition-colors focus-visible:ring-2 focus-visible:ring-accent dark:border-white/10 dark:bg-surface/80';
 
 export default async function EventsPage({
   searchParams,
@@ -126,63 +134,81 @@ export default async function EventsPage({
   ]);
 
   return (
-    <div className="mx-auto w-full max-w-3xl space-y-6">
-      <header className="space-y-1">
-        <h1 className="text-[22px] font-semibold tracking-tight">Campus Events</h1>
-        <p className="text-[13px] text-ink-secondary">
-          Fests, workshops, exams and club meets — what&apos;s on, and what&apos;s coming.
+    <div className="mx-auto w-full max-w-4xl space-y-8">
+      <div>
+        <div className="inline-flex items-center gap-1.5 rounded-full border border-accent/20 bg-accent-subtle px-3 py-0.5 text-[11px] font-bold uppercase tracking-wider text-accent dark:text-accent-hover">
+          <Sparkles className="h-3.5 w-3.5" />
+          <span>Campus Life & Schedules</span>
+        </div>
+        <h1 className="mt-2 text-2xl font-black tracking-tight text-ink md:text-3xl">
+          Campus Events & Workshops
+        </h1>
+        <p className="mt-1 text-[13px] text-ink-secondary">
+          Fests, hackathons, guest lectures, and student club meets happening across Jain University.
         </p>
-      </header>
+      </div>
 
-      {/* Date jump: plain GET form, no JS needed */}
-      <form action="/events" className="flex flex-wrap items-center gap-2">
-        <label className="flex items-center gap-2 text-[13px] text-ink-secondary">
-          <CalendarDays className="h-4 w-4 text-ink-tertiary" />
-          Events on
+      {/* Date jump form */}
+      <form
+        action="/events"
+        className="flex flex-wrap items-center gap-3 rounded-2xl border border-line/80 bg-surface/80 p-3 shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-[#121215]"
+      >
+        <div className="flex items-center gap-2 text-sm font-medium text-ink-secondary">
+          <CalendarDays className="h-4 w-4 text-accent" />
+          <span>Select Date:</span>
           <input type="date" name="date" defaultValue={viewDate} className={inputCls} />
-        </label>
+        </div>
         <button
           type="submit"
-          className="h-9 rounded bg-accent px-3 text-sm font-medium text-white transition-colors hover:bg-accent-hover"
+          className="h-10 rounded-xl bg-accent px-5 text-sm font-bold text-white shadow-glow-accent transition-all hover:bg-accent-hover active:scale-95"
         >
-          Go
+          View Events
         </button>
         {!isToday && (
           <Link
             href="/events"
-            className="text-[13px] text-ink-tertiary hover:text-ink hover:underline"
+            className="text-[13px] font-semibold text-accent hover:underline dark:text-accent-hover"
           >
-            Back to today
+            Jump to Today
           </Link>
         )}
       </form>
 
-      <section className="space-y-3">
-        <h2 className="flex items-center gap-2 text-micro font-semibold uppercase tracking-wide text-ink-tertiary">
-          <CalendarClock className="h-4 w-4" /> {fmtDayLabel(viewDate)}
+      {/* Events on Selected Date */}
+      <section className="space-y-4">
+        <h2 className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-ink-tertiary">
+          <CalendarClock className="h-4 w-4 text-accent" />
+          <span>{fmtDayLabel(viewDate)} ({dayEvents.length})</span>
         </h2>
         {dayEvents.length ? (
-          dayEvents.map((ev) => <EventCard key={ev.id} ev={ev} />)
+          <div className="space-y-3">
+            {dayEvents.map((ev) => (
+              <EventCard key={ev.id} ev={ev} />
+            ))}
+          </div>
         ) : (
-          <Card>
-            <CardContent className="py-10 text-center text-sm text-ink-secondary">
-              Nothing scheduled on this day.
-            </CardContent>
+          <Card className="rounded-2xl p-10 text-center">
+            <p className="text-sm font-semibold text-ink-secondary">
+              No campus events scheduled on this day.
+            </p>
           </Card>
         )}
       </section>
 
+      {/* Upcoming Events */}
       {isToday && upcoming.length > 0 && (
-        <section className="space-y-3">
-          <h2 className="text-micro font-semibold uppercase tracking-wide text-ink-tertiary">
-            Coming up next
+        <section className="space-y-4 border-t border-line/60 pt-6 dark:border-white/[0.06]">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-ink-tertiary">
+            Coming Up This Week
           </h2>
-          {upcoming.map((ev) => {
-            const evDate = new Date(ev.startsAt).toLocaleDateString('en-CA', {
-              timeZone: 'Asia/Kolkata',
-            });
-            return <EventCard key={ev.id} ev={ev} dayLabel={fmtDayLabel(evDate)} />;
-          })}
+          <div className="space-y-3">
+            {upcoming.map((ev) => {
+              const evDate = new Date(ev.startsAt).toLocaleDateString('en-CA', {
+                timeZone: 'Asia/Kolkata',
+              });
+              return <EventCard key={ev.id} ev={ev} dayLabel={fmtDayLabel(evDate)} />;
+            })}
+          </div>
         </section>
       )}
     </div>
