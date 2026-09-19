@@ -44,34 +44,33 @@ export default async function MatchPage({ searchParams }: { searchParams: Promis
   const results = submitted ? matchRooms(rooms, { size, duration, wants }).slice(0, 6) : [];
 
   return (
-    <div className="mx-auto w-full max-w-4xl space-y-8">
-      {/* Header */}
+    <div className="mx-auto w-full max-w-3xl space-y-6">
+      {/* Editorial Header */}
       <div>
-        <div className="inline-flex items-center gap-1.5 rounded-full border border-accent/20 bg-accent-subtle px-3 py-0.5 text-[11px] font-bold uppercase tracking-wider text-accent dark:text-accent-hover">
-          <Sparkles className="h-3.5 w-3.5" />
-          <span>Smart Recommendation Engine</span>
+        <div className="flex items-center gap-2">
+          <h1 className="text-xl font-bold tracking-tight text-ink sm:text-2xl">
+            Space Recommendation Engine
+          </h1>
+          <span className="rounded bg-surface-sunken px-2 py-0.5 font-mono text-[11px] font-medium text-zinc-500 dark:bg-white/[0.06] dark:text-zinc-400">
+            Matcher
+          </span>
         </div>
-        <h1 className="mt-2 text-2xl font-black tracking-tight text-ink md:text-3xl">
-          Match Me a Space
-        </h1>
-        <p className="mt-1 text-[13px] text-ink-secondary">
-          Tell us what you need in 3 quick taps. Transparent matching calibrated against timetable
-          schedules and amenity capacity.
+        <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+          Rank campus study spaces matching your group size, duration, and amenity requirements.
         </p>
       </div>
 
       {/* Matcher Form Card */}
-      <Card className="rounded-3xl p-6 shadow-e2 dark:border-white/10 dark:bg-[#121215]">
-        <form method="get" action="/match" className="space-y-6">
+      <div className="rounded-xl border border-line bg-surface p-5 shadow-sm dark:border-white/[0.08] dark:bg-[#111113]">
+        <form method="get" action="/match" className="space-y-5">
           {/* Question 1: Group Size */}
           <fieldset>
-            <legend className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-ink-tertiary">
-              <Users className="h-4 w-4 text-accent" />
-              <span>1. How many people in your group?</span>
+            <legend className="font-mono text-[11px] font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+              1. Group Size
             </legend>
-            <div className="mt-3 flex flex-wrap gap-2">
+            <div className="mt-2.5 flex flex-wrap gap-1.5 rounded-lg border border-line bg-surface-sunken p-1 dark:border-white/[0.08] dark:bg-[#141416]">
               {SIZES.map((s) => (
-                <label key={s} className="cursor-pointer">
+                <label key={s} className="flex-1 cursor-pointer min-w-10">
                   <input
                     type="radio"
                     name="size"
@@ -79,7 +78,7 @@ export default async function MatchPage({ searchParams }: { searchParams: Promis
                     defaultChecked={(params.size ?? '1') === s}
                     className="peer sr-only"
                   />
-                  <span className="inline-flex h-9 min-w-12 items-center justify-center rounded-xl border border-line/80 bg-surface/80 px-3.5 font-mono text-[13px] font-semibold text-ink-secondary transition-all duration-instant ease-spring peer-checked:border-accent peer-checked:bg-accent peer-checked:text-white peer-checked:shadow-sm dark:border-white/10 dark:bg-surface/60">
+                  <span className="flex h-8 items-center justify-center rounded-md font-mono text-xs font-medium text-zinc-500 transition-all peer-checked:bg-white peer-checked:text-zinc-900 peer-checked:shadow-sm dark:text-zinc-400 dark:peer-checked:bg-white dark:peer-checked:text-zinc-900 dark:peer-checked:font-semibold">
                     {s}
                   </span>
                 </label>
@@ -88,14 +87,13 @@ export default async function MatchPage({ searchParams }: { searchParams: Promis
           </fieldset>
 
           {/* Question 2: Duration */}
-          <fieldset className="border-t border-line/60 pt-5 dark:border-white/[0.06]">
-            <legend className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-ink-tertiary">
-              <Zap className="h-4 w-4 text-amber-500" />
-              <span>2. How long do you plan to study?</span>
+          <fieldset className="border-t border-line/60 pt-4 dark:border-white/[0.06]">
+            <legend className="font-mono text-[11px] font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+              2. Target Duration
             </legend>
-            <div className="mt-3 flex flex-wrap gap-2">
+            <div className="mt-2.5 flex flex-wrap gap-1.5 rounded-lg border border-line bg-surface-sunken p-1 dark:border-white/[0.08] dark:bg-[#141416]">
               {DURATIONS.map((d) => (
-                <label key={d.value} className="cursor-pointer">
+                <label key={d.value} className="flex-1 cursor-pointer min-w-16">
                   <input
                     type="radio"
                     name="duration"
@@ -103,7 +101,7 @@ export default async function MatchPage({ searchParams }: { searchParams: Promis
                     defaultChecked={(params.duration ?? '60') === d.value}
                     className="peer sr-only"
                   />
-                  <span className="inline-flex h-9 items-center justify-center rounded-xl border border-line/80 bg-surface/80 px-4 text-[13px] font-semibold text-ink-secondary transition-all duration-instant ease-spring peer-checked:border-accent peer-checked:bg-accent peer-checked:text-white peer-checked:shadow-sm dark:border-white/10 dark:bg-surface/60">
+                  <span className="flex h-8 items-center justify-center rounded-md text-xs font-medium text-zinc-500 transition-all peer-checked:bg-white peer-checked:text-zinc-900 peer-checked:shadow-sm dark:text-zinc-400 dark:peer-checked:bg-white dark:peer-checked:text-zinc-900 dark:peer-checked:font-semibold">
                     {d.label}
                   </span>
                 </label>
@@ -112,12 +110,11 @@ export default async function MatchPage({ searchParams }: { searchParams: Promis
           </fieldset>
 
           {/* Question 3: Amenities */}
-          <fieldset className="border-t border-line/60 pt-5 dark:border-white/[0.06]">
-            <legend className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-ink-tertiary">
-              <Sparkles className="h-4 w-4 text-emerald-500" />
-              <span>3. What matters most? (Select all that apply)</span>
+          <fieldset className="border-t border-line/60 pt-4 dark:border-white/[0.06]">
+            <legend className="font-mono text-[11px] font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+              3. Required Amenities (Optional)
             </legend>
-            <div className="mt-3 flex flex-wrap gap-2">
+            <div className="mt-2.5 flex flex-wrap gap-2">
               {WANT_OPTIONS.map((w) => (
                 <label key={w.key} className="cursor-pointer" title={w.hint}>
                   <input
@@ -127,7 +124,7 @@ export default async function MatchPage({ searchParams }: { searchParams: Promis
                     defaultChecked={wants.includes(w.key)}
                     className="peer sr-only"
                   />
-                  <span className="inline-flex h-9 items-center justify-center rounded-xl border border-line/80 bg-surface/80 px-4 text-[13px] font-medium text-ink-secondary transition-all duration-instant ease-spring peer-checked:border-accent peer-checked:bg-accent-subtle peer-checked:font-semibold peer-checked:text-accent dark:border-white/10 dark:bg-surface/60 dark:peer-checked:bg-accent/15 dark:peer-checked:text-accent-hover">
+                  <span className="inline-flex h-8 items-center justify-center rounded-lg border border-line bg-surface px-3 text-xs font-medium text-zinc-600 transition-all peer-checked:border-zinc-900 peer-checked:bg-zinc-900 peer-checked:text-white dark:border-white/[0.08] dark:bg-[#141416] dark:text-zinc-400 dark:peer-checked:border-white dark:peer-checked:bg-white dark:peer-checked:text-zinc-900 dark:peer-checked:font-semibold">
                     {w.label}
                   </span>
                 </label>
@@ -136,94 +133,90 @@ export default async function MatchPage({ searchParams }: { searchParams: Promis
           </fieldset>
 
           {/* Submit Button */}
-          <div className="border-t border-line/60 pt-5 dark:border-white/[0.06]">
+          <div className="border-t border-line/60 pt-4 dark:border-white/[0.06]">
             <button
               type="submit"
-              className="inline-flex h-11 items-center gap-2.5 rounded-xl bg-accent px-6 text-sm font-bold text-white shadow-glow-accent transition-all duration-fast hover:bg-accent-hover active:scale-[0.98]"
+              className="inline-flex h-9 items-center gap-2 rounded-lg bg-zinc-900 px-4 text-xs font-semibold text-white transition-all hover:bg-zinc-800 active:scale-[0.98] dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100"
             >
-              <Sparkles className="h-4 w-4" aria-hidden />
-              <span>Find Best Matched Spaces</span>
+              <span>Calculate Matches</span>
+              <ArrowRight className="h-3.5 w-3.5" />
             </button>
           </div>
         </form>
-      </Card>
+      </div>
 
       {/* Results Section */}
       {submitted && (
-        <div className="space-y-4">
+        <div className="space-y-3 pt-2">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-bold text-ink">
-              Top Matches for {size} {size === 1 ? 'person' : 'people'} ({duration} min)
+            <h2 className="text-sm font-bold text-ink">
+              Top Matches ({results.length})
             </h2>
-            <span className="font-mono text-xs font-semibold text-ink-tertiary">
-              {results.length} results
+            <span className="font-mono text-[11px] text-zinc-400">
+              {size} {size === 1 ? 'person' : 'people'} · {duration} min
             </span>
           </div>
 
-          <ol className="space-y-4">
+          <ol className="space-y-2.5">
             {results.map((r, i) => (
               <li key={r.room.room_id}>
-                <Card className="rounded-2xl p-5 shadow-e1 transition-all duration-base hover:border-accent/40 hover:shadow-e2 dark:border-white/10">
-                  <div className="flex flex-wrap items-start justify-between gap-4">
-                    <div className="min-w-0">
+                <div className="rounded-xl border border-line bg-surface p-4 shadow-sm dark:border-white/[0.08] dark:bg-[#111113]">
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div>
                       <div className="flex items-center gap-2">
-                        <span className="inline-flex h-6 w-6 items-center justify-center rounded-lg bg-accent-subtle font-mono text-xs font-extrabold text-accent dark:bg-accent/20">
+                        <span className="font-mono text-xs font-bold text-zinc-400">
                           #{i + 1}
                         </span>
-                        <span className="font-mono text-[13px] font-bold text-ink-secondary">
+                        <span className="font-mono text-xs font-bold text-ink">
                           {r.room.code}
+                        </span>
+                        <span className="font-mono text-[11px] text-zinc-400">
+                          · Floor {r.room.floor_level}
                         </span>
                       </div>
                       <Link
                         href={`/spaces/${r.room.slug}`}
-                        className="mt-1 block text-lg font-bold text-ink transition-colors hover:text-accent"
+                        className="mt-1 block text-sm font-bold text-ink hover:underline"
                       >
                         {r.room.name}
                       </Link>
-                      <p className="text-[12px] font-medium text-ink-secondary">
-                        {ROOM_CATEGORY_LABEL[r.room.category] ?? r.room.category} · Floor {r.room.floor_level}
-                      </p>
                     </div>
 
-                    <div className="flex flex-col items-end gap-2">
+                    <div className="flex items-center gap-3">
                       <StatusPill
                         status={r.room.status}
                         freeMinutes={r.room.free_minutes}
                         occupiedUntil={r.room.occupied_until}
                       />
-                      <div className="flex items-center gap-1.5 rounded-lg bg-emerald-500/10 px-2.5 py-1 text-xs font-bold text-emerald-600 dark:text-emerald-400">
-                        <Flame className="h-3.5 w-3.5" />
-                        <span>{r.score}% Match</span>
-                      </div>
+                      <span className="rounded bg-surface-sunken px-2 py-0.5 font-mono text-[11px] font-semibold text-zinc-700 dark:bg-white/[0.06] dark:text-zinc-200">
+                        {r.score}% Match
+                      </span>
                     </div>
                   </div>
 
-                  {/* Explainability reasons */}
-                  <div className="mt-4 border-t border-line/60 pt-3.5 dark:border-white/[0.06]">
-                    <p className="text-[11px] font-bold uppercase tracking-wider text-ink-tertiary">
-                      Why this space matches:
-                    </p>
-                    <ul className="mt-2 space-y-1.5">
+                  {/* Reasons checklist */}
+                  <div className="mt-3 border-t border-line/60 pt-2.5 dark:border-white/[0.06]">
+                    <ul className="space-y-1">
                       {r.reasons.map((reason) => (
-                        <li key={reason} className="flex items-center gap-2 text-[13px] font-medium text-ink-secondary">
-                          <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-500" />
+                        <li key={reason} className="flex items-center gap-1.5 text-xs text-zinc-500 dark:text-zinc-400">
+                          <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-emerald-500" />
                           <span>{reason}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
-                </Card>
+                </div>
               </li>
             ))}
           </ol>
 
           {results.length === 0 && (
-            <Card className="rounded-3xl border-dashed p-10 text-center">
-              <p className="text-[15px] font-semibold text-ink">No spaces matched all criteria</p>
-              <p className="mt-1 text-[13px] text-ink-secondary">
-                Try relaxing one of your preference filters or reducing the requested duration.
+            <div className="rounded-xl border border-dashed border-line p-8 text-center dark:border-white/[0.08]">
+              <p className="text-sm font-semibold text-ink">No spaces matched all requested criteria</p>
+              <p className="mt-1 text-xs text-zinc-400">
+                Try deselecting some amenity filters or reducing your requested duration.
               </p>
-            </Card>
+            </div>
           )}
         </div>
       )}

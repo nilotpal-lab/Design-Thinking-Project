@@ -3,10 +3,9 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { KeyRound, Lock, LogIn, Sparkles, User } from 'lucide-react';
+import { Lock, LogIn, User } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 import { createClient } from '@/lib/supabase/client';
 import { usernameSchema, usernameToEmail } from '@/lib/username-auth';
 
@@ -49,47 +48,44 @@ export default function LoginPage() {
   }
 
   return (
-    <Card className="rounded-3xl border border-line/80 bg-surface/90 p-8 shadow-e3 backdrop-blur-xl dark:border-white/10 dark:bg-[#121215]">
+    <div className="rounded-xl border border-line bg-surface p-6 shadow-sm dark:border-white/[0.08] dark:bg-[#111113]">
       <div className="text-center">
-        <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-accent-subtle text-accent shadow-sm dark:bg-accent/15">
-          <LogIn className="h-6 w-6" />
-        </div>
-        <h1 className="text-2xl font-black tracking-tight text-ink">Welcome Back</h1>
-        <p className="mt-1 text-[13px] font-medium text-ink-secondary">
-          Sign in to your student account
+        <h1 className="text-lg font-bold tracking-tight text-ink">Sign In</h1>
+        <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
+          Enter your student credentials
         </p>
       </div>
 
-      <form onSubmit={onSubmit} className="mt-6 space-y-4">
+      <form onSubmit={onSubmit} className="mt-5 space-y-3.5">
         <div>
-          <label className="block text-xs font-bold uppercase tracking-wider text-ink-tertiary">
+          <label className="block font-mono text-[10px] font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
             Username / USN
           </label>
-          <div className="relative mt-1.5">
-            <User className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-tertiary" />
+          <div className="relative mt-1">
+            <User className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-zinc-400" />
             <input
               name="username"
               required
               autoComplete="username"
               placeholder="e.g. nilotpal"
-              className="h-11 w-full rounded-xl border border-line/80 bg-surface px-3.5 pl-10 text-sm font-medium outline-none transition-all duration-instant focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-accent dark:border-white/10 dark:bg-surface/80"
+              className="h-9 w-full rounded-lg border border-line bg-surface px-3 pl-8 text-xs font-medium outline-none transition-colors focus-visible:ring-1 focus-visible:ring-zinc-400 dark:border-white/[0.08] dark:bg-[#141416] dark:text-zinc-200"
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-xs font-bold uppercase tracking-wider text-ink-tertiary">
+          <label className="block font-mono text-[10px] font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
             Password
           </label>
-          <div className="relative mt-1.5">
-            <Lock className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-tertiary" />
+          <div className="relative mt-1">
+            <Lock className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-zinc-400" />
             <input
               type="password"
               name="password"
               required
               autoComplete="current-password"
               placeholder="••••••••"
-              className="h-11 w-full rounded-xl border border-line/80 bg-surface px-3.5 pl-10 text-sm font-medium outline-none transition-all duration-instant focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-accent dark:border-white/10 dark:bg-surface/80"
+              className="h-9 w-full rounded-lg border border-line bg-surface px-3 pl-8 text-xs font-medium outline-none transition-colors focus-visible:ring-1 focus-visible:ring-zinc-400 dark:border-white/[0.08] dark:bg-[#141416] dark:text-zinc-200"
             />
           </div>
         </div>
@@ -97,25 +93,25 @@ export default function LoginPage() {
         {error && (
           <p
             role="alert"
-            className="rounded-xl border border-rose-500/20 bg-rose-500/10 px-3.5 py-2.5 text-[13px] font-semibold text-rose-600 dark:text-rose-400"
+            className="rounded-lg bg-rose-500/10 px-3 py-2 text-xs font-semibold text-rose-600 dark:text-rose-400"
           >
             {error}
           </p>
         )}
 
-        <Button type="submit" loading={loading} className="h-11 w-full text-sm font-bold shadow-glow-accent">
+        <Button type="submit" loading={loading} className="w-full text-xs font-semibold">
           Sign In
         </Button>
       </form>
 
-      <div className="mt-6 border-t border-line/60 pt-4 text-center dark:border-white/[0.06]">
-        <p className="text-[13px] font-medium text-ink-secondary">
+      <div className="mt-4 border-t border-line/60 pt-3 text-center dark:border-white/[0.06]">
+        <p className="text-xs text-zinc-500 dark:text-zinc-400">
           Don&apos;t have an account?{' '}
-          <Link href="/auth/signup" className="font-bold text-accent hover:underline dark:text-accent-hover">
+          <Link href="/auth/signup" className="font-semibold text-ink hover:underline dark:text-white">
             Create an Account
           </Link>
         </p>
       </div>
-    </Card>
+    </div>
   );
 }

@@ -2,20 +2,20 @@ import Link from 'next/link';
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="relative flex min-h-dvh flex-col items-center justify-center bg-canvas px-4 py-12 antialiased ambient-glow">
-      <Link href="/spaces" className="group mb-8 flex items-center gap-3">
-        <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-tr from-accent to-indigo-500 text-lg font-bold text-white shadow-glow-accent transition-transform duration-fast ease-spring group-hover:scale-105 active:scale-95">
+    <div className="flex min-h-dvh flex-col items-center justify-center bg-canvas px-4 py-12 antialiased text-ink">
+      <Link href="/spaces" className="group mb-6 flex items-center gap-2.5">
+        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-900 text-sm font-bold text-white transition-transform group-hover:scale-105 dark:bg-white dark:text-zinc-900">
           ◧
         </span>
         <div>
-          <span className="text-xl font-black tracking-tight text-ink">JainSpace</span>
-          <p className="text-[11px] font-semibold text-ink-tertiary">Campus Space Reimagined</p>
+          <span className="text-base font-bold tracking-tight text-ink">JainSpace</span>
+          <p className="text-[10px] text-zinc-400">Campus Reimagined</p>
         </div>
       </Link>
 
-      <div className="w-full max-w-md">{children}</div>
+      <div className="w-full max-w-sm">{children}</div>
 
-      <p className="mt-8 max-w-xs text-center text-micro text-ink-tertiary">
+      <p className="mt-6 max-w-xs text-center text-[11px] text-zinc-400">
         Browsing and schedule lookups require no account. Sign in to post check-ins, upvote issues,
         or save spaces.
       </p>

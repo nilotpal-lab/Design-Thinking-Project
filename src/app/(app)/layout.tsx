@@ -18,32 +18,25 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   }).format(new Date());
 
   return (
-    <div className="flex min-h-dvh bg-canvas antialiased ambient-glow">
+    <div className="flex min-h-dvh bg-canvas antialiased text-ink">
       <Sidebar />
       <div className="flex min-w-0 flex-1 flex-col">
-        {/* Glassmorphic Top Header */}
-        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-line/80 bg-surface/80 px-4 backdrop-blur-xl md:px-8 dark:border-white/[0.08] dark:bg-[#09090b]/80">
+        {/* Minimalist Top Header */}
+        <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-line bg-surface/90 px-4 backdrop-blur-xl md:px-6 dark:border-white/[0.08] dark:bg-[#0c0c0d]/90">
           <div className="flex items-center gap-3">
             {/* Mobile brand */}
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent text-sm font-bold text-white shadow-glow-accent md:hidden">
+            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-900 text-xs font-bold text-white md:hidden dark:bg-white dark:text-zinc-900">
               ◧
             </span>
-            <div className="flex items-center gap-2">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-              </span>
-              <span className="hidden text-[13px] font-medium text-ink-secondary md:inline-block">
-                Live Campus Timetable
-              </span>
-              <span className="hidden text-ink-tertiary md:inline-block">·</span>
-              <span className="font-mono text-[13px] font-medium text-ink-secondary">
-                {formattedDate}
-              </span>
+            <div className="flex items-center gap-2 text-xs font-medium text-zinc-500 dark:text-zinc-400">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+              <span className="hidden sm:inline-block">Live Timetable</span>
+              <span className="hidden sm:inline-block text-zinc-300 dark:text-zinc-700">·</span>
+              <span className="font-mono text-[11px]">{formattedDate}</span>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <CommandPalette />
             <ThemeToggle />
             <UserChip />
@@ -51,7 +44,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         </header>
 
         {/* Main Content Area */}
-        <main className="mx-auto w-full max-w-[1280px] flex-1 px-4 pb-28 pt-8 md:px-8 md:pb-12">
+        <main className="mx-auto w-full max-w-[1240px] flex-1 px-4 pb-20 pt-6 md:px-6 md:pb-10">
           {children}
         </main>
       </div>

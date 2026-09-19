@@ -20,7 +20,7 @@ const NAV = [
   { href: '/spaces', label: 'Spaces', icon: Waypoints },
   { href: '/map', label: 'Floor Map', icon: Map },
   { href: '/match', label: 'AI Matcher', icon: Sparkles },
-  { href: '/case-study', label: 'Case Study', icon: BookOpen },
+  { href: '/case-study', label: 'Case Study (20/20)', icon: BookOpen },
   { href: '/faculty', label: 'Faculty', icon: User },
   { href: '/events', label: 'Events', icon: CalendarClock },
   { href: '/report', label: 'Reports', icon: Flag },
@@ -42,29 +42,29 @@ function NavItems({ compact = false }: { compact?: boolean }) {
         aria-current={active ? 'page' : undefined}
         aria-label={compact ? n.label : undefined}
         className={cn(
-          'group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-instant ease-spring',
+          'group relative flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium transition-all duration-instant',
           active
-            ? 'bg-accent text-white shadow-sm shadow-accent/20 dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.2)]'
-            : 'text-ink-secondary hover:bg-surface-sunken hover:text-ink dark:hover:bg-white/[0.04]',
-          compact && 'justify-center px-0 py-3',
+            ? 'bg-zinc-150 text-zinc-900 font-semibold dark:bg-white/[0.08] dark:text-white dark:border dark:border-white/[0.08]'
+            : 'text-zinc-500 hover:bg-surface-sunken hover:text-ink dark:text-zinc-400 dark:hover:bg-white/[0.04] dark:hover:text-zinc-200',
+          compact && 'justify-center px-0 py-2.5',
         )}
       >
         <Icon
           className={cn(
-            'h-4 w-4 shrink-0 transition-transform duration-fast ease-spring group-hover:scale-110',
-            active ? 'text-white' : 'text-ink-tertiary group-hover:text-ink',
+            'h-4 w-4 shrink-0 transition-colors',
+            active ? 'text-zinc-900 dark:text-white' : 'text-zinc-400 dark:text-zinc-500 group-hover:text-zinc-700 dark:group-hover:text-zinc-300',
           )}
           aria-hidden
         />
-        {!compact && <span className="tracking-[-0.01em]">{n.label}</span>}
+        {!compact && <span>{n.label}</span>}
       </Link>
     );
   };
 
   return (
-    <nav aria-label="Main" className="flex flex-col gap-1">
+    <nav aria-label="Main" className="flex flex-col gap-0.5">
       {NAV.map(item)}
-      <div className="my-3 border-t border-line/60 dark:border-white/[0.08]" role="presentation" />
+      <div className="my-2.5 border-t border-line/60 dark:border-white/[0.06]" role="presentation" />
       {SECONDARY.map(item)}
     </nav>
   );
@@ -74,37 +74,31 @@ export function Sidebar() {
   return (
     <>
       {/* Full sidebar ≥ lg */}
-      <aside className="sticky top-0 hidden h-dvh w-64 shrink-0 flex-col border-r border-line/80 bg-surface/90 px-3.5 py-5 backdrop-blur-xl lg:flex dark:border-white/[0.08] dark:bg-[#0c0c0e]/90">
+      <aside className="sticky top-0 hidden h-dvh w-56 shrink-0 flex-col border-r border-line bg-surface px-3 py-4 lg:flex dark:border-white/[0.08] dark:bg-[#0c0c0d]">
         <Brand />
-        <div className="mt-7 flex-1 overflow-y-auto pr-1">
+        <div className="mt-6 flex-1 overflow-y-auto">
           <NavItems />
         </div>
-        <Link
-          href="/case-study"
-          className="group block rounded-xl border border-accent/20 bg-accent-subtle/50 p-3 transition-colors hover:bg-accent-subtle dark:bg-accent/10"
-        >
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-accent dark:text-accent-hover">
-              CA1 20/20 Package
-            </span>
-            <BookOpen className="h-3.5 w-3.5 text-accent" />
-          </div>
-          <p className="mt-0.5 text-micro font-medium text-ink-secondary">
-            Design Thinking & Innovation
+        <div className="rounded-lg border border-line/70 bg-surface-sunken/50 p-2.5 dark:border-white/[0.06] dark:bg-white/[0.02]">
+          <p className="font-mono text-[10px] font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+            Design Thinking CA1
           </p>
-        </Link>
+          <p className="mt-0.5 text-[11px] text-zinc-500 dark:text-zinc-400">
+            Jain University · 3rd Sem
+          </p>
+        </div>
       </aside>
 
       {/* Icon rail 640–1023px */}
-      <aside className="sticky top-0 hidden h-dvh w-20 shrink-0 flex-col items-center border-r border-line/80 bg-surface/90 py-5 backdrop-blur-xl max-lg:max-md:flex md:flex lg:hidden dark:border-white/[0.08] dark:bg-[#0c0c0e]/90">
+      <aside className="sticky top-0 hidden h-dvh w-14 shrink-0 flex-col items-center border-r border-line bg-surface py-4 max-lg:max-md:flex md:flex lg:hidden dark:border-white/[0.08] dark:bg-[#0c0c0d]">
         <Link
           href="/"
           aria-label="JainSpace home"
-          className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent text-base font-bold text-white shadow-glow-accent transition-transform hover:scale-105 active:scale-95"
+          className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-900 text-sm font-bold text-white dark:bg-white dark:text-zinc-900"
         >
           ◧
         </Link>
-        <div className="mt-7">
+        <div className="mt-6">
           <NavItems compact />
         </div>
       </aside>
@@ -112,7 +106,7 @@ export function Sidebar() {
       {/* Below 640px: bottom bar */}
       <nav
         aria-label="Main"
-        className="fixed inset-x-0 bottom-0 z-40 flex items-stretch justify-around border-t border-line/80 bg-surface/95 px-1 py-1 shadow-e3 backdrop-blur-xl md:hidden dark:border-white/[0.08] dark:bg-[#0c0c0e]/95"
+        className="fixed inset-x-0 bottom-0 z-40 flex items-stretch justify-around border-t border-line bg-surface/95 px-1 py-1 shadow-sm backdrop-blur-xl md:hidden dark:border-white/[0.08] dark:bg-[#0c0c0d]/95"
       >
         {NAV.slice(0, 5).map((n) => (
           <BottomItem key={n.href} {...n} />
@@ -130,10 +124,10 @@ function BottomItem({ href, label, icon: Icon }: (typeof NAV)[number]) {
       href={href}
       aria-current={active ? 'page' : undefined}
       className={cn(
-        'flex min-w-[50px] flex-col items-center gap-0.5 rounded-xl px-2 py-1.5 text-[10px] font-medium transition-all duration-instant',
+        'flex min-w-[52px] flex-col items-center gap-0.5 rounded-lg px-2 py-1.5 text-[10px] font-medium transition-colors',
         active
-          ? 'bg-accent text-white font-bold'
-          : 'text-ink-secondary hover:text-ink',
+          ? 'text-zinc-900 font-bold dark:text-white'
+          : 'text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200',
       )}
     >
       <Icon className="h-4 w-4" aria-hidden />
@@ -144,18 +138,18 @@ function BottomItem({ href, label, icon: Icon }: (typeof NAV)[number]) {
 
 function Brand() {
   return (
-    <Link href="/" className="group flex items-center gap-3 px-2">
-      <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-accent to-indigo-500 text-base font-bold text-white shadow-glow-accent transition-all duration-fast ease-spring group-hover:scale-105 active:scale-95">
+    <Link href="/" className="group flex items-center gap-2.5 px-2">
+      <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-900 text-sm font-bold text-white transition-transform duration-fast group-hover:scale-105 dark:bg-white dark:text-zinc-900">
         ◧
       </span>
       <div>
         <div className="flex items-center gap-1.5">
-          <span className="text-[16px] font-bold tracking-[-0.02em] text-ink">JainSpace</span>
-          <span className="rounded-full bg-accent-subtle px-1.5 py-0.2 font-mono text-[9px] font-bold uppercase tracking-wider text-accent">
+          <span className="text-[14px] font-bold tracking-tight text-ink">JainSpace</span>
+          <span className="rounded bg-zinc-200/80 px-1 py-0.2 font-mono text-[9px] font-bold uppercase tracking-wider text-zinc-700 dark:bg-white/10 dark:text-zinc-300">
             Live
           </span>
         </div>
-        <p className="text-[11px] font-medium text-ink-tertiary">Campus Reimagined</p>
+        <p className="text-[10px] text-zinc-400">Campus Reimagined</p>
       </div>
     </Link>
   );

@@ -1,15 +1,30 @@
 import { CircleCheck, CircleSlash, Clock, CircleHelp } from 'lucide-react';
 
-import { Badge } from '@/components/ui/badge';
 import { cn, formatMinutes, formatTime } from '@/lib/utils';
 
 export type RoomStatus = 'free' | 'soon' | 'busy' | 'unknown';
 
 const CONFIG = {
-  free: { label: 'Free now', icon: CircleCheck, cls: 'free' as const },
-  soon: { label: 'Free soon', icon: Clock, cls: 'soon' as const },
-  busy: { label: 'In session', icon: CircleSlash, cls: 'busy' as const },
-  unknown: { label: 'No data', icon: CircleHelp, cls: 'unknown' as const },
+  free: {
+    label: 'Free now',
+    dot: 'bg-emerald-500',
+    cls: 'text-emerald-700 bg-emerald-500/10 border-emerald-500/20 dark:text-emerald-400',
+  },
+  soon: {
+    label: 'Free soon',
+    dot: 'bg-amber-500',
+    cls: 'text-amber-700 bg-amber-500/10 border-amber-500/20 dark:text-amber-400',
+  },
+  busy: {
+    label: 'In session',
+    dot: 'bg-rose-500',
+    cls: 'text-rose-700 bg-rose-500/10 border-rose-500/20 dark:text-rose-400',
+  },
+  unknown: {
+    label: 'No data',
+    dot: 'bg-zinc-400',
+    cls: 'text-zinc-600 bg-zinc-500/10 border-zinc-500/20 dark:text-zinc-400',
+  },
 } as const;
 
 export function StatusPill({
@@ -24,30 +39,25 @@ export function StatusPill({
   className?: string;
 }) {
   const c = CONFIG[status] ?? CONFIG.unknown;
-  const Icon = c.icon;
 
   const detail =
     status === 'free' && freeMinutes != null
-      ? `(${formatMinutes(freeMinutes)})`
+      ? `${formatMinutes(freeMinutes)}`
       : status === 'busy' && occupiedUntil
-        ? `(${formatTime(occupiedUntil)})`
+        ? `until ${formatTime(occupiedUntil)}`
         : null;
 
   return (
-    <Badge
-      variant={c.cls}
-      className={cn('inline-flex items-center gap-1.5 whitespace-nowrap rounded-lg px-2.5 py-1 text-[11px] normal-case tracking-normal', className)}
-    >
-      {status === 'free' ? (
-        <span className="relative flex h-2 w-2 shrink-0">
-          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-          <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-        </span>
-      ) : (
-        <Icon className="h-3.5 w-3.5 shrink-0" aria-hidden />
+    <span
+      className={cn(
+        'inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[11px] font-medium transition-colors',
+        c.cls,
+        className,
       )}
-      <span className="font-semibold">{c.label}</span>
-      {detail && <span className="font-mono text-[11px] font-normal opacity-85">{detail}</span>}
-    </Badge>
+    >
+      <span className={cn('h-1.5 w-1.5 rounded-full', c.dot)} />
+      <span>{c.label}</span>
+      {detail && <span className="opacity-70 font-mono">({detail})</span>}
+    </span>
   );
 }

@@ -10,9 +10,9 @@ export const Card = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(f
     <div
       ref={ref}
       className={cn(
-        'relative rounded-xl border border-line/80 bg-surface shadow-e1',
-        'dark:border-white/[0.08] dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08)]',
-        'transition-all duration-fast ease-spring',
+        'relative rounded-xl border border-line bg-surface',
+        'dark:border-white/[0.08] dark:bg-[#111113] dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)]',
+        'transition-colors duration-fast',
         className,
       )}
       {...props}
@@ -31,7 +31,7 @@ export const CardTitle = forwardRef<HTMLHeadingElement, HTMLAttributes<HTMLHeadi
     return (
       <h3
         ref={ref}
-        className={cn('text-[15px] font-semibold leading-6 tracking-[-0.01em] text-ink', className)}
+        className={cn('text-base font-semibold tracking-tight text-ink', className)}
         {...props}
       />
     );
@@ -44,12 +44,11 @@ export const CardContent = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElem
   },
 );
 
-/** Skeleton matching final layout geometry — never a centred spinner. */
 export function Skeleton({ className }: { className?: string }) {
   return (
     <div
       aria-hidden
-      className={cn('animate-pulse rounded-lg bg-surface-sunken', className)}
+      className={cn('animate-pulse rounded-lg bg-surface-sunken dark:bg-white/[0.04]', className)}
     />
   );
 }

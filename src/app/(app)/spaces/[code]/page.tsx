@@ -29,27 +29,27 @@ export default async function RoomDetailPage({
     : 'No reports yet';
 
   return (
-    <div className="mx-auto w-full max-w-4xl space-y-7">
-      {/* Back Button */}
+    <div className="mx-auto w-full max-w-3xl space-y-6">
+      {/* Back Link */}
       <Link
         href="/spaces"
-        className="inline-flex items-center gap-2 text-sm font-semibold text-ink-secondary transition-colors hover:text-accent dark:hover:text-accent-hover"
+        className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-500 transition-colors hover:text-ink dark:text-zinc-400 dark:hover:text-white"
       >
-        <ArrowLeft className="h-4 w-4" aria-hidden />
-        <span>Back to All Spaces</span>
+        <ArrowLeft className="h-3.5 w-3.5" aria-hidden />
+        <span>Back to Spaces Directory</span>
       </Link>
 
       {/* Room Hero Header */}
-      <div className="relative overflow-hidden rounded-3xl border border-line/80 bg-surface/80 p-6 shadow-e2 backdrop-blur-xl md:p-8 dark:border-white/10 dark:bg-[#121215]">
+      <div className="rounded-xl border border-line bg-surface p-5 shadow-sm dark:border-white/[0.08] dark:bg-[#111113]">
         <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-start">
           <div>
-            <span className="font-mono text-sm font-bold uppercase tracking-wider text-accent dark:text-accent-hover">
+            <span className="font-mono text-xs font-bold text-zinc-400 dark:text-zinc-500">
               {room.code}
             </span>
-            <h1 className="mt-1 text-2xl font-black tracking-tight text-ink md:text-3xl">
+            <h1 className="mt-1 text-xl font-bold tracking-tight text-ink sm:text-2xl">
               {room.name}
             </h1>
-            <p className="mt-1 text-[13px] font-medium text-ink-secondary">
+            <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
               {ROOM_CATEGORY_LABEL[room.category] ?? room.category} · {room.block_name} · Floor{' '}
               {room.floor_level} ({room.floor_label})
             </p>
@@ -63,25 +63,25 @@ export default async function RoomDetailPage({
         </div>
 
         {/* Current / Next occupancy summary banner */}
-        <div className="mt-6 rounded-2xl border border-line/60 bg-surface-sunken/60 p-4 dark:border-white/[0.06] dark:bg-white/[0.02]">
+        <div className="mt-4 rounded-lg border border-line/60 bg-surface-sunken p-3 dark:border-white/[0.06] dark:bg-[#141416]">
           {room.status === 'busy' && room.current_occupancy_title ? (
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-rose-600 dark:text-rose-400">
+              <p className="font-mono text-[10px] font-semibold uppercase tracking-wider text-rose-600 dark:text-rose-400">
                 In Session · Occupied Until {room.occupied_until ? room.occupied_until.slice(0, 5) : ''}
               </p>
-              <p className="mt-1 text-base font-bold text-ink">{room.current_occupancy_title}</p>
-              <p className="text-xs text-ink-secondary">
+              <p className="mt-0.5 text-sm font-bold text-ink">{room.current_occupancy_title}</p>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">
                 {room.current_course_code ? `${room.current_course_code} · ` : ''}
                 Faculty: {room.current_faculty ?? 'Instructor'}
               </p>
             </div>
           ) : room.next_occupancy_from ? (
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">
-                Next Session At {room.next_occupancy_from.slice(0, 5)}
+              <p className="font-mono text-[10px] font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400">
+                Next Lecture At {room.next_occupancy_from.slice(0, 5)}
               </p>
-              <p className="mt-1 text-base font-bold text-ink">{room.next_occupancy_title}</p>
-              <p className="text-xs text-ink-secondary">
+              <p className="mt-0.5 text-sm font-bold text-ink">{room.next_occupancy_title}</p>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">
                 {room.free_minutes != null
                   ? `Free for another ${formatMinutes(room.free_minutes)}`
                   : 'Free for the rest of today'}
@@ -89,11 +89,11 @@ export default async function RoomDetailPage({
             </div>
           ) : (
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+              <p className="font-mono text-[10px] font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
                 Open Access
               </p>
-              <p className="mt-1 text-base font-bold text-ink">Free for the rest of today</p>
-              <p className="text-xs text-ink-secondary">
+              <p className="mt-0.5 text-sm font-bold text-ink">Free for the rest of today</p>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">
                 No further lecture classes scheduled for today.
               </p>
             </div>
@@ -102,74 +102,78 @@ export default async function RoomDetailPage({
       </div>
 
       {/* Today Timeline */}
-      <Card className="rounded-3xl p-6 shadow-e1 dark:border-white/10 dark:bg-[#121215]">
-        <h2 className="mb-4 text-base font-bold text-ink">Today&apos;s Class Timetable</h2>
+      <div className="rounded-xl border border-line bg-surface p-5 shadow-sm dark:border-white/[0.08] dark:bg-[#111113]">
+        <h2 className="mb-3 font-mono text-xs font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+          Today&apos;s Class Timetable
+        </h2>
         {slots.length === 0 ? (
-          <p className="text-sm text-ink-secondary">
-            No scheduled sessions today — the space is open all day for self-study.
+          <p className="text-xs text-zinc-400">
+            No scheduled sessions today — open all day for self-study.
           </p>
         ) : (
           <TodayTimeline slots={slots} nowTime={room.as_of_time ?? ''} />
         )}
-      </Card>
+      </div>
 
       {/* Infrastructure Bento Grid */}
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-        <Card className="rounded-3xl p-6 shadow-e1 dark:border-white/10 dark:bg-[#121215]">
-          <h2 className="mb-4 text-base font-bold text-ink">Room Equipment & Amenities</h2>
-          <div className="space-y-3.5 text-[13px] font-medium">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="rounded-xl border border-line bg-surface p-5 shadow-sm dark:border-white/[0.08] dark:bg-[#111113]">
+          <h2 className="mb-3 font-mono text-xs font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+            Room Amenities
+          </h2>
+          <div className="space-y-2.5 text-xs">
             <div className="flex items-center justify-between">
-              <span className="flex items-center gap-2.5 text-ink-secondary">
-                <Users className="h-4 w-4 text-accent" />
+              <span className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400">
+                <Users className="h-3.5 w-3.5" />
                 <span>Seating Capacity</span>
               </span>
-              <span className="font-mono text-sm font-bold text-ink">{room.capacity} seats</span>
+              <span className="font-mono font-semibold text-ink">{room.capacity} seats</span>
             </div>
 
-            <div className="flex items-center justify-between border-t border-line/60 pt-2.5 dark:border-white/[0.06]">
-              <span className="flex items-center gap-2.5 text-ink-secondary">
-                <Plug className="h-4 w-4 text-amber-500" />
+            <div className="flex items-center justify-between border-t border-line/60 pt-2 dark:border-white/[0.06]">
+              <span className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400">
+                <Plug className="h-3.5 w-3.5" />
                 <span>Power Sockets</span>
               </span>
-              <span className="font-mono text-sm font-bold text-ink">
+              <span className="font-mono font-semibold text-ink">
                 {room.sockets_working ?? 0} of {room.sockets_total ?? 0} working
               </span>
             </div>
 
-            <div className="flex items-center justify-between border-t border-line/60 pt-2.5 dark:border-white/[0.06]">
-              <span className="flex items-center gap-2.5 text-ink-secondary">
-                <Snowflake className="h-4 w-4 text-sky-500" />
+            <div className="flex items-center justify-between border-t border-line/60 pt-2 dark:border-white/[0.06]">
+              <span className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400">
+                <Snowflake className="h-3.5 w-3.5" />
                 <span>Air Conditioning</span>
               </span>
-              <span className="font-semibold text-ink">
+              <span className="font-medium text-ink">
                 {room.has_ac ? room.ac_type ?? 'Air Conditioned' : 'No AC'}
               </span>
             </div>
 
-            <div className="flex items-center justify-between border-t border-line/60 pt-2.5 dark:border-white/[0.06]">
-              <span className="flex items-center gap-2.5 text-ink-secondary">
-                <Wifi className="h-4 w-4 text-emerald-500" />
+            <div className="flex items-center justify-between border-t border-line/60 pt-2 dark:border-white/[0.06]">
+              <span className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400">
+                <Wifi className="h-3.5 w-3.5" />
                 <span>Campus Wi-Fi</span>
               </span>
-              <span className="font-semibold text-ink">
+              <span className="font-medium text-ink">
                 {room.wifi_band === 'wifi_6e'
-                  ? 'Wi-Fi 6E (High-Speed)'
+                  ? 'Wi-Fi 6E'
                   : room.wifi_band === 'wifi_5'
                     ? 'Wi-Fi 5'
                     : 'Campus Wi-Fi'}
               </span>
             </div>
 
-            <div className="flex items-center justify-between border-t border-line/60 pt-2.5 dark:border-white/[0.06]">
-              <span className="flex items-center gap-2.5 text-ink-secondary">
+            <div className="flex items-center justify-between border-t border-line/60 pt-2 dark:border-white/[0.06]">
+              <span className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400">
                 {room.has_projector ? (
-                  <Projector className="h-4 w-4 text-indigo-500" />
+                  <Projector className="h-3.5 w-3.5" />
                 ) : (
-                  <Monitor className="h-4 w-4 text-indigo-500" />
+                  <Monitor className="h-3.5 w-3.5" />
                 )}
-                <span>Presentation Gear</span>
+                <span>Display Gear</span>
               </span>
-              <span className="font-semibold text-ink">
+              <span className="font-medium text-ink">
                 {[
                   room.has_projector && 'Projector',
                   room.has_smart_board && 'Smart Board',
@@ -180,100 +184,98 @@ export default async function RoomDetailPage({
               </span>
             </div>
           </div>
-        </Card>
+        </div>
 
         {/* Space Environment & Noise Vibe */}
-        <Card className="rounded-3xl p-6 shadow-e1 dark:border-white/10 dark:bg-[#121215]">
-          <h2 className="mb-4 text-base font-bold text-ink">Space Environment</h2>
-          <div className="space-y-4">
+        <div className="rounded-xl border border-line bg-surface p-5 shadow-sm dark:border-white/[0.08] dark:bg-[#111113]">
+          <h2 className="mb-3 font-mono text-xs font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+            Environment & Vibe
+          </h2>
+          <div className="space-y-3">
             <div>
-              <p className="text-xs font-bold uppercase tracking-wider text-ink-tertiary">
-                Current Crowd Density
+              <p className="font-mono text-[10px] uppercase text-zinc-400">
+                Live Crowd Density
               </p>
-              <p className="mt-1 text-base font-bold text-ink">{crowd}</p>
+              <p className="mt-0.5 text-sm font-bold text-ink">{crowd}</p>
             </div>
 
-            <div className="flex flex-wrap gap-2">
-              <Badge variant="accent">
+            <div className="flex flex-wrap gap-1.5">
+              <span className="rounded bg-surface-sunken px-2 py-0.5 font-mono text-[10px] text-zinc-600 dark:bg-white/[0.06] dark:text-zinc-300">
                 {room.noise_vibe === 'silent'
                   ? 'Silent Zone'
                   : room.noise_vibe === 'collaborative'
                     ? 'Group-Friendly'
                     : room.noise_vibe === 'quick_break'
-                      ? 'Quick Breaks OK'
+                      ? 'Quick Breaks'
                       : 'Moderate Noise'}
-              </Badge>
-              {room.is_accessible && <Badge variant="neutral">Step-Free Accessible</Badge>}
+              </span>
+              {room.is_accessible && (
+                <span className="rounded bg-surface-sunken px-2 py-0.5 font-mono text-[10px] text-zinc-600 dark:bg-white/[0.06] dark:text-zinc-300">
+                  Step-Free Accessible
+                </span>
+              )}
             </div>
 
             {room.comfort_score != null && (
-              <div className="rounded-2xl border border-line/60 bg-surface-sunken/60 p-3.5 dark:border-white/[0.06] dark:bg-white/[0.02]">
+              <div className="rounded-lg border border-line/60 bg-surface-sunken p-2.5 dark:border-white/[0.06] dark:bg-[#141416]">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold uppercase tracking-wider text-ink-secondary">
+                  <span className="font-mono text-[10px] uppercase text-zinc-400">
                     Comfort Index
                   </span>
-                  <span className="font-mono text-base font-extrabold text-accent dark:text-accent-hover">
-                    {room.comfort_score}/10
+                  <span className="font-mono text-sm font-bold text-ink">
+                    {room.comfort_score} / 10
                   </span>
                 </div>
               </div>
             )}
           </div>
-        </Card>
+        </div>
       </div>
 
       {/* Live Check-in & Recent Activity */}
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-        <Card className="rounded-3xl p-6 shadow-e1 dark:border-white/10 dark:bg-[#121215]">
-          <h2 className="text-base font-bold text-ink">Check In Here</h2>
-          <p className="mt-1 text-xs text-ink-secondary">
-            Your 20-second report updates the live map for fellow students (+15 karma).
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="rounded-xl border border-line bg-surface p-5 shadow-sm dark:border-white/[0.08] dark:bg-[#111113]">
+          <h2 className="text-sm font-bold text-ink">Check In Here</h2>
+          <p className="mt-0.5 text-[11px] text-zinc-400">
+            Your report updates the live map for fellow students (+15 karma).
           </p>
-          <div className="mt-5">
+          <div className="mt-4">
             <CheckInForm roomId={room.room_id} roomCode={room.code} />
           </div>
-        </Card>
+        </div>
 
-        <Card className="rounded-3xl p-6 shadow-e1 dark:border-white/10 dark:bg-[#121215]">
-          <h2 className="text-base font-bold text-ink">Recent Student Reports</h2>
-          <div className="mt-4 space-y-3">
+        <div className="rounded-xl border border-line bg-surface p-5 shadow-sm dark:border-white/[0.08] dark:bg-[#111113]">
+          <h2 className="text-sm font-bold text-ink">Recent Student Reports</h2>
+          <div className="mt-3 space-y-2">
             {feed.length === 0 ? (
-              <p className="text-sm text-ink-secondary">
-                No check-ins in the last 90 minutes. Be the first to check in!
+              <p className="text-xs text-zinc-400">
+                No check-ins in the last 90 minutes.
               </p>
             ) : (
               feed.map((f) => (
                 <div
                   key={f.id}
-                  className="rounded-xl border border-line/60 bg-surface-sunken/40 p-3 dark:border-white/[0.06] dark:bg-white/[0.02]"
+                  className="rounded-lg border border-line/60 bg-surface-sunken p-2.5 dark:border-white/[0.06] dark:bg-[#141416]"
                 >
                   <div className="flex items-center justify-between gap-2">
-                    <Badge
-                      variant={
-                        f.crowd_density === 'crowded' || f.crowd_density === 'full'
-                          ? 'busy'
-                          : f.crowd_density === 'empty' || f.crowd_density === 'light'
-                            ? 'free'
-                            : 'soon'
-                      }
-                    >
+                    <span className="font-mono text-[10px] font-semibold uppercase text-zinc-500 dark:text-zinc-400">
                       {f.crowd_density ? (CROWD_LABEL[f.crowd_density] ?? f.crowd_density) : 'Report'}
-                    </Badge>
-                    <span className="font-mono text-micro text-ink-tertiary">
+                    </span>
+                    <span className="font-mono text-[10px] text-zinc-400">
                       {timeAgo(f.created_at)}
                     </span>
                   </div>
-                  <p className="mt-2 text-[13px] font-medium text-ink">
+                  <p className="mt-1 text-xs text-ink">
                     {f.note ? `“${f.note}”` : 'Checked in and confirmed status.'}
                   </p>
-                  <p className="mt-1 text-micro text-ink-tertiary">
+                  <p className="mt-0.5 font-mono text-[10px] text-zinc-400">
                     by {f.display_name ?? 'Student'}
                   </p>
                 </div>
               ))
             )}
           </div>
-        </Card>
+        </div>
       </div>
     </div>
   );

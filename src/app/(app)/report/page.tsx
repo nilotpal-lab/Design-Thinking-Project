@@ -1,4 +1,4 @@
-import { ArrowBigUp, Flag, Sparkles } from 'lucide-react';
+import { ArrowBigUp, Flag } from 'lucide-react';
 import Link from 'next/link';
 
 import { NewIssueForm } from '@/components/reports/new-issue-form';
@@ -11,11 +11,11 @@ import { roomHref, timeAgo } from '@/lib/utils';
 export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Campus Facility Reports' };
 
-const URGENCY_VARIANT = {
-  low: 'neutral',
-  medium: 'soon',
-  high: 'busy',
-  critical: 'busy',
+const URGENCY_LABEL = {
+  low: 'Low',
+  medium: 'Medium',
+  high: 'High',
+  critical: 'Critical',
 } as const;
 
 const STATUS_LABEL = {
@@ -31,59 +31,59 @@ export default async function ReportPage() {
   const [rooms, board] = await Promise.all([getLiveRooms(), getIssueBoard()]);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
+      {/* Editorial Header */}
       <div>
-        <div className="inline-flex items-center gap-1.5 rounded-full border border-accent/20 bg-accent-subtle px-3 py-0.5 text-[11px] font-bold uppercase tracking-wider text-accent dark:text-accent-hover">
-          <Sparkles className="h-3.5 w-3.5" />
-          <span>Crowdsourced Facilities</span>
+        <div className="flex items-center gap-2">
+          <h1 className="text-xl font-bold tracking-tight text-ink sm:text-2xl">
+            Campus Issue Board
+          </h1>
+          <span className="rounded bg-surface-sunken px-2 py-0.5 font-mono text-[11px] font-medium text-zinc-500 dark:bg-white/[0.06] dark:text-zinc-400">
+            Crowdsourced
+          </span>
         </div>
-        <h1 className="mt-2 text-2xl font-black tracking-tight text-ink md:text-3xl">
-          Campus Issue Board
-        </h1>
-        <p className="mt-1 text-[13px] text-ink-secondary">
-          Broken power sockets, malfunctioning ACs, or Wi-Fi dead zones — reported by students,
-          upvoted by the community, fixed by facilities.
+        <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+          Broken power sockets, malfunctioning ACs, and Wi-Fi issues reported by students and resolved by facilities.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-7 lg:grid-cols-[400px_1fr]">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[360px_1fr]">
         {/* Sticky Report Form */}
-        <Card className="h-fit rounded-3xl p-6 shadow-e2 lg:sticky lg:top-24 dark:border-white/10 dark:bg-[#121215]">
-          <div className="mb-4 flex items-center gap-2 border-b border-line/60 pb-3 dark:border-white/[0.06]">
-            <Flag className="h-5 w-5 text-accent" />
-            <h2 className="text-base font-bold text-ink">File a New Report</h2>
+        <div className="h-fit rounded-xl border border-line bg-surface p-4 shadow-sm lg:sticky lg:top-20 dark:border-white/[0.08] dark:bg-[#111113]">
+          <div className="mb-3.5 flex items-center gap-2 border-b border-line/60 pb-2.5 dark:border-white/[0.06]">
+            <Flag className="h-4 w-4 text-zinc-400" />
+            <h2 className="text-sm font-bold text-ink">File a New Report</h2>
           </div>
           <NewIssueForm
             rooms={rooms.map((r) => ({ id: r.room_id, code: r.code, name: r.name }))}
           />
-        </Card>
+        </div>
 
         {/* Public Board */}
-        <section aria-label="Issue board" className="space-y-4">
+        <section aria-label="Issue board" className="space-y-3">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-bold text-ink">Active Issues ({board.length})</h2>
-            <span className="text-micro font-semibold uppercase tracking-wider text-ink-tertiary">
+            <h2 className="text-sm font-bold text-ink">Active Issues ({board.length})</h2>
+            <span className="font-mono text-[11px] text-zinc-400">
               Live Feed
             </span>
           </div>
 
           {board.length === 0 && (
-            <Card className="rounded-3xl border-dashed p-10 text-center">
-              <p className="text-[15px] font-semibold text-ink">All facilities in working order</p>
-              <p className="mt-1 text-[13px] text-ink-secondary">
-                No active issues reported right now. When something needs repair, file it to notify
-                the facilities team.
+            <div className="rounded-xl border border-dashed border-line p-8 text-center dark:border-white/[0.08]">
+              <p className="text-sm font-semibold text-ink">All facilities in working order</p>
+              <p className="mt-1 text-xs text-zinc-400">
+                No active issues reported right now.
               </p>
-            </Card>
+            </div>
           )}
 
-          <div className="space-y-3">
+          <div className="space-y-2.5">
             {board.map((issue) => (
-              <Card
+              <div
                 key={issue.id}
-                className="rounded-2xl p-5 shadow-e1 transition-all duration-base hover:border-accent/40 hover:shadow-e2 dark:border-white/10"
+                className="rounded-xl border border-line bg-surface p-4 shadow-sm dark:border-white/[0.08] dark:bg-[#111113]"
               >
-                <div className="flex items-start gap-4">
+                <div className="flex items-start gap-3.5">
                   {/* Upvote Button with Tactile Physics */}
                   <form action={upvoteIssueForm}>
                     <input type="hidden" name="issue_id" value={issue.id} />
@@ -96,53 +96,53 @@ export default async function ReportPage() {
                       }
                       aria-pressed={issue.voted_by_me}
                       className={
-                        'flex flex-col items-center justify-center rounded-xl px-3 py-2 transition-all duration-instant ease-spring active:scale-90 ' +
+                        'flex flex-col items-center justify-center rounded-lg px-2.5 py-1.5 transition-all duration-instant active:scale-95 ' +
                         (issue.voted_by_me
-                          ? 'bg-accent text-white shadow-sm shadow-accent/20'
-                          : 'border border-line/80 bg-surface text-ink-secondary hover:border-line-strong hover:bg-surface-sunken hover:text-ink dark:border-white/10')
+                          ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900'
+                          : 'border border-line bg-surface text-zinc-500 hover:text-ink dark:border-white/[0.08] dark:bg-[#141416] dark:text-zinc-400 dark:hover:text-white')
                       }
                     >
-                      <ArrowBigUp className="h-6 w-6" aria-hidden />
+                      <ArrowBigUp className="h-5 w-5" aria-hidden />
                       <span className="font-mono text-xs font-bold">{issue.vote_count}</span>
                     </button>
                   </form>
 
                   <div className="min-w-0 flex-1">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="font-mono text-[12px] font-bold text-accent dark:text-accent-hover">
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      <span className="font-mono text-xs font-bold text-ink">
                         {issue.ref}
                       </span>
-                      <Badge variant={URGENCY_VARIANT[issue.urgency as keyof typeof URGENCY_VARIANT] ?? 'neutral'}>
+                      <span className="rounded bg-surface-sunken px-1.5 py-0.2 font-mono text-[10px] uppercase text-zinc-500 dark:bg-white/[0.06] dark:text-zinc-400">
                         {issue.urgency}
-                      </Badge>
-                      <Badge variant="neutral">
+                      </span>
+                      <span className="rounded bg-surface-sunken px-1.5 py-0.2 font-mono text-[10px] text-zinc-500 dark:bg-white/[0.06] dark:text-zinc-400">
                         {STATUS_LABEL[issue.status as keyof typeof STATUS_LABEL] ?? issue.status}
-                      </Badge>
-                      <span className="font-mono text-micro text-ink-tertiary">
-                        {timeAgo(issue.created_at)}
+                      </span>
+                      <span className="font-mono text-[10px] text-zinc-400">
+                        · {timeAgo(issue.created_at)}
                       </span>
                     </div>
 
-                    <h3 className="mt-1.5 text-base font-bold text-ink">
+                    <h3 className="mt-1 text-sm font-bold text-ink">
                       {issue.room_code && (
                         <Link
                           href={roomHref(issue.room_slug ?? '')}
-                          className="mr-2 font-mono text-[13px] font-bold text-accent hover:underline dark:text-accent-hover"
+                          className="mr-1.5 font-mono text-xs font-bold text-ink hover:underline dark:text-white"
                         >
                           {issue.room_code}
                         </Link>
                       )}
                       {issue.title}
                     </h3>
-                    <p className="mt-1 line-clamp-2 text-[13px] leading-relaxed text-ink-secondary">
+                    <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
                       {issue.description}
                     </p>
-                    <p className="mt-2 text-micro text-ink-tertiary">
+                    <p className="mt-2 text-[10px] text-zinc-400">
                       Reported by {issue.reporter_name ? issue.reporter_name : 'Student'} · Category: {issue.category}
                     </p>
                   </div>
                 </div>
-              </Card>
+              </div>
             ))}
           </div>
         </section>

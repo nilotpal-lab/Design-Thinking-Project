@@ -7,10 +7,6 @@ import { Button } from '@/components/ui/button';
 import { createCheckIn } from '@/server/actions/checkins';
 import { cn } from '@/lib/utils';
 
-/**
- * CheckInForm — 20-second target (DESIGN §4). Radio rows, optional note,
- * anonymous toggle. Calls the Server Action directly; errors render inline.
- */
 export function CheckInForm({ roomId, roomCode }: { roomId: string; roomCode: string }) {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
@@ -31,9 +27,9 @@ export function CheckInForm({ roomId, roomCode }: { roomId: string; roomCode: st
     { v: 'off', l: 'No AC' },
   ];
   const SOCKETS = [
-    { v: 'plenty', l: 'Plenty free' },
-    { v: 'limited', l: 'A few left' },
-    { v: 'none', l: 'All taken' },
+    { v: 'plenty', l: 'Plenty' },
+    { v: 'limited', l: 'A few' },
+    { v: 'none', l: 'None free' },
   ];
   const PURPOSE = [
     { v: 'study', l: 'Self study' },
@@ -59,50 +55,50 @@ export function CheckInForm({ roomId, roomCode }: { roomId: string; roomCode: st
 
   if (done) {
     return (
-      <div className="rounded-lg bg-status-free-bg p-4 text-center">
-        <p className="text-[14px] font-medium text-status-free">Checked in — thanks!</p>
-        <p className="mt-1 text-[13px] text-ink-secondary">
-          Your report is live for 90 minutes. +15 karma.
+      <div className="rounded-lg border border-line bg-surface-sunken p-3 text-center dark:border-white/[0.08] dark:bg-[#141416]">
+        <p className="font-mono text-xs font-bold text-ink dark:text-white">Checked in · +15 karma</p>
+        <p className="mt-0.5 text-[11px] text-zinc-500 dark:text-zinc-400">
+          Live for 90 minutes.
         </p>
       </div>
     );
   }
 
   return (
-    <form onSubmit={submit} className="space-y-4">
+    <form onSubmit={submit} className="space-y-3.5">
       <input type="hidden" name="room_id" value={roomId} />
 
-      <ChoiceRow name="crowd_density" label="How busy is it right now?" options={CROWD} required />
-      <ChoiceRow name="ac_comfort" label="How does the AC feel?" options={AC} />
-      <ChoiceRow name="socket_availability" label="Sockets?" options={SOCKETS} />
-      <ChoiceRow name="purpose" label="What are you up to?" options={PURPOSE} />
+      <ChoiceRow name="crowd_density" label="Crowd Density" options={CROWD} required />
+      <ChoiceRow name="ac_comfort" label="AC Comfort" options={AC} />
+      <ChoiceRow name="socket_availability" label="Sockets" options={SOCKETS} />
+      <ChoiceRow name="purpose" label="Purpose" options={PURPOSE} />
 
-      <label className="block">
-        <span className="text-[13px] font-medium">
-          Note <span className="font-normal text-ink-tertiary">(optional)</span>
-        </span>
+      <div>
+        <label className="font-mono text-[10px] font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+          Note (Optional)
+        </label>
         <textarea
           name="note"
           maxLength={280}
           rows={2}
-          placeholder="e.g. AC dripping near window seats"
-          className="mt-1 w-full rounded border border-line-strong bg-canvas p-2.5 text-sm outline-none focus-visible:ring-2 focus-visible:ring-accent"
+          placeholder="e.g. AC working well, plenty of seats on left side…"
+          className="mt-1 w-full rounded-lg border border-line bg-surface p-2 text-xs font-medium outline-none transition-colors focus-visible:ring-1 focus-visible:ring-zinc-400 dark:border-white/[0.08] dark:bg-[#141416] dark:text-zinc-200"
         />
-      </label>
+      </div>
 
-      <label className="flex items-center gap-2 text-[13px] text-ink-secondary">
-        <input type="checkbox" name="is_anonymous" className="h-4 w-4 rounded" />
-        Post anonymously
+      <label className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
+        <input type="checkbox" name="is_anonymous" className="h-3.5 w-3.5 rounded border-line" />
+        <span>Post anonymously</span>
       </label>
 
       {error && (
-        <p role="alert" className="rounded-sm bg-status-busy-bg px-3 py-2 text-[13px] text-status-busy">
+        <p role="alert" className="rounded-lg bg-rose-500/10 px-3 py-2 text-xs font-semibold text-rose-600 dark:text-rose-400">
           {error}
         </p>
       )}
 
-      <Button type="submit" loading={busy} className="w-full">
-        Check in to {roomCode}
+      <Button type="submit" loading={busy} className="w-full text-xs font-semibold">
+        Check In to {roomCode}
       </Button>
     </form>
   );
@@ -121,8 +117,8 @@ function ChoiceRow({
 }) {
   return (
     <fieldset>
-      <legend className="text-[13px] font-medium">{label}</legend>
-      <div className="mt-1.5 flex flex-wrap gap-1.5">
+      <legend className="font-mono text-[10px] font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">{label}</legend>
+      <div className="mt-1 flex flex-wrap gap-1">
         {options.map((o) => (
           <label key={o.v} className="cursor-pointer">
             <input
@@ -134,9 +130,8 @@ function ChoiceRow({
             />
             <span
               className={cn(
-                'inline-flex h-8 items-center rounded border border-line px-3 text-[13px] text-ink-secondary',
-                'transition-colors peer-checked:border-accent peer-checked:bg-accent-subtle peer-checked:font-medium peer-checked:text-accent',
-                'peer-focus-visible:ring-2 peer-focus-visible:ring-accent',
+                'inline-flex h-6 items-center rounded border border-line bg-surface px-2 font-mono text-[10px] text-zinc-500',
+                'transition-all peer-checked:border-zinc-900 peer-checked:bg-zinc-900 peer-checked:text-white dark:border-white/[0.08] dark:bg-[#141416] dark:text-zinc-400 dark:peer-checked:border-white dark:peer-checked:bg-white dark:peer-checked:text-zinc-900 dark:peer-checked:font-semibold',
               )}
             >
               {o.l}

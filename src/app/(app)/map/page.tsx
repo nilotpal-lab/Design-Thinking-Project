@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Layers, MapPin, Sparkles } from 'lucide-react';
+import { Layers, MapPin } from 'lucide-react';
 
 import { getLiveRooms, type LiveRoom } from '@/server/queries/rooms';
 import { Card } from '@/components/ui/card';
@@ -10,35 +10,31 @@ export const metadata = { title: 'Architectural Floor Map' };
 
 const STATUS_STYLE: Record<
   string,
-  { fill: string; stroke: string; label: string; dot: string; glow: string }
+  { fill: string; stroke: string; label: string; dot: string }
 > = {
   free: {
-    fill: 'fill-emerald-500/20 hover:fill-emerald-500/35',
-    stroke: 'stroke-emerald-600 dark:stroke-emerald-400',
+    fill: 'fill-emerald-500/10 hover:fill-emerald-500/25 dark:fill-emerald-500/15 dark:hover:fill-emerald-500/30',
+    stroke: 'stroke-emerald-600/70 dark:stroke-emerald-400/60',
     label: 'Free now',
-    dot: '●',
-    glow: 'bg-emerald-500',
+    dot: 'bg-emerald-500',
   },
   soon: {
-    fill: 'fill-amber-500/20 hover:fill-amber-500/35',
-    stroke: 'stroke-amber-600 dark:stroke-amber-400',
+    fill: 'fill-amber-500/10 hover:fill-amber-500/25 dark:fill-amber-500/15 dark:hover:fill-amber-500/30',
+    stroke: 'stroke-amber-600/70 dark:stroke-amber-400/60',
     label: 'Free soon (<45m)',
-    dot: '◐',
-    glow: 'bg-amber-500',
+    dot: 'bg-amber-500',
   },
   busy: {
-    fill: 'fill-rose-500/20 hover:fill-rose-500/35',
-    stroke: 'stroke-rose-600 dark:stroke-rose-400',
+    fill: 'fill-rose-500/10 hover:fill-rose-500/25 dark:fill-rose-500/15 dark:hover:fill-rose-500/30',
+    stroke: 'stroke-rose-600/70 dark:stroke-rose-400/60',
     label: 'In session',
-    dot: '○',
-    glow: 'bg-rose-500',
+    dot: 'bg-rose-500',
   },
   unknown: {
-    fill: 'fill-zinc-500/15 hover:fill-zinc-500/25',
+    fill: 'fill-zinc-500/10 hover:fill-zinc-500/20 dark:fill-zinc-700/20 dark:hover:fill-zinc-700/30',
     stroke: 'stroke-zinc-400 dark:stroke-zinc-600',
     label: 'No data',
-    dot: '',
-    glow: 'bg-zinc-400',
+    dot: 'bg-zinc-400',
   },
 };
 
@@ -76,49 +72,49 @@ export default async function MapPage({
   };
 
   return (
-    <div className="mx-auto w-full max-w-6xl space-y-7">
-      {/* Header Banner */}
-      <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+    <div className="space-y-6">
+      {/* Editorial Header & Segmented Controls */}
+      <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
         <div>
-          <div className="inline-flex items-center gap-1.5 rounded-full border border-accent/20 bg-accent-subtle px-3 py-0.5 text-[11px] font-bold uppercase tracking-wider text-accent dark:text-accent-hover">
-            <Layers className="h-3.5 w-3.5" />
-            <span>Interactive Blueprint</span>
+          <div className="flex items-center gap-2">
+            <h1 className="text-xl font-bold tracking-tight text-ink sm:text-2xl">
+              Floor Map Navigator
+            </h1>
+            <span className="rounded bg-surface-sunken px-2 py-0.5 font-mono text-[11px] font-medium text-zinc-500 dark:bg-white/[0.06] dark:text-zinc-400">
+              CAD Schematic
+            </span>
           </div>
-          <h1 className="mt-2 text-2xl font-black tracking-tight text-ink md:text-3xl">
-            Floor Map Navigator
-          </h1>
-          <p className="mt-1 text-[13px] text-ink-secondary">
-            Live spatial occupancy schematic for {activeBlock}, Floor {activeFloor}. Click any space
-            for full schedule.
+          <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+            Spatial occupancy blueprint for {activeBlock}, Floor {activeFloor}. Click any room for full schedule.
           </p>
         </div>
 
-        {/* Floor & Block Selector Tabs */}
-        <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-line/80 bg-surface/80 p-1.5 shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-[#121215]/80">
+        {/* Segmented Control Track */}
+        <div className="flex flex-wrap items-center gap-1.5 rounded-lg border border-line bg-surface-sunken p-1 dark:border-white/[0.08] dark:bg-[#141416]">
           {allBlocks.map((b) => (
             <Link
               key={b}
               href={`/map?block=${encodeURIComponent(b)}&floor=${floors[0] ?? 1}`}
               className={cn(
-                'rounded-xl px-3.5 py-1.5 text-xs font-bold transition-all duration-instant',
+                'rounded-md px-3 py-1 text-xs font-medium transition-all',
                 b === activeBlock
-                  ? 'bg-accent text-white shadow-sm shadow-accent/20'
-                  : 'text-ink-secondary hover:bg-surface-sunken hover:text-ink dark:hover:bg-white/[0.04]',
+                  ? 'bg-white text-zinc-900 shadow-sm dark:bg-white dark:text-zinc-900 font-semibold'
+                  : 'text-zinc-500 hover:text-ink dark:text-zinc-400 dark:hover:text-zinc-200',
               )}
             >
               {b}
             </Link>
           ))}
-          <span className="h-4 w-px bg-line/80 dark:bg-white/10" />
+          <span className="h-4 w-px bg-zinc-300 dark:bg-zinc-700" />
           {floors.map((f) => (
             <Link
               key={f}
               href={`/map?block=${encodeURIComponent(activeBlock)}&floor=${f}`}
               className={cn(
-                'rounded-xl px-3 py-1.5 font-mono text-xs font-bold transition-all duration-instant',
+                'rounded-md px-2.5 py-1 font-mono text-xs font-medium transition-all',
                 f === activeFloor
-                  ? 'bg-accent text-white shadow-sm shadow-accent/20'
-                  : 'text-ink-secondary hover:bg-surface-sunken hover:text-ink dark:hover:bg-white/[0.04]',
+                  ? 'bg-white text-zinc-900 shadow-sm dark:bg-white dark:text-zinc-900 font-semibold'
+                  : 'text-zinc-500 hover:text-ink dark:text-zinc-400 dark:hover:text-zinc-200',
               )}
             >
               L{f}
@@ -127,48 +123,48 @@ export default async function MapPage({
         </div>
       </div>
 
-      {/* Blueprint Container */}
-      <Card className="overflow-hidden rounded-3xl border-line/80 p-6 shadow-e2 dark:border-white/10 dark:bg-[#101014]">
-        {/* Top Blueprint Legend Bar */}
-        <div className="mb-5 flex flex-wrap items-center justify-between gap-4 border-b border-line/60 pb-4 dark:border-white/[0.06]">
-          <div className="flex flex-wrap gap-4 text-[12px] font-medium text-ink-secondary">
+      {/* Blueprint Card */}
+      <div className="rounded-xl border border-line bg-surface p-5 shadow-sm dark:border-white/[0.08] dark:bg-[#111113]">
+        {/* Top Legend Bar */}
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3 border-b border-line/60 pb-3.5 dark:border-white/[0.06]">
+          <div className="flex flex-wrap items-center gap-4 text-xs font-medium">
             {(['free', 'soon', 'busy'] as const).map((k) => (
-              <span key={k} className="inline-flex items-center gap-2">
-                <span className={cn('h-2.5 w-2.5 rounded-full ring-2 ring-white/20', STATUS_STYLE[k].glow)} />
-                <span className="text-ink font-semibold">{STATUS_STYLE[k].label}</span>
-                <span className="font-mono text-micro text-ink-tertiary">({counts[k]})</span>
+              <span key={k} className="inline-flex items-center gap-1.5">
+                <span className={cn('h-2 w-2 rounded-full', STATUS_STYLE[k].dot)} />
+                <span className="text-ink">{STATUS_STYLE[k].label}</span>
+                <span className="font-mono text-[11px] text-zinc-400">({counts[k]})</span>
               </span>
             ))}
           </div>
 
-          <span className="font-mono text-[12px] font-medium text-ink-tertiary">
-            Floor {activeFloor} · {floorRooms.length} Spaces Mapped
+          <span className="font-mono text-[11px] text-zinc-400">
+            Level {activeFloor} · {floorRooms.length} Spaces Mapped
           </span>
         </div>
 
         {/* SVG Blueprint Canvas */}
-        <div className="relative overflow-x-auto rounded-2xl border border-line/70 bg-canvas/60 p-4 dark:border-white/[0.06] dark:bg-[#09090b]">
+        <div className="relative overflow-x-auto rounded-lg border border-line/60 bg-surface-sunken/40 p-4 dark:border-white/[0.06] dark:bg-[#09090b]">
           <svg
             viewBox="0 0 100 100"
             preserveAspectRatio="none"
-            className="h-[500px] w-full min-w-[620px]"
+            className="h-[480px] w-full min-w-[580px]"
             role="img"
             aria-label={`${activeBlock} level ${activeFloor} floor plan`}
           >
             {/* Wing Headers */}
-            <text x="17" y="4" textAnchor="middle" className="fill-ink-tertiary text-[3px] font-bold uppercase tracking-widest">
+            <text x="17" y="4" textAnchor="middle" className="fill-zinc-400 dark:fill-zinc-500 text-[2.8px] font-mono font-semibold uppercase tracking-widest">
               West Wing
             </text>
-            <text x="50" y="4" textAnchor="middle" className="fill-ink-tertiary text-[3px] font-bold uppercase tracking-widest">
+            <text x="50" y="4" textAnchor="middle" className="fill-zinc-400 dark:fill-zinc-500 text-[2.8px] font-mono font-semibold uppercase tracking-widest">
               Central Atrium
             </text>
-            <text x="83" y="4" textAnchor="middle" className="fill-ink-tertiary text-[3px] font-bold uppercase tracking-widest">
+            <text x="83" y="4" textAnchor="middle" className="fill-zinc-400 dark:fill-zinc-500 text-[2.8px] font-mono font-semibold uppercase tracking-widest">
               East Wing
             </text>
 
             {/* Corridors */}
-            <rect x="32" y="0" width="3" height="100" className="fill-surface-sunken opacity-60 dark:fill-white/[0.03]" />
-            <rect x="65" y="0" width="3" height="100" className="fill-surface-sunken opacity-60 dark:fill-white/[0.03]" />
+            <rect x="32" y="0" width="3" height="100" className="fill-zinc-200/50 dark:fill-white/[0.02]" />
+            <rect x="65" y="0" width="3" height="100" className="fill-zinc-200/50 dark:fill-white/[0.02]" />
 
             {/* Rooms Geometry */}
             {floorRooms.map((r) => {
@@ -182,10 +178,10 @@ export default async function MapPage({
                       y={r.map_y}
                       width={r.map_w}
                       height={r.map_h}
-                      rx="1.5"
-                      strokeWidth="0.7"
+                      rx="1"
+                      strokeWidth="0.5"
                       className={cn(
-                        'cursor-pointer transition-all duration-instant',
+                        'cursor-pointer transition-colors duration-fast',
                         s.fill,
                         s.stroke,
                       )}
@@ -196,7 +192,7 @@ export default async function MapPage({
                     y={r.map_y + r.map_h / 2}
                     textAnchor="middle"
                     dominantBaseline="central"
-                    className="pointer-events-none select-none fill-ink text-[3.2px] font-bold tracking-tight dark:fill-white"
+                    className="pointer-events-none select-none fill-zinc-900 text-[3px] font-mono font-bold tracking-tight dark:fill-zinc-100"
                   >
                     {r.code}
                   </text>
@@ -205,18 +201,17 @@ export default async function MapPage({
             })}
 
             {floorRooms.length === 0 && (
-              <text x="50" y="50" textAnchor="middle" className="fill-ink-tertiary text-[4px] font-medium">
+              <text x="50" y="50" textAnchor="middle" className="fill-zinc-400 text-[3.5px] font-medium">
                 No rooms mapped on this floor
               </text>
             )}
           </svg>
         </div>
 
-        <p className="mt-4 text-micro text-ink-tertiary">
-          Schematic floor coordinates derived from campus building layout. Real-time room occupancy
-          refreshes automatically via timetable feeds and student check-ins.
+        <p className="mt-3 text-[11px] text-zinc-400">
+          Schematic floor coordinates derived from academic block layout. Room availability syncs automatically with active lecture timetables.
         </p>
-      </Card>
+      </div>
     </div>
   );
 }

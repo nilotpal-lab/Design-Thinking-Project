@@ -43,63 +43,56 @@ export default async function LandingPage() {
   const featuredRooms = rooms.slice(0, 4);
 
   return (
-    <div className="min-h-dvh bg-canvas text-ink antialiased selection:bg-accent/20">
-      {/* Ambient Lighting Orbs */}
-      <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="absolute -left-40 -top-40 h-[550px] w-[550px] rounded-full bg-gradient-to-br from-indigo-500/15 via-purple-500/10 to-transparent blur-3xl" />
-        <div className="absolute right-0 top-1/4 h-[650px] w-[650px] rounded-full bg-gradient-to-bl from-blue-500/15 via-emerald-500/10 to-transparent blur-3xl" />
-        <div className="absolute bottom-10 left-1/3 h-[500px] w-[500px] rounded-full bg-gradient-to-tr from-accent/10 via-pink-500/5 to-transparent blur-3xl" />
-      </div>
-
+    <div className="min-h-dvh bg-canvas text-ink antialiased selection:bg-white/20">
       {/* Floating Island Navigation Header */}
-      <header className="sticky top-4 z-50 mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="flex h-16 items-center justify-between rounded-2xl border border-line/80 bg-surface/80 px-4 shadow-e2 backdrop-blur-xl md:px-6 dark:border-white/10 dark:bg-[#101014]/85">
-          <Link href="/" className="flex items-center gap-3">
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-accent to-indigo-500 text-base font-extrabold text-white shadow-glow-accent">
+      <header className="sticky top-4 z-50 mx-auto max-w-6xl px-4 sm:px-6">
+        <div className="flex h-14 items-center justify-between rounded-xl border border-line bg-surface/90 px-4 shadow-sm backdrop-blur-xl md:px-5 dark:border-white/[0.08] dark:bg-[#0c0c0d]/90">
+          <Link href="/" className="flex items-center gap-2.5">
+            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-900 text-xs font-bold text-white dark:bg-white dark:text-zinc-900">
               ◧
             </span>
-            <div>
-              <span className="text-base font-black tracking-tight text-ink">JainSpace</span>
-              <span className="ml-1.5 hidden rounded-md bg-accent-subtle px-1.5 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider text-accent sm:inline-block">
+            <div className="flex items-center gap-1.5">
+              <span className="text-[14px] font-bold tracking-tight text-ink">JainSpace</span>
+              <span className="hidden rounded bg-zinc-200/80 px-1 py-0.2 font-mono text-[9px] font-bold uppercase tracking-wider text-zinc-700 sm:inline-block dark:bg-white/10 dark:text-zinc-300">
                 3rd Sem DT
               </span>
             </div>
           </Link>
 
-          <nav className="hidden items-center gap-1 lg:flex">
+          <nav className="hidden items-center gap-1 md:flex">
             <Link
               href="/spaces"
-              className="rounded-xl px-3.5 py-2 text-sm font-semibold text-ink-secondary transition-colors hover:bg-surface-sunken hover:text-ink dark:hover:bg-white/[0.04]"
+              className="rounded-lg px-3 py-1.5 text-xs font-medium text-zinc-500 transition-colors hover:bg-surface-sunken hover:text-ink dark:text-zinc-400 dark:hover:bg-white/[0.04] dark:hover:text-zinc-200"
             >
-              Spaces Directory
+              Spaces
             </Link>
             <Link
               href="/map"
-              className="rounded-xl px-3.5 py-2 text-sm font-semibold text-ink-secondary transition-colors hover:bg-surface-sunken hover:text-ink dark:hover:bg-white/[0.04]"
+              className="rounded-lg px-3 py-1.5 text-xs font-medium text-zinc-500 transition-colors hover:bg-surface-sunken hover:text-ink dark:text-zinc-400 dark:hover:bg-white/[0.04] dark:hover:text-zinc-200"
             >
               Floor Map
             </Link>
             <Link
               href="/match"
-              className="rounded-xl px-3.5 py-2 text-sm font-semibold text-ink-secondary transition-colors hover:bg-surface-sunken hover:text-ink dark:hover:bg-white/[0.04]"
+              className="rounded-lg px-3 py-1.5 text-xs font-medium text-zinc-500 transition-colors hover:bg-surface-sunken hover:text-ink dark:text-zinc-400 dark:hover:bg-white/[0.04] dark:hover:text-zinc-200"
             >
               AI Matcher
             </Link>
             <Link
               href="/case-study"
-              className="rounded-xl px-3.5 py-2 text-sm font-semibold text-accent transition-colors hover:bg-accent-subtle dark:text-accent-hover"
+              className="rounded-lg px-3 py-1.5 text-xs font-semibold text-zinc-900 transition-colors hover:bg-surface-sunken dark:text-white dark:hover:bg-white/[0.04]"
             >
               Case Study (20/20)
             </Link>
             <Link
               href="/faculty"
-              className="rounded-xl px-3.5 py-2 text-sm font-semibold text-ink-secondary transition-colors hover:bg-surface-sunken hover:text-ink dark:hover:bg-white/[0.04]"
+              className="rounded-lg px-3 py-1.5 text-xs font-medium text-zinc-500 transition-colors hover:bg-surface-sunken hover:text-ink dark:text-zinc-400 dark:hover:bg-white/[0.04] dark:hover:text-zinc-200"
             >
               Faculty
             </Link>
           </nav>
 
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2">
             <ThemeToggle />
             <UserChip />
           </div>
@@ -107,407 +100,400 @@ export default async function LandingPage() {
       </header>
 
       {/* Hero Section */}
-      <main className="relative mx-auto max-w-7xl px-4 pt-16 pb-24 sm:px-6 md:pt-24 md:pb-32">
-        <div className="mx-auto max-w-4xl text-center">
-          {/* Eyebrow Pill */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent-subtle px-4 py-1.5 text-xs font-bold text-accent shadow-sm backdrop-blur-md dark:border-accent/30 dark:bg-accent/15 dark:text-accent-hover">
-            <Sparkles className="h-3.5 w-3.5" />
-            <span>Jain (Deemed-to-be University) · Design Thinking Project</span>
+      <main className="relative mx-auto max-w-5xl px-4 pt-16 pb-20 sm:px-6 md:pt-24 md:pb-28">
+        <div className="mx-auto max-w-3xl text-center">
+          {/* Subtle Eyebrow Badge */}
+          <div className="inline-flex items-center gap-2 rounded-full border border-line bg-surface-sunken/80 px-3 py-1 text-[11px] font-medium text-zinc-600 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-zinc-300">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+            <span>Jain (Deemed-to-be University) · Design Thinking CA1</span>
           </div>
 
-          {/* Main Headline */}
-          <h1 className="mt-6 text-4xl font-black tracking-tight text-ink sm:text-6xl lg:text-7xl">
-            Campus Space{' '}
-            <span className="bg-gradient-to-r from-accent via-indigo-500 to-purple-600 bg-clip-text text-transparent">
-              Reimagined
-            </span>{' '}
-            for Student Comfort.
+          {/* Headline */}
+          <h1 className="mt-6 text-3xl font-extrabold tracking-tight text-ink sm:text-5xl lg:text-6xl">
+            Campus space intelligence for student comfort.
           </h1>
 
           {/* Subtitle */}
-          <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-ink-secondary sm:text-lg">
-            Real-time availability for every classroom, computer lab, and seminar hall on campus.
-            Derived automatically from the live academic timetable and confirmed by student telemetry.
+          <p className="mx-auto mt-5 max-w-xl text-sm leading-relaxed text-zinc-500 sm:text-base dark:text-zinc-400">
+            Real-time availability for 52 classrooms, computer labs, and seminar halls across 4 floors.
+            Calculated automatically from the live academic timetable and confirmed by student telemetry.
           </p>
 
-          {/* CTA Buttons */}
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+          {/* Hero CTAs */}
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <Link
               href="/spaces"
-              className="group inline-flex h-12 items-center gap-3 rounded-2xl bg-accent px-7 text-sm font-bold text-white shadow-glow-accent transition-all duration-fast hover:bg-accent-hover active:scale-95"
+              className="group inline-flex h-10 items-center gap-2 rounded-lg bg-zinc-900 px-5 text-xs font-semibold text-white transition-all hover:bg-zinc-800 active:scale-[0.98] dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100"
             >
               <span>Explore Live Spaces</span>
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/20 transition-transform group-hover:translate-x-1">
-                <ArrowRight className="h-3.5 w-3.5" />
-              </span>
+              <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
             </Link>
 
             <Link
               href="/map"
-              className="inline-flex h-12 items-center gap-2.5 rounded-2xl border border-line/80 bg-surface/80 px-6 text-sm font-bold text-ink shadow-sm backdrop-blur-md transition-all duration-fast hover:border-line-strong hover:bg-surface active:scale-95 dark:border-white/10 dark:bg-surface/80"
+              className="inline-flex h-10 items-center gap-2 rounded-lg border border-line bg-surface px-4 text-xs font-semibold text-ink transition-all hover:bg-surface-sunken active:scale-[0.98] dark:border-white/[0.08] dark:bg-[#111113] dark:hover:bg-white/[0.04]"
             >
-              <Map className="h-4 w-4 text-accent" />
-              <span>Architectural Floor Map</span>
+              <Map className="h-3.5 w-3.5 text-zinc-500 dark:text-zinc-400" />
+              <span>Architectural Map</span>
             </Link>
 
             <Link
               href="/case-study"
-              className="inline-flex h-12 items-center gap-2.5 rounded-2xl border border-line/80 bg-surface/80 px-6 text-sm font-bold text-ink shadow-sm backdrop-blur-md transition-all duration-fast hover:border-line-strong hover:bg-surface active:scale-95 dark:border-white/10 dark:bg-surface/80"
+              className="inline-flex h-10 items-center gap-2 rounded-lg border border-line bg-surface px-4 text-xs font-semibold text-ink transition-all hover:bg-surface-sunken active:scale-[0.98] dark:border-white/[0.08] dark:bg-[#111113] dark:hover:bg-white/[0.04]"
             >
-              <BookOpen className="h-4 w-4 text-purple-500" />
-              <span>Design Thinking Paper</span>
+              <BookOpen className="h-3.5 w-3.5 text-zinc-500 dark:text-zinc-400" />
+              <span>CA1 Case Study</span>
             </Link>
           </div>
 
-          {/* Live Campus Telemetry Widget Pill */}
-          <div className="mt-12 inline-flex flex-wrap items-center justify-center gap-6 rounded-2xl border border-line/80 bg-surface/80 px-6 py-3.5 shadow-e1 backdrop-blur-md dark:border-white/10 dark:bg-[#121216]">
-            <div className="flex items-center gap-2.5">
-              <span className="relative flex h-2.5 w-2.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
-              </span>
-              <span className="font-mono text-sm font-bold text-emerald-600 dark:text-emerald-400">
-                {freeCount} Rooms Free Right Now
-              </span>
+          {/* Telemetry Counter Bar */}
+          <div className="mt-10 inline-flex flex-wrap items-center justify-center gap-4 rounded-xl border border-line bg-surface px-4 py-2.5 shadow-sm dark:border-white/[0.08] dark:bg-[#111113]">
+            <div className="flex items-center gap-2 font-mono text-xs font-medium">
+              <span className="h-2 w-2 rounded-full bg-emerald-500" />
+              <span className="text-zinc-900 dark:text-zinc-200">{freeCount} Free Now</span>
             </div>
-            <span className="h-4 w-px bg-line dark:bg-white/10" />
-            <div className="flex items-center gap-2 font-mono text-xs font-semibold text-ink-secondary">
-              <Clock className="h-3.5 w-3.5 text-amber-500" />
+            <span className="h-3 w-px bg-line dark:bg-white/[0.08]" />
+            <div className="flex items-center gap-2 font-mono text-xs font-medium text-zinc-500 dark:text-zinc-400">
+              <span className="h-2 w-2 rounded-full bg-amber-500" />
               <span>{soonCount} Free Soon</span>
             </div>
-            <span className="h-4 w-px bg-line dark:bg-white/10" />
-            <div className="flex items-center gap-2 font-mono text-xs font-semibold text-ink-secondary">
-              <Layers className="h-3.5 w-3.5 text-accent" />
-              <span>{rooms.length} Campus Rooms Mapped</span>
+            <span className="h-3 w-px bg-line dark:bg-white/[0.08]" />
+            <div className="flex items-center gap-2 font-mono text-xs font-medium text-zinc-500 dark:text-zinc-400">
+              <span className="h-2 w-2 rounded-full bg-zinc-400 dark:bg-zinc-600" />
+              <span>{rooms.length} Mapped</span>
             </div>
           </div>
         </div>
 
-        {/* Empathy & Student Pain Point Numbers Section */}
-        <section className="mt-28">
+        {/* Problem Metrics Grid (Stage 1 Research) */}
+        <section className="mt-24 border-t border-line/60 pt-16 dark:border-white/[0.06]">
           <div className="text-center">
-            <p className="text-xs font-bold uppercase tracking-wider text-accent dark:text-accent-hover">
-              Stage 1: Empathy & Quantitative Student Research
-            </p>
-            <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-ink md:text-4xl">
-              The Real Problem at Jain University
+            <span className="font-mono text-[11px] font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+              Stage 1 · Empathy & User Research
+            </span>
+            <h2 className="mt-2 text-2xl font-bold tracking-tight text-ink sm:text-3xl">
+              The Reality of Campus Hallway Congestion
             </h2>
-            <p className="mx-auto mt-3 max-w-2xl text-[14px] text-ink-secondary">
-              We surveyed over 120 engineering students across CSE, AI&ML, and ISE departments during
-              the Empathize stage of our Design Thinking methodology.
+            <p className="mx-auto mt-2 max-w-xl text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
+              Survey data gathered from 120+ engineering students at Jain University during the Empathize phase.
             </p>
           </div>
 
-          <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            <Card className="rounded-3xl p-6 text-center shadow-e1 dark:border-white/10">
-              <p className="font-mono text-4xl font-black text-rose-500">78%</p>
-              <h3 className="mt-2 text-base font-bold text-ink">Wasted Study Time</h3>
-              <p className="mt-1 text-xs leading-relaxed text-ink-secondary">
-                Students spend 15–25 minutes wandering hallways looking for unlocked, empty rooms
-                between classes.
+          <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="rounded-xl border border-line bg-surface p-5 dark:border-white/[0.08] dark:bg-[#111113]">
+              <p className="font-mono text-3xl font-extrabold tracking-tight text-ink">78%</p>
+              <h3 className="mt-2 text-xs font-bold uppercase tracking-wider text-zinc-400">Wasted Time</h3>
+              <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+                15–25 minutes lost every break wandering corridors to find an unlocked room.
               </p>
-            </Card>
+            </div>
 
-            <Card className="rounded-3xl p-6 text-center shadow-e1 dark:border-white/10">
-              <p className="font-mono text-4xl font-black text-amber-500">85%</p>
-              <h3 className="mt-2 text-base font-bold text-ink">Power Socket Deficit</h3>
-              <p className="mt-1 text-xs leading-relaxed text-ink-secondary">
-                Laptop batteries die without knowing which rooms contain functioning 3-pin wall
-                sockets.
+            <div className="rounded-xl border border-line bg-surface p-5 dark:border-white/[0.08] dark:bg-[#111113]">
+              <p className="font-mono text-3xl font-extrabold tracking-tight text-ink">85%</p>
+              <h3 className="mt-2 text-xs font-bold uppercase tracking-wider text-zinc-400">Socket Deficit</h3>
+              <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+                Laptop batteries die without knowing which classrooms have working wall sockets.
               </p>
-            </Card>
+            </div>
 
-            <Card className="rounded-3xl p-6 text-center shadow-e1 dark:border-white/10">
-              <p className="font-mono text-4xl font-black text-indigo-500">92%</p>
-              <h3 className="mt-2 text-base font-bold text-ink">Noise Clashes</h3>
-              <p className="mt-1 text-xs leading-relaxed text-ink-secondary">
-                Students wanting silent study clash with groups working on collaborative team
-                presentations.
+            <div className="rounded-xl border border-line bg-surface p-5 dark:border-white/[0.08] dark:bg-[#111113]">
+              <p className="font-mono text-3xl font-extrabold tracking-tight text-ink">92%</p>
+              <h3 className="mt-2 text-xs font-bold uppercase tracking-wider text-zinc-400">Noise Clashes</h3>
+              <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+                Silent individual study clashes with collaborative group discussions.
               </p>
-            </Card>
+            </div>
 
-            <Card className="rounded-3xl p-6 text-center shadow-e1 dark:border-white/10">
-              <p className="font-mono text-4xl font-black text-emerald-500">0s</p>
-              <h3 className="mt-2 text-base font-bold text-ink">JainSpace Search</h3>
-              <p className="mt-1 text-xs leading-relaxed text-ink-secondary">
-                Instant answers: open JainSpace on your phone and see every empty room with live
-                countdown timers.
+            <div className="rounded-xl border border-line bg-surface p-5 dark:border-white/[0.08] dark:bg-[#111113]">
+              <p className="font-mono text-3xl font-extrabold tracking-tight text-ink">&lt; 1s</p>
+              <h3 className="mt-2 text-xs font-bold uppercase tracking-wider text-zinc-400">Lookup Time</h3>
+              <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+                Instant answers with JainSpace: check room status and amenities instantly.
               </p>
-            </Card>
+            </div>
           </div>
         </section>
 
-        {/* Asymmetrical Bento Grid Showcase */}
-        <section className="mt-32">
+        {/* Core Platform Pillars Bento Grid */}
+        <section className="mt-24 border-t border-line/60 pt-16 dark:border-white/[0.06]">
           <div className="text-center">
-            <p className="text-xs font-bold uppercase tracking-wider text-accent dark:text-accent-hover">
-              Core Platform Architecture
-            </p>
-            <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-ink md:text-4xl">
-              Engineered for Speed, Precision & Delight
+            <span className="font-mono text-[11px] font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+              System Architecture
+            </span>
+            <h2 className="mt-2 text-2xl font-bold tracking-tight text-ink sm:text-3xl">
+              Engineered for Precision & Clarity
             </h2>
           </div>
 
-          <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
-            {/* Bento 1: Timetable Intelligence (Large 2 cols) */}
-            <Card className="rounded-3xl p-8 shadow-e2 md:col-span-2 dark:border-white/10">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">
-                <Cpu className="h-6 w-6" />
+          <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3">
+            {/* Bento 1: Timetable Engine */}
+            <div className="rounded-xl border border-line bg-surface p-6 md:col-span-2 dark:border-white/[0.08] dark:bg-[#111113]">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-surface-sunken text-ink dark:bg-white/[0.06] dark:text-white">
+                <Cpu className="h-4 w-4" />
               </div>
-              <h3 className="mt-5 text-2xl font-bold text-ink">
+              <h3 className="mt-4 text-lg font-bold text-ink">
                 Live Timetable Intelligence Engine
               </h3>
-              <p className="mt-2 text-sm leading-relaxed text-ink-secondary">
+              <p className="mt-1.5 text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
                 Every classroom&apos;s state is calculated deterministically from the published Jain
-                University timetable. No guessing games: know when a class ends, who the teacher is,
-                and how long you have until the next lecture begins.
+                University timetable. Know exactly when a class ends, who the teacher is, and how long
+                you have until the next lecture begins.
               </p>
-              <div className="mt-6 flex flex-wrap gap-2">
-                <Badge variant="free">Automatic Time Windows</Badge>
-                <Badge variant="accent">52 Rooms Tracked</Badge>
-                <Badge variant="neutral">Zero Hallway Guesswork</Badge>
+              <div className="mt-5 flex flex-wrap gap-1.5">
+                <span className="rounded bg-surface-sunken px-2 py-0.5 font-mono text-[11px] font-medium text-zinc-600 dark:bg-white/[0.06] dark:text-zinc-300">
+                  52 Rooms Mapped
+                </span>
+                <span className="rounded bg-surface-sunken px-2 py-0.5 font-mono text-[11px] font-medium text-zinc-600 dark:bg-white/[0.06] dark:text-zinc-300">
+                  Automatic Slots
+                </span>
+                <span className="rounded bg-surface-sunken px-2 py-0.5 font-mono text-[11px] font-medium text-zinc-600 dark:bg-white/[0.06] dark:text-zinc-300">
+                  Deterministic Logic
+                </span>
               </div>
-            </Card>
+            </div>
 
-            {/* Bento 2: CAD Floor Map */}
-            <Card className="rounded-3xl p-8 shadow-e2 dark:border-white/10">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
-                <Map className="h-6 w-6" />
+            {/* Bento 2: Architectural CAD Blueprint */}
+            <div className="rounded-xl border border-line bg-surface p-6 dark:border-white/[0.08] dark:bg-[#111113]">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-surface-sunken text-ink dark:bg-white/[0.06] dark:text-white">
+                <Map className="h-4 w-4" />
               </div>
-              <h3 className="mt-5 text-xl font-bold text-ink">4-Floor CAD Blueprint</h3>
-              <p className="mt-2 text-sm leading-relaxed text-ink-secondary">
-                Full spatial schematic across Floor 0 to Floor 3. Wing dividers (West, Central, East)
-                with live occupancy heat maps.
+              <h3 className="mt-4 text-lg font-bold text-ink">4-Floor CAD Map</h3>
+              <p className="mt-1.5 text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
+                Full spatial schematic across Floor 0 to Floor 3 with West, Central, and East wings.
               </p>
               <Link
                 href="/map"
-                className="mt-6 inline-flex items-center gap-1.5 text-xs font-bold text-accent hover:underline dark:text-accent-hover"
+                className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-ink hover:underline dark:text-white"
               >
-                <span>Launch Floor Map</span>
-                <ArrowRight className="h-3.5 w-3.5" />
+                <span>Launch Map</span>
+                <ArrowRight className="h-3 w-3" />
               </Link>
-            </Card>
+            </div>
 
             {/* Bento 3: AI Matcher */}
-            <Card className="rounded-3xl p-8 shadow-e2 dark:border-white/10">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-purple-500/10 text-purple-600 dark:text-purple-400">
-                <Sparkles className="h-6 w-6" />
+            <div className="rounded-xl border border-line bg-surface p-6 dark:border-white/[0.08] dark:bg-[#111113]">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-surface-sunken text-ink dark:bg-white/[0.06] dark:text-white">
+                <Sparkles className="h-4 w-4" />
               </div>
-              <h3 className="mt-5 text-xl font-bold text-ink">1-Click AI Space Matcher</h3>
-              <p className="mt-2 text-sm leading-relaxed text-ink-secondary">
-                Need a silent room with 4 sockets for 2 hours? Select your criteria in 3 taps and get
-                ranked compatible spaces with explainable match scores.
+              <h3 className="mt-4 text-lg font-bold text-ink">Smart Matcher</h3>
+              <p className="mt-1.5 text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
+                Filter by group size, study duration, AC, sockets, and silent zone requirements.
               </p>
               <Link
                 href="/match"
-                className="mt-6 inline-flex items-center gap-1.5 text-xs font-bold text-accent hover:underline dark:text-accent-hover"
+                className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-ink hover:underline dark:text-white"
               >
-                <span>Try AI Matcher</span>
-                <ArrowRight className="h-3.5 w-3.5" />
+                <span>Find Room</span>
+                <ArrowRight className="h-3 w-3" />
               </Link>
-            </Card>
+            </div>
 
-            {/* Bento 4: Crowdsourced Telemetry (Large 2 cols) */}
-            <Card className="rounded-3xl p-8 shadow-e2 md:col-span-2 dark:border-white/10">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400">
-                <Flame className="h-6 w-6" />
+            {/* Bento 4: Crowdsourced Telemetry */}
+            <div className="rounded-xl border border-line bg-surface p-6 md:col-span-2 dark:border-white/[0.08] dark:bg-[#111113]">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-surface-sunken text-ink dark:bg-white/[0.06] dark:text-white">
+                <Flame className="h-4 w-4" />
               </div>
-              <h3 className="mt-5 text-2xl font-bold text-ink">
-                Crowdsourced Comfort Telemetry & Karma Rewards
+              <h3 className="mt-4 text-lg font-bold text-ink">
+                Crowdsourced Comfort Telemetry & Karma
               </h3>
-              <p className="mt-2 text-sm leading-relaxed text-ink-secondary">
-                Students report live noise levels, AC comfort, and broken sockets in 20 seconds.
-                Every confirmed report awards +15 student karma points and feeds the public facility
-                board for admin maintenance.
+              <p className="mt-1.5 text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
+                Students report live noise levels, AC status, and broken sockets in 20 seconds.
+                Confirmed reports earn +15 karma points and auto-feed the public facility repair board.
               </p>
-              <div className="mt-6 flex flex-wrap gap-2">
-                <Badge variant="soon">20-Second Check-In</Badge>
-                <Badge variant="accent">Karma Leaderboard</Badge>
-                <Badge variant="free">Public Issue Board</Badge>
+              <div className="mt-5 flex flex-wrap gap-1.5">
+                <span className="rounded bg-surface-sunken px-2 py-0.5 font-mono text-[11px] font-medium text-zinc-600 dark:bg-white/[0.06] dark:text-zinc-300">
+                  20s Check-In
+                </span>
+                <span className="rounded bg-surface-sunken px-2 py-0.5 font-mono text-[11px] font-medium text-zinc-600 dark:bg-white/[0.06] dark:text-zinc-300">
+                  Karma Points
+                </span>
+                <span className="rounded bg-surface-sunken px-2 py-0.5 font-mono text-[11px] font-medium text-zinc-600 dark:bg-white/[0.06] dark:text-zinc-300">
+                  Facility Board
+                </span>
               </div>
-            </Card>
+            </div>
           </div>
         </section>
 
-        {/* 5-Stage Design Thinking Showcase */}
-        <section className="mt-32 rounded-3xl border border-line/80 bg-surface/80 p-8 shadow-e2 md:p-12 dark:border-white/10 dark:bg-[#121216]">
+        {/* 5 Stages of Design Thinking Framework */}
+        <section className="mt-24 border-t border-line/60 pt-16 dark:border-white/[0.06]">
           <div className="text-center">
-            <Badge variant="accent" className="text-xs font-bold uppercase tracking-wider">
-              Academic Methodology
-            </Badge>
-            <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-ink md:text-4xl">
-              5 Stages of Design Thinking Applied
+            <span className="font-mono text-[11px] font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+              Methodology
+            </span>
+            <h2 className="mt-2 text-2xl font-bold tracking-tight text-ink sm:text-3xl">
+              The 5-Stage Design Thinking Process
             </h2>
-            <p className="mx-auto mt-2 max-w-2xl text-[14px] text-ink-secondary">
-              Documented for the 3rd Semester CA1 Examination evaluation rubric at Jain University.
+            <p className="mx-auto mt-2 max-w-xl text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
+              Evaluated under the 20/20 CA1 Academic Rubric for 3rd Semester B.Tech.
             </p>
           </div>
 
-          <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-5">
-            <div className="rounded-2xl border border-line/60 bg-surface p-5 dark:border-white/[0.06] dark:bg-white/[0.02]">
-              <span className="font-mono text-xs font-bold text-accent">01 · EMPATHIZE</span>
-              <h3 className="mt-2 text-base font-bold text-ink">User Discovery</h3>
-              <p className="mt-1 text-xs text-ink-secondary">
-                120+ student surveys & campus hallway observations identifying seat anxiety.
+          <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
+            <div className="rounded-xl border border-line bg-surface p-4 dark:border-white/[0.08] dark:bg-[#111113]">
+              <span className="font-mono text-[11px] font-bold text-zinc-400">01</span>
+              <h3 className="mt-1 text-sm font-bold text-ink">Empathize</h3>
+              <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+                120+ student surveys & campus hallway observation logs.
               </p>
             </div>
 
-            <div className="rounded-2xl border border-line/60 bg-surface p-5 dark:border-white/[0.06] dark:bg-white/[0.02]">
-              <span className="font-mono text-xs font-bold text-indigo-500">02 · DEFINE</span>
-              <h3 className="mt-2 text-base font-bold text-ink">Problem Statement</h3>
-              <p className="mt-1 text-xs text-ink-secondary">
-                How Might We optimize empty classrooms for student focus and productivity?
+            <div className="rounded-xl border border-line bg-surface p-4 dark:border-white/[0.08] dark:bg-[#111113]">
+              <span className="font-mono text-[11px] font-bold text-zinc-400">02</span>
+              <h3 className="mt-1 text-sm font-bold text-ink">Define</h3>
+              <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+                POV & HMW statements tackling underutilized academic capacity.
               </p>
             </div>
 
-            <div className="rounded-2xl border border-line/60 bg-surface p-5 dark:border-white/[0.06] dark:bg-white/[0.02]">
-              <span className="font-mono text-xs font-bold text-purple-500">03 · IDEATE</span>
-              <h3 className="mt-2 text-base font-bold text-ink">Feature Matrix</h3>
-              <p className="mt-1 text-xs text-ink-secondary">
-                SCAMPER analysis & prioritization of timetable sync over manual reservations.
+            <div className="rounded-xl border border-line bg-surface p-4 dark:border-white/[0.08] dark:bg-[#111113]">
+              <span className="font-mono text-[11px] font-bold text-zinc-400">03</span>
+              <h3 className="mt-1 text-sm font-bold text-ink">Ideate</h3>
+              <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+                SCAMPER analysis prioritizing automatic timetable synchronization.
               </p>
             </div>
 
-            <div className="rounded-2xl border border-line/60 bg-surface p-5 dark:border-white/[0.06] dark:bg-white/[0.02]">
-              <span className="font-mono text-xs font-bold text-amber-500">04 · PROTOTYPE</span>
-              <h3 className="mt-2 text-base font-bold text-ink">Next.js Platform</h3>
-              <p className="mt-1 text-xs text-ink-secondary">
-                Full-stack production web application with real timetable data and Supabase auth.
+            <div className="rounded-xl border border-line bg-surface p-4 dark:border-white/[0.08] dark:bg-[#111113]">
+              <span className="font-mono text-[11px] font-bold text-zinc-400">04</span>
+              <h3 className="mt-1 text-sm font-bold text-ink">Prototype</h3>
+              <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+                Full-stack Next.js web application deployed with real timetable data.
               </p>
             </div>
 
-            <div className="rounded-2xl border border-line/60 bg-surface p-5 dark:border-white/[0.06] dark:bg-white/[0.02]">
-              <span className="font-mono text-xs font-bold text-emerald-500">05 · TEST</span>
-              <h3 className="mt-2 text-base font-bold text-ink">User Validation</h3>
-              <p className="mt-1 text-xs text-ink-secondary">
-                Usability testing sessions: 94% task completion rate with 4.8/5 student rating.
+            <div className="rounded-xl border border-line bg-surface p-4 dark:border-white/[0.08] dark:bg-[#111113]">
+              <span className="font-mono text-[11px] font-bold text-zinc-400">05</span>
+              <h3 className="mt-1 text-sm font-bold text-ink">Test</h3>
+              <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+                94% task completion rate and 4.8/5 student usability score.
               </p>
             </div>
           </div>
 
-          <div className="mt-8 text-center">
+          <div className="mt-6 text-center">
             <Link
               href="/case-study"
-              className="inline-flex items-center gap-2 rounded-xl bg-accent px-6 py-3 text-sm font-bold text-white shadow-glow-accent transition-all hover:bg-accent-hover active:scale-95"
+              className="inline-flex items-center gap-2 text-xs font-semibold text-ink hover:underline dark:text-white"
             >
-              <BookOpen className="h-4 w-4" />
-              <span>Read Full CA1 Design Thinking Case Study</span>
+              <span>Read complete 20/20 Case Study Documentation</span>
+              <ArrowRight className="h-3 w-3" />
             </Link>
           </div>
         </section>
 
         {/* Featured Campus Spaces Preview */}
-        <section className="mt-32">
-          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+        <section className="mt-24 border-t border-line/60 pt-16 dark:border-white/[0.06]">
+          <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
             <div>
-              <p className="text-xs font-bold uppercase tracking-wider text-accent dark:text-accent-hover">
+              <span className="font-mono text-[11px] font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
                 Live Inventory
-              </p>
-              <h2 className="mt-1 text-3xl font-extrabold tracking-tight text-ink">
-                Popular Campus Study Spaces
+              </span>
+              <h2 className="mt-1 text-xl font-bold tracking-tight text-ink sm:text-2xl">
+                Featured Campus Spaces
               </h2>
             </div>
             <Link
               href="/spaces"
-              className="inline-flex items-center gap-1.5 text-sm font-bold text-accent hover:underline dark:text-accent-hover"
+              className="inline-flex items-center gap-1 text-xs font-semibold text-ink hover:underline dark:text-white"
             >
-              <span>View All {rooms.length} Spaces</span>
-              <ArrowRight className="h-4 w-4" />
+              <span>View all {rooms.length} spaces</span>
+              <ArrowRight className="h-3 w-3" />
             </Link>
           </div>
 
-          <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {featuredRooms.map((room) => (
               <Link
                 key={room.room_id}
                 href={`/spaces/${room.slug}`}
-                className="group block rounded-2xl"
+                className="group block"
               >
-                <Card className="h-full p-5 shadow-e1 transition-all duration-base hover:-translate-y-1 hover:border-accent/40 hover:shadow-e2 dark:border-white/10">
-                  <div className="flex items-start justify-between gap-2">
-                    <span className="font-mono text-xs font-bold text-accent dark:text-accent-hover">
-                      {room.code}
+                <div className="rounded-xl border border-line bg-surface p-4 transition-all hover:border-zinc-400 dark:border-white/[0.08] dark:bg-[#111113] dark:hover:border-white/20">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="font-mono text-xs font-bold text-ink">{room.code}</span>
+                    <span className="inline-flex items-center gap-1 font-mono text-[11px] font-medium text-zinc-500 dark:text-zinc-400">
+                      <span
+                        className={`h-1.5 w-1.5 rounded-full ${
+                          room.status === 'free'
+                            ? 'bg-emerald-500'
+                            : room.status === 'soon'
+                              ? 'bg-amber-500'
+                              : 'bg-rose-500'
+                        }`}
+                      />
+                      {room.status === 'free' ? 'Free' : room.status === 'soon' ? 'Soon' : 'Busy'}
                     </span>
-                    <Badge variant={room.status === 'free' ? 'free' : room.status === 'soon' ? 'soon' : 'busy'}>
-                      {room.status === 'free' ? 'Free now' : room.status === 'soon' ? 'Free soon' : 'Busy'}
-                    </Badge>
                   </div>
-                  <h3 className="mt-2 truncate text-base font-bold text-ink transition-colors group-hover:text-accent">
+                  <h3 className="mt-2 truncate text-sm font-semibold text-ink group-hover:text-zinc-900 dark:group-hover:text-white">
                     {room.name}
                   </h3>
-                  <p className="text-xs text-ink-secondary">Floor {room.floor_level} · {room.block_name}</p>
+                  <p className="text-[11px] text-zinc-400">Floor {room.floor_level} · {room.block_name}</p>
 
-                  <div className="mt-4 flex items-center gap-3 border-t border-line/60 pt-3 text-xs text-ink-secondary dark:border-white/[0.06]">
-                    <span className="flex items-center gap-1 font-medium">
-                      <Users className="h-3.5 w-3.5 text-ink-tertiary" />
+                  <div className="mt-3 flex items-center gap-3 border-t border-line/60 pt-2.5 text-[11px] font-mono text-zinc-500 dark:border-white/[0.06] dark:text-zinc-400">
+                    <span className="flex items-center gap-1">
+                      <Users className="h-3 w-3 text-zinc-400" />
                       <span>{room.capacity}</span>
                     </span>
                     {room.sockets_working != null && (
-                      <span className="flex items-center gap-1 font-medium text-amber-600 dark:text-amber-400">
-                        <Plug className="h-3.5 w-3.5" />
+                      <span className="flex items-center gap-1">
+                        <Plug className="h-3 w-3 text-zinc-400" />
                         <span>{room.sockets_working}</span>
                       </span>
                     )}
                     {room.has_ac && (
-                      <span className="flex items-center gap-1 font-medium text-sky-600 dark:text-sky-400">
-                        <Snowflake className="h-3.5 w-3.5" />
+                      <span className="flex items-center gap-1">
+                        <Snowflake className="h-3 w-3 text-zinc-400" />
                         <span>AC</span>
                       </span>
                     )}
                   </div>
-                </Card>
+                </div>
               </Link>
             ))}
           </div>
         </section>
 
-        {/* Academic Evaluation Banner */}
-        <section className="mt-32 rounded-3xl bg-gradient-to-tr from-accent/15 via-purple-500/10 to-indigo-500/10 p-8 text-center border border-accent/20 shadow-e2 md:p-12">
-          <div className="mx-auto max-w-2xl space-y-3">
-            <h2 className="text-2xl font-black tracking-tight text-ink md:text-3xl">
-              Ready to Explore JainSpace?
-            </h2>
-            <p className="text-sm text-ink-secondary">
-              Find an empty room with power sockets, check your professor&apos;s cabin, or review the
-              full Design Thinking case study.
-            </p>
-            <div className="pt-4 flex flex-wrap justify-center gap-4">
-              <Link
-                href="/spaces"
-                className="inline-flex h-11 items-center gap-2 rounded-xl bg-accent px-6 text-sm font-bold text-white shadow-glow-accent transition-all hover:bg-accent-hover active:scale-95"
-              >
-                <span>Launch App</span>
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link
-                href="/case-study"
-                className="inline-flex h-11 items-center gap-2 rounded-xl border border-line bg-surface px-6 text-sm font-bold text-ink shadow-sm transition-all hover:bg-surface-sunken active:scale-95 dark:border-white/10"
-              >
-                <span>View CA1 Case Study</span>
-              </Link>
-            </div>
+        {/* Action Callout */}
+        <section className="mt-24 rounded-xl border border-line bg-surface p-8 text-center dark:border-white/[0.08] dark:bg-[#111113]">
+          <h2 className="text-xl font-bold tracking-tight text-ink sm:text-2xl">
+            Start Exploring Campus Spaces
+          </h2>
+          <p className="mx-auto mt-2 max-w-md text-xs text-zinc-500 dark:text-zinc-400">
+            Check real-time room occupancy, verify professor cabins, or inspect the CA1 Design Thinking case study.
+          </p>
+          <div className="mt-5 flex flex-wrap justify-center gap-3">
+            <Link
+              href="/spaces"
+              className="inline-flex h-9 items-center gap-2 rounded-lg bg-zinc-900 px-4 text-xs font-semibold text-white transition-all hover:bg-zinc-800 active:scale-[0.98] dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100"
+            >
+              <span>Launch Directory</span>
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+            <Link
+              href="/case-study"
+              className="inline-flex h-9 items-center gap-2 rounded-lg border border-line bg-surface px-4 text-xs font-semibold text-ink transition-all hover:bg-surface-sunken active:scale-[0.98] dark:border-white/[0.08] dark:bg-surface-sunken"
+            >
+              <span>View Case Study</span>
+            </Link>
           </div>
         </section>
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-line/80 bg-surface/60 py-12 backdrop-blur-xl dark:border-white/[0.08] dark:bg-[#0c0c0e]">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-center">
-            <div className="flex items-center gap-3">
-              <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-accent text-sm font-bold text-white">
+      <footer className="border-t border-line bg-surface py-8 dark:border-white/[0.08] dark:bg-[#0c0c0d]">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+            <div className="flex items-center gap-2">
+              <span className="flex h-6 w-6 items-center justify-center rounded bg-zinc-900 text-[10px] font-bold text-white dark:bg-white dark:text-zinc-900">
                 ◧
               </span>
-              <div>
-                <p className="text-sm font-bold text-ink">JainSpace — Campus Reimagined</p>
-                <p className="text-xs text-ink-tertiary">
-                  Jain (Deemed-to-be University) · Faculty of Engineering and Technology
-                </p>
-              </div>
+              <span className="text-xs font-bold text-ink">JainSpace</span>
+              <span className="text-xs text-zinc-400">· Campus Reimagined</span>
             </div>
 
-            <p className="text-xs text-ink-tertiary">
-              Designed & Developed by <span className="font-semibold text-ink">Nilotpal Deb</span> · 3rd Sem B.Tech CSE
+            <p className="text-[11px] text-zinc-400">
+              Nilotpal Deb (23BTRCN042) · 3rd Sem B.Tech CSE · Jain (Deemed-to-be University)
             </p>
           </div>
         </div>

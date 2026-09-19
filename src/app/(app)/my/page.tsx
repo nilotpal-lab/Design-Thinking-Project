@@ -30,30 +30,29 @@ export default async function MyPage() {
 
   if (!user) {
     return (
-      <div className="mx-auto max-w-lg py-16 text-center">
-        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-accent-subtle text-accent dark:bg-accent/15">
-          <User className="h-7 w-7" />
+      <div className="mx-auto max-w-md py-12 text-center">
+        <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-surface-sunken text-zinc-600 dark:bg-white/[0.06] dark:text-zinc-300">
+          <User className="h-5 w-5" />
         </div>
-        <h1 className="text-2xl font-black tracking-tight text-ink md:text-3xl">
-          Your Campus Space, Saved
+        <h1 className="text-xl font-bold tracking-tight text-ink">
+          My Space
         </h1>
-        <p className="mt-2 text-[14px] leading-relaxed text-ink-secondary">
-          Bookmark your favourite study corners, monitor your reported issues, and track your
-          community karma points.
+        <p className="mt-1.5 text-xs text-zinc-500 dark:text-zinc-400">
+          Sign in to bookmark favorite spaces, monitor filed issue reports, and track community karma points.
         </p>
-        <div className="mt-6 flex justify-center gap-3">
+        <div className="mt-5 flex justify-center gap-2.5">
           <Link
             href="/auth/login"
-            className="inline-flex h-11 items-center gap-2 rounded-xl bg-accent px-6 text-sm font-bold text-white shadow-glow-accent transition-all hover:bg-accent-hover active:scale-95"
+            className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-zinc-900 px-4 text-xs font-semibold text-white transition-all hover:bg-zinc-800 active:scale-[0.98] dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100"
           >
-            <LogIn className="h-4 w-4" />
+            <LogIn className="h-3.5 w-3.5" />
             <span>Sign In</span>
           </Link>
           <Link
             href="/auth/signup"
-            className="inline-flex h-11 items-center gap-2 rounded-xl border border-line/80 bg-surface px-6 text-sm font-bold text-ink shadow-sm transition-all hover:bg-surface-sunken active:scale-95 dark:border-white/10"
+            className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-line bg-surface px-4 text-xs font-semibold text-ink transition-all hover:bg-surface-sunken active:scale-[0.98] dark:border-white/[0.08]"
           >
-            <UserPlus className="h-4 w-4" />
+            <UserPlus className="h-3.5 w-3.5" />
             <span>Create Account</span>
           </Link>
         </div>
@@ -86,40 +85,37 @@ export default async function MyPage() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-5xl space-y-8">
-      {/* Student Profile Bento Hero */}
-      <div className="relative overflow-hidden rounded-3xl border border-line/80 bg-surface/80 p-6 shadow-e2 backdrop-blur-xl md:p-8 dark:border-white/10 dark:bg-[#121215]">
-        <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-center">
-          <div className="flex items-center gap-4">
+    <div className="space-y-6">
+      {/* Student Profile Card */}
+      <div className="rounded-xl border border-line bg-surface p-5 shadow-sm dark:border-white/[0.08] dark:bg-[#111113]">
+        <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+          <div className="flex items-center gap-3.5">
             <Avatar
               name={profileRes.data?.full_name ?? 'Student'}
-              className="h-16 w-16 text-xl font-extrabold shadow-md"
+              className="h-12 w-12 text-sm font-bold"
             />
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-2xl font-extrabold tracking-tight text-ink">
+                <h1 className="text-lg font-bold tracking-tight text-ink">
                   {profileRes.data?.full_name ?? 'Student Profile'}
                 </h1>
-                <Badge variant="accent" className="text-[10px] uppercase">
+                <span className="rounded bg-surface-sunken px-1.5 py-0.2 font-mono text-[10px] uppercase text-zinc-500 dark:bg-white/[0.06] dark:text-zinc-400">
                   {profileRes.data?.role ?? 'student'}
-                </Badge>
+                </span>
               </div>
-              <p className="mt-0.5 font-mono text-xs font-semibold text-ink-tertiary">
+              <p className="mt-0.5 font-mono text-xs text-zinc-400">
                 USN: {profileRes.data?.usn ?? '23BTRCN042'} · Jain (Deemed-to-be University)
               </p>
             </div>
           </div>
 
-          {/* Karma Metric Pill */}
-          <div className="flex items-center gap-3 rounded-2xl border border-accent/20 bg-accent-subtle/60 p-4 dark:bg-accent/10">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent text-white shadow-glow-accent">
-              <Sparkles className="h-5 w-5" />
-            </div>
+          {/* Karma Metric */}
+          <div className="flex items-center gap-2.5 rounded-lg border border-line bg-surface-sunken px-3.5 py-2 dark:border-white/[0.08] dark:bg-[#141416]">
             <div>
-              <p className="font-mono text-2xl font-black text-accent dark:text-accent-hover">
+              <p className="font-mono text-xl font-bold text-ink">
                 {profileRes.data?.karma ?? 0}
               </p>
-              <p className="text-[11px] font-bold uppercase tracking-wider text-ink-secondary">
+              <p className="font-mono text-[10px] uppercase tracking-wider text-zinc-400">
                 Karma Points
               </p>
             </div>
@@ -128,20 +124,20 @@ export default async function MyPage() {
       </div>
 
       {/* Bookmarked Favorites */}
-      <section className="space-y-4">
+      <section className="space-y-3">
         <div className="flex items-center gap-2">
-          <Heart className="h-5 w-5 text-rose-500" />
-          <h2 className="text-lg font-bold text-ink">Saved Favorite Spaces ({favorites.length})</h2>
+          <Heart className="h-4 w-4 text-zinc-400" />
+          <h2 className="text-sm font-bold text-ink">Saved Favorite Spaces ({favorites.length})</h2>
         </div>
 
         {favorites.length === 0 ? (
-          <Card className="rounded-2xl border-dashed p-8 text-center">
-            <p className="text-[14px] font-semibold text-ink-secondary">
-              No saved spaces yet. Open any room card and bookmark it for one-click access.
+          <div className="rounded-xl border border-dashed border-line p-6 text-center dark:border-white/[0.08]">
+            <p className="text-xs text-zinc-400">
+              No saved spaces yet. Open any room page and bookmark it for quick access.
             </p>
-          </Card>
+          </div>
         ) : (
-          <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
+          <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {favorites.map((room) => (
               <li key={room.room_id}>
                 <RoomCard room={room} />
@@ -152,46 +148,46 @@ export default async function MyPage() {
       </section>
 
       {/* Reported Issues */}
-      <section className="space-y-4 border-t border-line/60 pt-6 dark:border-white/[0.06]">
+      <section className="space-y-3 border-t border-line/60 pt-5 dark:border-white/[0.06]">
         <div className="flex items-center gap-2">
-          <ShieldAlert className="h-5 w-5 text-amber-500" />
-          <h2 className="text-lg font-bold text-ink">Your Filed Reports</h2>
+          <ShieldAlert className="h-4 w-4 text-zinc-400" />
+          <h2 className="text-sm font-bold text-ink">Your Filed Reports</h2>
         </div>
 
         {(myIssues as MyIssue[] | null)?.length ? (
-          <div className="space-y-3">
+          <div className="space-y-2">
             {(myIssues as MyIssue[]).map((i) => (
-              <Card
+              <div
                 key={i.id}
-                className="flex items-center justify-between gap-4 rounded-2xl p-4 shadow-e1 dark:border-white/10"
+                className="flex items-center justify-between gap-3 rounded-xl border border-line bg-surface p-3.5 shadow-sm dark:border-white/[0.08] dark:bg-[#111113]"
               >
                 <div className="min-w-0">
-                  <p className="text-[14px] font-bold text-ink">
-                    <span className="mr-1.5 font-mono text-[12px] font-semibold text-ink-tertiary">
+                  <p className="text-xs font-bold text-ink">
+                    <span className="mr-1.5 font-mono text-[11px] font-normal text-zinc-400">
                       {i.ref}
                     </span>
                     {i.title}
                   </p>
-                  <p className="mt-0.5 text-[12px] font-medium text-ink-secondary">
+                  <p className="mt-0.5 text-[11px] text-zinc-400">
                     Room {i.rooms?.code ?? 'General'} · Filed {timeAgo(i.created_at)}
                   </p>
                 </div>
-                <Badge variant={i.status === 'resolved' ? 'free' : 'soon'}>
+                <span className="rounded bg-surface-sunken px-2 py-0.5 font-mono text-[10px] text-zinc-500 dark:bg-white/[0.06] dark:text-zinc-400">
                   {STATUS_LABEL[i.status as keyof typeof STATUS_LABEL] ?? i.status}
-                </Badge>
-              </Card>
+                </span>
+              </div>
             ))}
           </div>
         ) : (
-          <Card className="rounded-2xl border-dashed p-8 text-center">
-            <p className="text-[14px] font-semibold text-ink-secondary">
-              You haven&apos;t filed any facility reports yet. See something broken on campus?{' '}
-              <Link href="/report" className="text-accent font-bold hover:underline dark:text-accent-hover">
-                Report it here
+          <div className="rounded-xl border border-dashed border-line p-6 text-center dark:border-white/[0.08]">
+            <p className="text-xs text-zinc-400">
+              You haven&apos;t filed any facility reports yet.{' '}
+              <Link href="/report" className="font-semibold text-ink hover:underline dark:text-white">
+                File a report
               </Link>{' '}
-              to earn +15 karma when confirmed.
+              to earn +25 karma.
             </p>
-          </Card>
+          </div>
         )}
       </section>
     </div>

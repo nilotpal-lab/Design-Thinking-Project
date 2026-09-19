@@ -12,7 +12,7 @@ export const metadata = { title: 'Faculty Presence Tracker' };
 
 const todayLabel = new Date().toLocaleDateString('en-IN', {
   timeZone: 'Asia/Kolkata',
-  weekday: 'long',
+  weekday: 'short',
   day: 'numeric',
   month: 'short',
 });
@@ -26,15 +26,15 @@ const STATUS = {
 function StatusPill({ status }: { status: keyof typeof STATUS }) {
   const s = STATUS[status] ?? STATUS.free;
   return (
-    <span className={cn('inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-[11px] font-bold', s.cls)}>
-      <span className={cn('h-2 w-2 rounded-full', s.dot)} />
+    <span className={cn('inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-[11px] font-medium', s.cls)}>
+      <span className={cn('h-1.5 w-1.5 rounded-full', s.dot)} />
       {s.label}
     </span>
   );
 }
 
 const inputCls =
-  'h-10 rounded-xl border border-line/80 bg-surface px-3 text-sm font-medium outline-none transition-colors focus-visible:ring-2 focus-visible:ring-accent dark:border-white/10 dark:bg-surface/80';
+  'h-9 rounded-lg border border-line bg-surface px-3 text-xs font-medium outline-none transition-colors focus-visible:ring-1 focus-visible:ring-zinc-400 dark:border-white/[0.08] dark:bg-[#111113] dark:text-zinc-200';
 
 export default async function FacultyTrackerPage({
   searchParams,
@@ -62,36 +62,35 @@ export default async function FacultyTrackerPage({
   if (sp.dept) ordered = ordered.filter((f) => f.department === sp.dept);
 
   return (
-    <div className="mx-auto w-full max-w-5xl space-y-8">
+    <div className="space-y-6">
+      {/* Editorial Header */}
       <div>
-        <div className="inline-flex items-center gap-1.5 rounded-full border border-accent/20 bg-accent-subtle px-3 py-0.5 text-[11px] font-bold uppercase tracking-wider text-accent dark:text-accent-hover">
-          <Sparkles className="h-3.5 w-3.5" />
-          <span>Faculty & Staff Navigation</span>
+        <div className="flex items-center gap-2">
+          <h1 className="text-xl font-bold tracking-tight text-ink sm:text-2xl">
+            Faculty Presence Tracker
+          </h1>
+          <span className="rounded bg-surface-sunken px-2 py-0.5 font-mono text-[11px] font-medium text-zinc-500 dark:bg-white/[0.06] dark:text-zinc-400">
+            {todayLabel}
+          </span>
         </div>
-        <h1 className="mt-2 text-2xl font-black tracking-tight text-ink md:text-3xl">
-          Faculty Presence Tracker
-        </h1>
-        <p className="mt-1 text-[13px] text-ink-secondary">
-          Know exactly where your professors are lecturing right now, their cabin rooms, and office
-          consultation hours.
-          <span className="mx-1.5">·</span>
-          {todayLabel}
+        <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+          Find current lecture locations, office cabin rooms, and consultation hours for department faculty.
         </p>
       </div>
 
       {/* Search & Dept Filters */}
       <form
-        className="flex flex-wrap items-center gap-3 rounded-2xl border border-line/80 bg-surface/80 p-3 shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-[#121215]"
+        className="flex flex-wrap items-center gap-2.5 rounded-xl border border-line bg-surface p-2.5 shadow-sm dark:border-white/[0.08] dark:bg-[#111113]"
         action="/faculty"
       >
         <div className="relative min-w-56 flex-1">
-          <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-tertiary" />
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-zinc-400" />
           <input
             name="q"
             aria-label="Search faculty by name, department or cabin"
             defaultValue={sp.q ?? ''}
             placeholder="Search professor name, dept, cabin…"
-            className={cn(inputCls, 'w-full pl-9')}
+            className={cn(inputCls, 'w-full pl-8')}
           />
         </div>
         <select name="dept" aria-label="Filter by department" defaultValue={sp.dept ?? ''} className={inputCls}>
@@ -104,32 +103,34 @@ export default async function FacultyTrackerPage({
         </select>
         <button
           type="submit"
-          className="h-10 rounded-xl bg-accent px-5 text-sm font-bold text-white shadow-glow-accent transition-all hover:bg-accent-hover active:scale-95"
+          className="h-9 rounded-lg bg-zinc-900 px-4 text-xs font-semibold text-white transition-all hover:bg-zinc-800 active:scale-[0.98] dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100"
         >
           Search
         </button>
-        <Link
-          href="/faculty"
-          className="text-[13px] font-semibold text-ink-secondary hover:text-ink hover:underline"
-        >
-          Reset
-        </Link>
+        { (sp.q || sp.dept) && (
+          <Link
+            href="/faculty"
+            className="text-xs font-medium text-zinc-500 hover:text-ink hover:underline dark:text-zinc-400"
+          >
+            Reset
+          </Link>
+        )}
       </form>
 
       {/* Faculty Cards Grid */}
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-3 sm:grid-cols-2">
         {ordered.map((f) => (
-          <Card
+          <div
             key={f.id}
-            className="rounded-2xl p-5 shadow-e1 transition-all duration-base hover:border-accent/40 hover:shadow-e2 dark:border-white/10"
+            className="rounded-xl border border-line bg-surface p-4 shadow-sm dark:border-white/[0.08] dark:bg-[#111113]"
           >
-            <div className="space-y-4">
+            <div className="space-y-3.5">
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-center gap-3">
-                  <Avatar name={f.name} className="h-11 w-11 text-sm font-bold shadow-sm" />
+                  <Avatar name={f.name} className="h-9 w-9 text-xs font-bold" />
                   <div>
-                    <h3 className="text-base font-bold text-ink">{f.name}</h3>
-                    <p className="text-[12px] font-medium text-ink-tertiary">
+                    <h3 className="text-sm font-bold text-ink">{f.name}</h3>
+                    <p className="text-[11px] text-zinc-400">
                       {f.department ?? 'Faculty Member'}
                     </p>
                   </div>
@@ -139,21 +140,21 @@ export default async function FacultyTrackerPage({
 
               {/* Lecture Slots */}
               {f.slots.length > 0 ? (
-                <div className="rounded-xl border border-line/60 bg-surface-sunken/50 p-3 dark:border-white/[0.06] dark:bg-white/[0.02]">
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-ink-tertiary">
-                    Today&apos;s Classes
+                <div className="rounded-lg border border-line/60 bg-surface-sunken/40 p-2.5 dark:border-white/[0.06] dark:bg-white/[0.02]">
+                  <p className="font-mono text-[10px] font-semibold uppercase tracking-wider text-zinc-400">
+                    Today&apos;s Schedule
                   </p>
-                  <ul className="mt-2 space-y-1.5 text-[13px]">
+                  <ul className="mt-1.5 space-y-1 text-xs">
                     {f.slots.slice(0, 3).map((s, i) => (
-                      <li key={i} className="flex items-center justify-between gap-2 font-medium">
-                        <span className="font-mono text-xs text-ink-secondary">
+                      <li key={i} className="flex items-center justify-between gap-2">
+                        <span className="font-mono text-[11px] text-zinc-400">
                           {s.start}–{s.end}
                         </span>
-                        <span className="truncate text-ink">{s.title}</span>
+                        <span className="truncate text-zinc-700 dark:text-zinc-300">{s.title}</span>
                         {s.roomSlug && (
                           <Link
                             href={`/spaces/${s.roomSlug}`}
-                            className="font-mono text-xs font-bold text-accent hover:underline dark:text-accent-hover"
+                            className="font-mono text-[11px] font-semibold text-ink hover:underline dark:text-white"
                           >
                             {s.roomCode}
                           </Link>
@@ -161,60 +162,60 @@ export default async function FacultyTrackerPage({
                       </li>
                     ))}
                     {f.slots.length > 3 && (
-                      <li className="font-mono text-micro text-ink-tertiary">
+                      <li className="font-mono text-[10px] text-zinc-400">
                         +{f.slots.length - 3} more classes today
                       </li>
                     )}
                   </ul>
                 </div>
               ) : (
-                <p className="rounded-xl bg-surface-sunken/40 p-2.5 text-center text-[12px] text-ink-tertiary">
+                <p className="rounded-lg bg-surface-sunken/30 p-2 text-center text-[11px] text-zinc-400">
                   No lecture classes scheduled for today.
                 </p>
               )}
 
               {/* Cabin & Office Hours */}
-              <div className="border-t border-line/60 pt-3 text-[12px] font-medium dark:border-white/[0.06]">
+              <div className="border-t border-line/60 pt-2.5 text-[11px] dark:border-white/[0.06]">
                 {f.cabin ? (
-                  <p className="flex items-center gap-2 text-ink">
-                    <DoorClosed className="h-4 w-4 text-accent" />
+                  <p className="flex items-center gap-1.5 text-zinc-700 dark:text-zinc-300">
+                    <DoorClosed className="h-3.5 w-3.5 text-zinc-400" />
                     <span>
                       Office Cabin:{' '}
                       <Link
                         href={`/spaces/${f.cabin.slug}`}
-                        className="font-bold text-accent hover:underline dark:text-accent-hover"
+                        className="font-semibold text-ink hover:underline dark:text-white"
                       >
                         {f.cabin.code}
                       </Link>
-                      <span className="text-ink-tertiary">
+                      <span className="text-zinc-400">
                         {' '}
                         · {f.cabin.block} L{f.cabin.floor}
                       </span>
                     </span>
                   </p>
                 ) : (
-                  <p className="flex items-center gap-2 text-ink-tertiary">
-                    <MapPin className="h-3.5 w-3.5" /> Cabin room unassigned
+                  <p className="flex items-center gap-1.5 text-zinc-400">
+                    <MapPin className="h-3 w-3" /> Cabin unassigned
                   </p>
                 )}
-                {f.cabinNote && <p className="mt-1 text-micro text-ink-tertiary">{f.cabinNote}</p>}
+                {f.cabinNote && <p className="mt-0.5 text-[10px] text-zinc-400">{f.cabinNote}</p>}
                 {f.officeHours && (
-                  <p className="mt-1 text-micro text-ink-secondary">
-                    Consultation Hours: <span className="font-semibold">{f.officeHours}</span>
+                  <p className="mt-0.5 text-[10px] text-zinc-500 dark:text-zinc-400">
+                    Consultation: <span className="font-semibold text-ink">{f.officeHours}</span>
                   </p>
                 )}
               </div>
             </div>
-          </Card>
+          </div>
         ))}
       </div>
 
       {ordered.length === 0 && (
-        <Card className="rounded-3xl border-dashed p-10 text-center">
-          <p className="text-sm font-semibold text-ink-secondary">
+        <div className="rounded-xl border border-dashed border-line p-8 text-center dark:border-white/[0.08]">
+          <p className="text-xs font-semibold text-zinc-400">
             No faculty members matched those filters.
           </p>
-        </Card>
+        </div>
       )}
     </div>
   );

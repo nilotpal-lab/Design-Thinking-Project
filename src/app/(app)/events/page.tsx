@@ -1,23 +1,22 @@
 import Link from 'next/link';
-import { CalendarClock, CalendarDays, MapPin, Sparkles } from 'lucide-react';
+import { CalendarClock, CalendarDays, MapPin } from 'lucide-react';
 
 import { getEventsOnDay, getUpcomingEvents, type CampusEvent } from '@/server/queries/events';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
 export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Campus Events & Workshops' };
 
 const CATEGORY_STYLE: Record<string, string> = {
-  fest: 'bg-fuchsia-500/10 text-fuchsia-700 dark:text-fuchsia-300 ring-1 ring-fuchsia-500/20',
-  workshop: 'bg-sky-500/10 text-sky-700 dark:text-sky-300 ring-1 ring-sky-500/20',
-  seminar: 'bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 ring-1 ring-indigo-500/20',
-  exam: 'bg-rose-500/10 text-rose-700 dark:text-rose-300 ring-1 ring-rose-500/20',
-  club: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 ring-1 ring-emerald-500/20',
-  sports: 'bg-orange-500/10 text-orange-700 dark:text-orange-300 ring-1 ring-orange-500/20',
-  cultural: 'bg-purple-500/10 text-purple-700 dark:text-purple-300 ring-1 ring-purple-500/20',
-  other: 'bg-zinc-500/10 text-zinc-700 dark:text-zinc-300 ring-1 ring-zinc-500/20',
+  fest: 'bg-zinc-200/80 text-zinc-800 dark:bg-white/10 dark:text-zinc-200',
+  workshop: 'bg-zinc-200/80 text-zinc-800 dark:bg-white/10 dark:text-zinc-200',
+  seminar: 'bg-zinc-200/80 text-zinc-800 dark:bg-white/10 dark:text-zinc-200',
+  exam: 'bg-rose-500/10 text-rose-700 dark:text-rose-400',
+  club: 'bg-zinc-200/80 text-zinc-800 dark:bg-white/10 dark:text-zinc-200',
+  sports: 'bg-zinc-200/80 text-zinc-800 dark:bg-white/10 dark:text-zinc-200',
+  cultural: 'bg-zinc-200/80 text-zinc-800 dark:bg-white/10 dark:text-zinc-200',
+  other: 'bg-zinc-200/80 text-zinc-800 dark:bg-white/10 dark:text-zinc-200',
 };
 
 function fmtTime(iso: string): string {
@@ -45,24 +44,24 @@ function fmtDayLabel(iso: string): string {
 
 function EventCard({ ev, dayLabel }: { ev: CampusEvent; dayLabel?: string }) {
   return (
-    <Card
+    <div
       className={cn(
-        'rounded-2xl p-5 shadow-e1 transition-all duration-base hover:border-accent/40 hover:shadow-e2 dark:border-white/10',
+        'rounded-xl border border-line bg-surface p-4 shadow-sm transition-all dark:border-white/[0.08] dark:bg-[#111113]',
         ev.isCancelled && 'opacity-60',
       )}
     >
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
         {/* Time Stamp Tile */}
-        <div className="flex w-20 shrink-0 flex-col items-center justify-center rounded-xl border border-line/80 bg-surface-sunken/60 py-2 dark:border-white/[0.06] dark:bg-white/[0.02]">
+        <div className="flex w-16 shrink-0 flex-col items-center justify-center rounded-lg border border-line/60 bg-surface-sunken/60 py-1.5 dark:border-white/[0.06] dark:bg-white/[0.02]">
           {ev.allDay ? (
-            <span className="font-mono text-micro font-extrabold uppercase tracking-wider text-ink-tertiary">
+            <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-zinc-400">
               All Day
             </span>
           ) : (
             <>
-              <span className="font-mono text-sm font-extrabold text-ink">{fmtTime(ev.startsAt)}</span>
+              <span className="font-mono text-xs font-bold text-ink">{fmtTime(ev.startsAt)}</span>
               {ev.endsAt && (
-                <span className="font-mono text-[11px] font-semibold text-ink-tertiary">
+                <span className="font-mono text-[10px] font-medium text-zinc-400">
                   {fmtTime(ev.endsAt)}
                 </span>
               )}
@@ -73,50 +72,50 @@ function EventCard({ ev, dayLabel }: { ev: CampusEvent; dayLabel?: string }) {
         {/* Event Content */}
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <h3 className={cn('text-base font-bold text-ink', ev.isCancelled && 'line-through')}>
+            <h3 className={cn('text-sm font-bold text-ink', ev.isCancelled && 'line-through')}>
               {ev.title}
             </h3>
             <span
               className={cn(
-                'rounded-lg px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider',
+                'rounded px-1.5 py-0.2 font-mono text-[10px] font-medium uppercase tracking-wider',
                 CATEGORY_STYLE[ev.category] ?? CATEGORY_STYLE.other,
               )}
             >
               {ev.category}
             </span>
-            {ev.isCancelled && <Badge variant="neutral">Cancelled</Badge>}
-            {dayLabel && <span className="font-mono text-micro text-ink-tertiary">· {dayLabel}</span>}
+            {ev.isCancelled && <span className="rounded bg-rose-500/10 px-1.5 py-0.2 font-mono text-[10px] text-rose-500">Cancelled</span>}
+            {dayLabel && <span className="font-mono text-[10px] text-zinc-400">· {dayLabel}</span>}
           </div>
 
           {ev.description && (
-            <p className="mt-1.5 line-clamp-2 text-[13px] leading-relaxed text-ink-secondary">
+            <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
               {ev.description}
             </p>
           )}
 
-          <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-line/60 pt-3 text-[12px] font-medium text-ink-secondary dark:border-white/[0.06]">
+          <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-line/60 pt-2 text-[11px] text-zinc-500 dark:border-white/[0.06] dark:text-zinc-400">
             {ev.venueSlug ? (
-              <span className="inline-flex items-center gap-1.5 text-accent dark:text-accent-hover">
-                <MapPin className="h-3.5 w-3.5" />
-                <Link href={`/spaces/${ev.venueSlug}`} className="font-semibold hover:underline">
+              <span className="inline-flex items-center gap-1 font-semibold text-ink dark:text-white">
+                <MapPin className="h-3 w-3 text-zinc-400" />
+                <Link href={`/spaces/${ev.venueSlug}`} className="hover:underline">
                   {ev.venueCode}
                 </Link>
               </span>
             ) : ev.venueText ? (
-              <span className="inline-flex items-center gap-1.5 text-ink-tertiary">
-                <MapPin className="h-3.5 w-3.5" /> {ev.venueText}
+              <span className="inline-flex items-center gap-1">
+                <MapPin className="h-3 w-3 text-zinc-400" /> {ev.venueText}
               </span>
             ) : null}
-            {ev.organizer && <span className="text-ink-tertiary">Organized by {ev.organizer}</span>}
+            {ev.organizer && <span>· Organized by {ev.organizer}</span>}
           </div>
         </div>
       </div>
-    </Card>
+    </div>
   );
 }
 
 const inputCls =
-  'h-10 rounded-xl border border-line/80 bg-surface px-3 text-sm font-medium outline-none transition-colors focus-visible:ring-2 focus-visible:ring-accent dark:border-white/10 dark:bg-surface/80';
+  'h-9 rounded-lg border border-line bg-surface px-3 text-xs font-medium outline-none transition-colors focus-visible:ring-1 focus-visible:ring-zinc-400 dark:border-white/[0.08] dark:bg-[#111113] dark:text-zinc-200';
 
 export default async function EventsPage({
   searchParams,
@@ -134,40 +133,42 @@ export default async function EventsPage({
   ]);
 
   return (
-    <div className="mx-auto w-full max-w-4xl space-y-8">
+    <div className="mx-auto w-full max-w-3xl space-y-6">
+      {/* Editorial Header */}
       <div>
-        <div className="inline-flex items-center gap-1.5 rounded-full border border-accent/20 bg-accent-subtle px-3 py-0.5 text-[11px] font-bold uppercase tracking-wider text-accent dark:text-accent-hover">
-          <Sparkles className="h-3.5 w-3.5" />
-          <span>Campus Life & Schedules</span>
+        <div className="flex items-center gap-2">
+          <h1 className="text-xl font-bold tracking-tight text-ink sm:text-2xl">
+            Campus Events & Workshops
+          </h1>
+          <span className="rounded bg-surface-sunken px-2 py-0.5 font-mono text-[11px] font-medium text-zinc-500 dark:bg-white/[0.06] dark:text-zinc-400">
+            Schedule
+          </span>
         </div>
-        <h1 className="mt-2 text-2xl font-black tracking-tight text-ink md:text-3xl">
-          Campus Events & Workshops
-        </h1>
-        <p className="mt-1 text-[13px] text-ink-secondary">
-          Fests, hackathons, guest lectures, and student club meets happening across Jain University.
+        <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+          Workshops, fests, hackathons, and student club meets happening across campus.
         </p>
       </div>
 
       {/* Date jump form */}
       <form
         action="/events"
-        className="flex flex-wrap items-center gap-3 rounded-2xl border border-line/80 bg-surface/80 p-3 shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-[#121215]"
+        className="flex flex-wrap items-center gap-2.5 rounded-xl border border-line bg-surface p-2.5 shadow-sm dark:border-white/[0.08] dark:bg-[#111113]"
       >
-        <div className="flex items-center gap-2 text-sm font-medium text-ink-secondary">
-          <CalendarDays className="h-4 w-4 text-accent" />
-          <span>Select Date:</span>
+        <div className="flex items-center gap-2 text-xs font-medium text-zinc-500 dark:text-zinc-400">
+          <CalendarDays className="h-3.5 w-3.5" />
+          <span>Date:</span>
           <input type="date" name="date" defaultValue={viewDate} className={inputCls} />
         </div>
         <button
           type="submit"
-          className="h-10 rounded-xl bg-accent px-5 text-sm font-bold text-white shadow-glow-accent transition-all hover:bg-accent-hover active:scale-95"
+          className="h-9 rounded-lg bg-zinc-900 px-4 text-xs font-semibold text-white transition-all hover:bg-zinc-800 active:scale-[0.98] dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100"
         >
           View Events
         </button>
         {!isToday && (
           <Link
             href="/events"
-            className="text-[13px] font-semibold text-accent hover:underline dark:text-accent-hover"
+            className="text-xs font-medium text-zinc-500 hover:text-ink hover:underline dark:text-zinc-400"
           >
             Jump to Today
           </Link>
@@ -175,33 +176,32 @@ export default async function EventsPage({
       </form>
 
       {/* Events on Selected Date */}
-      <section className="space-y-4">
-        <h2 className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-ink-tertiary">
-          <CalendarClock className="h-4 w-4 text-accent" />
-          <span>{fmtDayLabel(viewDate)} ({dayEvents.length})</span>
+      <section className="space-y-3">
+        <h2 className="font-mono text-[11px] font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+          {fmtDayLabel(viewDate)} ({dayEvents.length})
         </h2>
         {dayEvents.length ? (
-          <div className="space-y-3">
+          <div className="space-y-2.5">
             {dayEvents.map((ev) => (
               <EventCard key={ev.id} ev={ev} />
             ))}
           </div>
         ) : (
-          <Card className="rounded-2xl p-10 text-center">
-            <p className="text-sm font-semibold text-ink-secondary">
+          <div className="rounded-xl border border-dashed border-line p-8 text-center dark:border-white/[0.08]">
+            <p className="text-xs font-semibold text-zinc-400">
               No campus events scheduled on this day.
             </p>
-          </Card>
+          </div>
         )}
       </section>
 
       {/* Upcoming Events */}
       {isToday && upcoming.length > 0 && (
-        <section className="space-y-4 border-t border-line/60 pt-6 dark:border-white/[0.06]">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-ink-tertiary">
+        <section className="space-y-3 border-t border-line/60 pt-6 dark:border-white/[0.06]">
+          <h2 className="font-mono text-[11px] font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
             Coming Up This Week
           </h2>
-          <div className="space-y-3">
+          <div className="space-y-2.5">
             {upcoming.map((ev) => {
               const evDate = new Date(ev.startsAt).toLocaleDateString('en-CA', {
                 timeZone: 'Asia/Kolkata',
