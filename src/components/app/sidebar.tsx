@@ -2,14 +2,25 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { CalendarClock, Flag, Map, ShieldCheck, Sparkles, User, UserRound, Waypoints } from 'lucide-react';
+import {
+  BookOpen,
+  CalendarClock,
+  Flag,
+  Map,
+  ShieldCheck,
+  Sparkles,
+  User,
+  UserRound,
+  Waypoints,
+} from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
 const NAV = [
   { href: '/spaces', label: 'Spaces', icon: Waypoints },
   { href: '/map', label: 'Floor Map', icon: Map },
-  { href: '/match', label: 'Match', icon: Sparkles },
+  { href: '/match', label: 'AI Matcher', icon: Sparkles },
+  { href: '/case-study', label: 'Case Study', icon: BookOpen },
   { href: '/faculty', label: 'Faculty', icon: User },
   { href: '/events', label: 'Events', icon: CalendarClock },
   { href: '/report', label: 'Reports', icon: Flag },
@@ -22,7 +33,7 @@ function NavItems({ compact = false }: { compact?: boolean }) {
   const pathname = usePathname();
 
   const item = (n: (typeof NAV)[number]) => {
-    const active = pathname === n.href || pathname.startsWith(n.href + '/');
+    const active = pathname === n.href || (n.href !== '/' && pathname.startsWith(n.href + '/'));
     const Icon = n.icon;
     return (
       <Link
@@ -33,18 +44,15 @@ function NavItems({ compact = false }: { compact?: boolean }) {
         className={cn(
           'group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-instant ease-spring',
           active
-            ? 'bg-accent-subtle text-accent dark:bg-accent/15 dark:text-accent-hover shadow-sm'
+            ? 'bg-accent text-white shadow-sm shadow-accent/20 dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.2)]'
             : 'text-ink-secondary hover:bg-surface-sunken hover:text-ink dark:hover:bg-white/[0.04]',
           compact && 'justify-center px-0 py-3',
         )}
       >
-        {active && !compact && (
-          <span className="absolute left-0 top-2 bottom-2 w-1 rounded-r bg-accent shadow-glow-accent" />
-        )}
         <Icon
           className={cn(
             'h-4 w-4 shrink-0 transition-transform duration-fast ease-spring group-hover:scale-110',
-            active ? 'text-accent dark:text-accent-hover' : 'text-ink-tertiary group-hover:text-ink',
+            active ? 'text-white' : 'text-ink-tertiary group-hover:text-ink',
           )}
           aria-hidden
         />
@@ -71,14 +79,20 @@ export function Sidebar() {
         <div className="mt-7 flex-1 overflow-y-auto pr-1">
           <NavItems />
         </div>
-        <div className="rounded-xl border border-line/60 bg-surface-sunken/60 p-3 dark:border-white/[0.06] dark:bg-white/[0.02]">
-          <p className="text-[11px] font-semibold uppercase tracking-wider text-ink-tertiary">
-            Design Thinking CA1
+        <Link
+          href="/case-study"
+          className="group block rounded-xl border border-accent/20 bg-accent-subtle/50 p-3 transition-colors hover:bg-accent-subtle dark:bg-accent/10"
+        >
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-accent dark:text-accent-hover">
+              CA1 20/20 Package
+            </span>
+            <BookOpen className="h-3.5 w-3.5 text-accent" />
+          </div>
+          <p className="mt-0.5 text-micro font-medium text-ink-secondary">
+            Design Thinking & Innovation
           </p>
-          <p className="mt-0.5 text-micro text-ink-secondary">
-            Jain (Deemed-to-be University) · 3rd Sem
-          </p>
-        </div>
+        </Link>
       </aside>
 
       {/* Icon rail 640–1023px */}
@@ -98,9 +112,9 @@ export function Sidebar() {
       {/* Below 640px: bottom bar */}
       <nav
         aria-label="Main"
-        className="fixed inset-x-0 bottom-0 z-40 flex items-stretch justify-around border-t border-line/80 bg-surface/95 px-2 py-1 shadow-e3 backdrop-blur-xl md:hidden dark:border-white/[0.08] dark:bg-[#0c0c0e]/95"
+        className="fixed inset-x-0 bottom-0 z-40 flex items-stretch justify-around border-t border-line/80 bg-surface/95 px-1 py-1 shadow-e3 backdrop-blur-xl md:hidden dark:border-white/[0.08] dark:bg-[#0c0c0e]/95"
       >
-        {NAV.map((n) => (
+        {NAV.slice(0, 5).map((n) => (
           <BottomItem key={n.href} {...n} />
         ))}
       </nav>
@@ -116,13 +130,13 @@ function BottomItem({ href, label, icon: Icon }: (typeof NAV)[number]) {
       href={href}
       aria-current={active ? 'page' : undefined}
       className={cn(
-        'flex min-w-[54px] flex-col items-center gap-1 rounded-xl px-2 py-2 text-[11px] font-medium transition-all duration-instant',
+        'flex min-w-[50px] flex-col items-center gap-0.5 rounded-xl px-2 py-1.5 text-[10px] font-medium transition-all duration-instant',
         active
-          ? 'bg-accent-subtle/80 text-accent font-semibold dark:text-accent-hover'
+          ? 'bg-accent text-white font-bold'
           : 'text-ink-secondary hover:text-ink',
       )}
     >
-      <Icon className="h-5 w-5" aria-hidden />
+      <Icon className="h-4 w-4" aria-hidden />
       <span>{label}</span>
     </Link>
   );

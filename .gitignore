@@ -50,4 +50,6 @@ Thumbs.db
 # Chat transcripts & local scratch
 freebuff-chat-*.md
 *.chat.md
+Users/
+
 

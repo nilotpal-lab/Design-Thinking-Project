@@ -1,11 +1,11 @@
 import { ThemeToggle } from '@/components/app/theme-toggle';
 import { Sidebar } from '@/components/app/sidebar';
 import { UserChip } from '@/components/app/user-chip';
+import { CommandPalette } from '@/components/app/command-palette';
 import { LiveRefresher } from '@/components/app/live-refresher';
 import { createClient } from '@/lib/supabase/server';
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
-  // Drives the realtime-vs-polling split in LiveRefresher.
   const supabase = await createClient();
   const {
     data: { user },
@@ -24,7 +24,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         {/* Glassmorphic Top Header */}
         <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-line/80 bg-surface/80 px-4 backdrop-blur-xl md:px-8 dark:border-white/[0.08] dark:bg-[#09090b]/80">
           <div className="flex items-center gap-3">
-            {/* Mobile brand (sidebar hidden below md) */}
+            {/* Mobile brand */}
             <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent text-sm font-bold text-white shadow-glow-accent md:hidden">
               ◧
             </span>
@@ -34,7 +34,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
               </span>
               <span className="hidden text-[13px] font-medium text-ink-secondary md:inline-block">
-                Live Timetable
+                Live Campus Timetable
               </span>
               <span className="hidden text-ink-tertiary md:inline-block">·</span>
               <span className="font-mono text-[13px] font-medium text-ink-secondary">
@@ -43,7 +43,8 @@ export default async function AppLayout({ children }: { children: React.ReactNod
             </div>
           </div>
 
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-3">
+            <CommandPalette />
             <ThemeToggle />
             <UserChip />
           </div>
