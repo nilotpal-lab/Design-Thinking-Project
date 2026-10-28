@@ -62,7 +62,7 @@ export function CampusSearch({ initialRooms }: CampusSearchProps) {
   };
 
   return (
-    <div className="relative mx-auto w-full max-w-3xl">
+    <div className="relative w-full">
       {/* Search Input Box */}
       <form
         onSubmit={handleSubmit}
@@ -77,7 +77,7 @@ export function CampusSearch({ initialRooms }: CampusSearchProps) {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => setIsFocused(true)}
-          placeholder="Search 63 classrooms, floors, AC spots, or facilities (e.g. '201', 'AC', 'Floor 3')..."
+          placeholder="Search 63 regular classrooms, floors, AC, or subject (e.g. '201', 'AC', 'Floor 3')..."
           className="flex-1 bg-transparent px-2 text-sm text-ink placeholder:text-ink-tertiary focus:outline-none"
         />
 

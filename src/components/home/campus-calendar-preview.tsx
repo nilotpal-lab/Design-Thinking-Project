@@ -1,227 +1,266 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { Calendar as CalendarIcon, Clock, MapPin, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
+import {
+  Calendar as CalendarIcon,
+  Clock,
+  DoorOpen,
+  ArrowRight,
+  Snowflake,
+  Plug,
+  AlertCircle,
+  CheckCircle2,
+} from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import type { WeeklyTimetableSummary } from '@/lib/campus-dataset';
 
-interface CalendarEvent {
-  id: string;
-  date: number; // day of month
-  dayName: string;
-  title: string;
-  time: string;
-  location: string;
-  category: 'Academic' | 'Tech' | 'Workshop' | 'Exam';
-  description: string;
+interface CampusCalendarPreviewProps {
+  weeklySummary: WeeklyTimetableSummary;
+  initialDay?: number;
+  initialPeriod?: number;
 }
 
-const EVENTS: CalendarEvent[] = [
-  {
-    id: 'e1',
-    date: 28,
-    dayName: 'Wed',
-    title: 'Design Thinking Prototype Review & User Testing',
-    time: '11:00 AM – 1:00 PM',
-    location: 'Room 301 · 3rd Floor [AC]',
-    category: 'Academic',
-    description: 'CA1 working sessions and peer heuristic critique for campus solutions.',
-  },
-  {
-    id: 'e2',
-    date: 29,
-    dayName: 'Thu',
-    title: 'Cloud Computing & Microservices Lab Exam',
-    time: '08:45 AM – 10:45 AM',
-    location: 'Computer Lab 214',
-    category: 'Exam',
-    description: 'Mid-term practical evaluation for Batch A and Batch B.',
-  },
-  {
-    id: 'e3',
-    date: 30,
-    dayName: 'Fri',
-    title: 'Student Developer Club: Full-Stack Next.js 16 Workshop',
-    time: '01:50 PM – 03:50 PM',
-    location: 'Seminar Hall A · 1st Floor',
-    category: 'Workshop',
-    description: 'Hands-on session on App Router, Turbopack, and server actions.',
-  },
-  {
-    id: 'e4',
-    date: 31,
-    dayName: 'Sat',
-    title: 'Autonomous Robotics Society Demo & Track Setup',
-    time: '10:00 AM – 12:00 PM',
-    location: 'Ground Floor Innovation Foyer',
-    category: 'Tech',
-    description: 'Testing obstacle detection and line follower prototypes.',
-  },
-  {
-    id: 'e5',
-    date: 2,
-    dayName: 'Mon',
-    title: 'Database Systems Architecture Lecture & Query Tuning',
-    time: '09:45 AM – 10:45 AM',
-    location: 'Room 203 · 2nd Floor [AC]',
-    category: 'Academic',
-    description: 'Postgres index structures and execution plan analysis.',
-  },
-];
+const SUPPORTED_DAYS = [
+  { value: 1, label: 'Mon', fullLabel: 'Monday' },
+  { value: 2, label: 'Tue', fullLabel: 'Tuesday' },
+  { value: 3, label: 'Wed', fullLabel: 'Wednesday' },
+  { value: 4, label: 'Thu', fullLabel: 'Thursday' },
+  { value: 5, label: 'Fri', fullLabel: 'Friday' },
+  { value: 6, label: 'Sat', fullLabel: 'Saturday' },
+] as const;
 
-export function CampusCalendarPreview() {
-  const [selectedDate, setSelectedDate] = useState<number>(28);
+const PERIODS = [
+  { value: 1, label: 'P1', time: '8:45–9:45' },
+  { value: 2, label: 'P2', time: '9:45–10:45' },
+  { value: 3, label: 'P3', time: '11:00–12:00' },
+  { value: 4, label: 'P4', time: '12:00–1:00' },
+  { value: 5, label: 'P5', time: '1:00–1:50' },
+  { value: 6, label: 'P6', time: '1:50–2:50' },
+  { value: 7, label: 'P7', time: '2:50–3:50' },
+] as const;
 
-  const selectedEvent = EVENTS.find((e) => e.date === selectedDate) || EVENTS[0];
+export function CampusCalendarPreview({
+  weeklySummary,
+  initialDay,
+  initialPeriod,
+}: CampusCalendarPreviewProps) {
+  // Check if today is Sunday (JS getDay() === 0)
+  const isSunday = typeof window !== 'undefined' ? new Date().getDay() === 0 : false;
 
-  const getCategoryBadgeVariant = (cat: CalendarEvent['category']) => {
-    switch (cat) {
-      case 'Academic':
-        return 'pastelSky';
-      case 'Tech':
-        return 'pastelMint';
-      case 'Workshop':
-        return 'pastelButter';
-      case 'Exam':
-        return 'pastelCoral';
-      default:
-        return 'neutral';
+  // Determine initial day: 1-6 (Mon-Sat); if Sunday, default to Monday (1)
+  const [selectedDay, setSelectedDay] = useState<number>(() => {
+    if (initialDay && initialDay >= 1 && initialDay <= 6) return initialDay;
+    if (typeof window !== 'undefined') {
+      const jsDay = new Date().getDay();
+      return jsDay === 0 ? 1 : jsDay;
     }
-  };
+    return 1;
+  });
+
+  const [selectedPeriod, setSelectedPeriod] = useState<number>(() => {
+    if (initialPeriod && initialPeriod >= 1 && initialPeriod <= 7) return initialPeriod;
+    return 1;
+  });
+
+  // Current slot data from real weekly schedule
+  const currentSlot = useMemo(() => {
+    const dayData = weeklySummary[selectedDay];
+    if (dayData && dayData[selectedPeriod]) {
+      return dayData[selectedPeriod];
+    }
+    // Fallback if data missing
+    return {
+      dayNumber: selectedDay,
+      dayLabel: SUPPORTED_DAYS.find((d) => d.value === selectedDay)?.label ?? 'Mon',
+      dayFullLabel: SUPPORTED_DAYS.find((d) => d.value === selectedDay)?.fullLabel ?? 'Monday',
+      periodNumber: selectedPeriod,
+      periodLabel: `P${selectedPeriod}`,
+      periodTime: PERIODS.find((p) => p.value === selectedPeriod)?.time ?? '',
+      totalRooms: 63,
+      freeCount: 0,
+      busyCount: 63,
+      freeRooms: [],
+      occupiedSessions: [],
+    };
+  }, [weeklySummary, selectedDay, selectedPeriod]);
 
   return (
-    <div className="campus-card overflow-hidden">
-      {/* Top Banner / Bar */}
-      <div className="flex flex-col gap-3 border-b border-line bg-surface-sunken/40 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
-        <div className="flex items-center gap-2.5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-[#1B4332] text-white dark:bg-[#2D6A4F]">
-            <CalendarIcon className="h-4 w-4" />
-          </div>
-          <div>
-            <h3 className="text-sm font-bold text-ink tracking-tight">CAMPUS SCHEDULE & TIMETABLE</h3>
-            <p className="text-[11px] text-ink-secondary">Official Fall 2026 Academic Term · Active Periods P1–P7</p>
-          </div>
+    <div className="space-y-4">
+      {/* Sunday Notification Banner */}
+      {isSunday && (
+        <div className="flex items-center gap-2 rounded-md border border-amber-200 bg-amber-50/80 p-3 text-xs text-amber-800 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-300">
+          <AlertCircle className="h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" />
+          <span>
+            <strong>No regular timetable scheduled today (Sunday).</strong> Select Monday through Saturday below to view scheduled classroom availability.
+          </span>
+        </div>
+      )}
+
+      {/* Weekday Selector Strip (Mon - Sat only, 6 supported days) */}
+      <div className="space-y-1.5">
+        <div className="flex items-center justify-between text-xs">
+          <span className="font-mono text-[11px] uppercase tracking-wider text-ink-tertiary">
+            Select Weekday (Monday – Saturday)
+          </span>
+          <span className="font-mono text-[11px] text-ink-secondary">
+            {currentSlot.dayFullLabel}
+          </span>
         </div>
 
-        <div className="flex items-center gap-2">
-          <Link
-            href="/events"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#1B4332] hover:underline dark:text-[#74C69D]"
-          >
-            <span>Full Semester Calendar</span>
-            <ArrowRight className="h-3.5 w-3.5" />
-          </Link>
+        <div className="grid grid-cols-6 gap-1.5 sm:gap-2">
+          {SUPPORTED_DAYS.map((day) => {
+            const active = selectedDay === day.value;
+            // Get day total free rooms for currently selected period
+            const daySlot = weeklySummary[day.value]?.[selectedPeriod];
+            const freeCountForDay = daySlot?.freeCount ?? 0;
+
+            return (
+              <button
+                key={day.value}
+                type="button"
+                onClick={() => setSelectedDay(day.value)}
+                className={`flex flex-col items-center justify-center rounded-md border py-2 px-1 text-center transition-all ${
+                  active
+                    ? 'border-[#1B4332] bg-[#E8EFEA] text-[#1B4332] shadow-sm dark:border-[#52B788] dark:bg-[#2D6A4F]/25 dark:text-[#74C69D]'
+                    : 'border-line bg-surface text-ink hover:bg-surface-sunken dark:border-white/[0.08] dark:bg-[#1A1918]'
+                }`}
+              >
+                <span className="font-mono text-xs font-bold">{day.label}</span>
+                <span className="text-[10px] text-ink-secondary mt-0.5 font-mono">
+                  {freeCountForDay} free
+                </span>
+              </button>
+            );
+          })}
         </div>
       </div>
 
-      <div className="grid lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-line">
-        {/* Left Column: Date Selector Bar */}
-        <div className="lg:col-span-5 p-4 sm:p-5 space-y-4">
-          <div className="flex items-center justify-between text-xs font-semibold text-ink">
-            <span>October 2026</span>
-            <span className="font-mono text-[11px] text-ink-tertiary">Week 9</span>
-          </div>
+      {/* Period Selector Strip (P1 – P7) */}
+      <div className="space-y-1.5 pt-1">
+        <div className="flex items-center justify-between text-xs">
+          <span className="font-mono text-[11px] uppercase tracking-wider text-ink-tertiary">
+            Timetable Period (P1 – P7)
+          </span>
+          <span className="font-mono text-[11px] text-ink-secondary">
+            {currentSlot.periodLabel} ({currentSlot.periodTime})
+          </span>
+        </div>
 
-          {/* Days Strip */}
-          <div className="grid grid-cols-5 gap-1.5">
-            {[
-              { d: 28, name: 'Wed' },
-              { d: 29, name: 'Thu' },
-              { d: 30, name: 'Fri' },
-              { d: 31, name: 'Sat' },
-              { d: 2, name: 'Mon' },
-            ].map((day) => {
-              const active = selectedDate === day.d;
-              const hasEv = EVENTS.some((e) => e.date === day.d);
-              return (
-                <button
-                  key={day.d}
-                  type="button"
-                  onClick={() => setSelectedDate(day.d)}
-                  className={`flex flex-col items-center justify-center rounded-md border p-2.5 text-center transition-all ${
-                    active
-                      ? 'border-[#1B4332] bg-[#E8EFEA] text-[#1B4332] font-bold shadow-sm dark:border-[#52B788] dark:bg-[#2D6A4F]/25 dark:text-[#74C69D]'
-                      : 'border-line bg-surface text-ink hover:bg-surface-sunken dark:border-white/[0.08] dark:bg-[#1A1918]'
+        <div className="grid grid-cols-7 gap-1 sm:gap-1.5">
+          {PERIODS.map((period) => {
+            const active = selectedPeriod === period.value;
+            const slot = weeklySummary[selectedDay]?.[period.value];
+            const freeCount = slot?.freeCount ?? 0;
+
+            return (
+              <button
+                key={period.value}
+                type="button"
+                onClick={() => setSelectedPeriod(period.value)}
+                className={`flex flex-col items-center justify-center rounded-md border py-2 px-0.5 text-center transition-all ${
+                  active
+                    ? 'border-[#1B4332] bg-[#1B4332] text-white shadow-sm dark:bg-[#2D6A4F] dark:border-[#52B788]'
+                    : 'border-line bg-surface text-ink hover:bg-surface-sunken dark:border-white/[0.08] dark:bg-[#1A1918]'
+                }`}
+              >
+                <span className="font-mono text-xs font-bold">{period.label}</span>
+                <span
+                  className={`text-[9px] font-mono leading-tight mt-0.5 ${
+                    active ? 'text-white/80' : 'text-ink-secondary'
                   }`}
                 >
-                  <span className="text-[10px] uppercase font-mono text-ink-secondary">{day.name}</span>
-                  <span className="text-base font-bold tracking-tight mt-0.5">{day.d}</span>
-                  {hasEv && (
-                    <span
-                      className={`mt-1 h-1 w-1 rounded-full ${
-                        active ? 'bg-[#1B4332] dark:bg-[#52B788]' : 'bg-emerald-500'
-                      }`}
-                    />
-                  )}
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Timetable Period Scheme Pill Bar */}
-          <div className="rounded-md border border-line bg-surface p-2.5 space-y-1.5">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-ink-tertiary">
-              Standard Daily Period Timings
-            </span>
-            <div className="grid grid-cols-7 gap-1 text-center font-mono text-[9px] text-ink-secondary">
-              <div className="rounded bg-surface-sunken p-1">P1<br/><span className="text-[8px] text-ink-tertiary">8:45</span></div>
-              <div className="rounded bg-surface-sunken p-1">P2<br/><span className="text-[8px] text-ink-tertiary">9:45</span></div>
-              <div className="rounded bg-surface-sunken p-1">P3<br/><span className="text-[8px] text-ink-tertiary">11:00</span></div>
-              <div className="rounded bg-surface-sunken p-1">P4<br/><span className="text-[8px] text-ink-tertiary">12:00</span></div>
-              <div className="rounded bg-surface-sunken p-1">P5<br/><span className="text-[8px] text-ink-tertiary">1:00</span></div>
-              <div className="rounded bg-surface-sunken p-1">P6<br/><span className="text-[8px] text-ink-tertiary">1:50</span></div>
-              <div className="rounded bg-surface-sunken p-1">P7<br/><span className="text-[8px] text-ink-tertiary">2:50</span></div>
-            </div>
-          </div>
-        </div>
-
-        {/* Right Column: Event Details for Selected Day */}
-        <div className="lg:col-span-7 p-4 sm:p-5 flex flex-col justify-between">
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Badge variant={getCategoryBadgeVariant(selectedEvent.category)}>
-                  {selectedEvent.category}
-                </Badge>
-                <span className="font-mono text-xs font-semibold text-ink">
-                  {selectedEvent.dayName}, Oct {selectedEvent.date}
+                  {period.time.split('–')[0]}
                 </span>
-              </div>
-              <span className="text-[11px] font-mono text-ink-tertiary">Verified Academic Schedule</span>
-            </div>
-
-            <h4 className="text-base font-bold text-ink sm:text-lg">
-              {selectedEvent.title}
-            </h4>
-
-            <p className="text-xs text-ink-secondary leading-relaxed">
-              {selectedEvent.description}
-            </p>
-
-            <div className="flex flex-wrap gap-4 pt-1 text-xs text-ink-secondary">
-              <div className="flex items-center gap-1.5">
-                <Clock className="h-3.5 w-3.5 text-ink-tertiary" />
-                <span className="font-mono">{selectedEvent.time}</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <MapPin className="h-3.5 w-3.5 text-ink-tertiary" />
-                <span>{selectedEvent.location}</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-5 pt-3 border-t border-line/60 flex items-center justify-between">
-            <span className="text-[11px] text-ink-tertiary">2,646 slots mapped to room availability</span>
-            <Link
-              href="/spaces"
-              className="text-xs font-semibold text-[#1B4332] hover:underline dark:text-[#74C69D] inline-flex items-center gap-1"
-            >
-              <span>Check room availability for this day</span>
-              <ArrowRight className="h-3 w-3" />
-            </Link>
-          </div>
+                <span
+                  className={`text-[9px] font-mono mt-0.5 ${
+                    active ? 'text-emerald-300' : 'text-emerald-600 dark:text-emerald-400'
+                  }`}
+                >
+                  {freeCount}f
+                </span>
+              </button>
+            );
+          })}
         </div>
+      </div>
+
+      {/* Selected Day & Period Results Card */}
+      <div className="rounded-lg border border-line bg-surface p-4 space-y-4 dark:border-white/[0.08] dark:bg-[#1A1918]">
+        {/* Availability Count Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-line/60 pb-3">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="font-mono text-xs font-bold text-ink">
+                {currentSlot.dayFullLabel} · {currentSlot.periodLabel} ({currentSlot.periodTime})
+              </span>
+              <Badge variant="pastelMint">
+                {currentSlot.freeCount} Classrooms Free
+              </Badge>
+            </div>
+            <p className="mt-1 text-xs text-ink-secondary">
+              Out of 63 regular classrooms, {currentSlot.freeCount} are scheduled free and {currentSlot.busyCount} are in session.
+            </p>
+          </div>
+
+          <Link
+            href={`/spaces?day=${selectedDay}&period=${selectedPeriod}&status=free`}
+            className="inline-flex items-center gap-1.5 rounded-md bg-[#1B4332] px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-[#143326] dark:bg-[#2D6A4F] dark:hover:bg-[#40916C] self-start sm:self-auto"
+          >
+            <span>View Free Rooms</span>
+            <ArrowRight className="h-3 w-3" />
+          </Link>
+        </div>
+
+        {/* Free Classrooms Quick List */}
+        <div>
+          <div className="flex items-center justify-between text-[11px] font-mono text-ink-secondary uppercase tracking-wider mb-2">
+            <span>Free Classrooms ({currentSlot.freeRooms.length})</span>
+            <span className="text-[10px] text-ink-tertiary">63 Regular Classrooms Inventory</span>
+          </div>
+
+          {currentSlot.freeRooms.length === 0 ? (
+            <div className="rounded border border-line/60 bg-surface-sunken p-3 text-center text-xs text-ink-secondary">
+              No regular classrooms scheduled free during {currentSlot.periodLabel} on {currentSlot.dayFullLabel}.
+            </div>
+          ) : (
+            <div className="flex flex-wrap gap-1.5 max-h-36 overflow-y-auto pr-1">
+              {currentSlot.freeRooms.map((room) => (
+                <Link
+                  key={room.code}
+                  href={`/spaces/${room.slug}`}
+                  className="inline-flex items-center gap-1.5 rounded-md border border-[#C6E2CF] bg-[#EAF5EE] px-2 py-1 text-xs font-medium text-[#1B4332] transition-colors hover:bg-[#D8EDE0] dark:border-[#2D6A4F]/40 dark:bg-[#2D6A4F]/20 dark:text-[#74C69D]"
+                >
+                  <span className="font-mono font-bold">{room.code}</span>
+                  <span className="text-[10px] text-[#1B4332]/70 dark:text-[#74C69D]/70">Fl.{room.floor_level}</span>
+                  {room.has_ac && <Snowflake className="h-2.5 w-2.5 text-sky-600" />}
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Sample Scheduled Sessions Occupying Classrooms */}
+        {currentSlot.occupiedSessions.length > 0 && (
+          <div className="pt-2 border-t border-line/60">
+            <span className="text-[11px] font-mono text-ink-secondary uppercase tracking-wider block mb-2">
+              Sample Scheduled Sessions in Session ({currentSlot.occupiedSessions.length} total)
+            </span>
+            <div className="grid gap-1 sm:grid-cols-2 text-xs">
+              {currentSlot.occupiedSessions.slice(0, 4).map((session, idx) => (
+                <div
+                  key={idx}
+                  className="rounded border border-line/60 bg-surface-sunken/60 px-2 py-1.5 flex items-center justify-between gap-2"
+                >
+                  <span className="font-mono font-semibold text-ink shrink-0">{session.roomCode}</span>
+                  <span className="text-ink-secondary truncate text-[11px]" title={session.label}>
+                    {session.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

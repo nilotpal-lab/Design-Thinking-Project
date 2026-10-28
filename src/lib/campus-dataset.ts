@@ -689,3 +689,92 @@ export function getCleanedRoomBySlug(
   const slots = getCleanedRoomSchedule(found.room_id, dayNumber);
   return { room: found, slots };
 }
+
+export interface DayPeriodSlotSummary {
+  dayNumber: number;
+  dayLabel: string;
+  dayFullLabel: string;
+  periodNumber: number;
+  periodLabel: string;
+  periodTime: string;
+  totalRooms: number;
+  freeCount: number;
+  busyCount: number;
+  freeRooms: Array<{
+    code: string;
+    slug: string;
+    name: string;
+    floor_level: number;
+    has_ac: boolean;
+    has_charging_points: boolean;
+  }>;
+  occupiedSessions: Array<{
+    roomCode: string;
+    label: string;
+  }>;
+}
+
+export type WeeklyTimetableSummary = Record<number, Record<number, DayPeriodSlotSummary>>;
+
+let cachedWeeklySummary: WeeklyTimetableSummary | null = null;
+
+export function getWeeklyTimetableSummary(): WeeklyTimetableSummary {
+  if (cachedWeeklySummary) return cachedWeeklySummary;
+
+  const rooms = loadCleanedRooms();
+  const slotMap = getSlotMap();
+  const summary: WeeklyTimetableSummary = {};
+
+  for (let d = 1; d <= 6; d++) {
+    summary[d] = {};
+    const dayConfig = CAMPUS_DAYS.find((cd) => cd.value === d);
+    const dayLabel = dayConfig?.label ?? 'Mon';
+    const dayFullLabel = dayConfig?.fullLabel ?? 'Monday';
+
+    for (let p = 1; p <= 7; p++) {
+      const periodConfig = CAMPUS_PERIODS.find((cp) => cp.value === p);
+      const periodLabel = periodConfig?.label ?? `P${p}`;
+      const periodTime = periodConfig?.time ?? '';
+
+      const freeRooms: DayPeriodSlotSummary['freeRooms'] = [];
+      const occupiedSessions: DayPeriodSlotSummary['occupiedSessions'] = [];
+
+      for (const room of rooms) {
+        const slot = slotMap.get(`${room.room_id}_${d}_${p}`);
+        if (slot && slot.is_scheduled_free === true) {
+          freeRooms.push({
+            code: room.room_code,
+            slug: room.room_code.toLowerCase(),
+            name: room.display_name,
+            floor_level: room.floor_number,
+            has_ac: room.has_ac,
+            has_charging_points: room.has_charging_points,
+          });
+        } else if (slot && slot.scheduled_label) {
+          occupiedSessions.push({
+            roomCode: room.room_code,
+            label: slot.scheduled_label,
+          });
+        }
+      }
+
+      summary[d][p] = {
+        dayNumber: d,
+        dayLabel,
+        dayFullLabel,
+        periodNumber: p,
+        periodLabel,
+        periodTime,
+        totalRooms: rooms.length,
+        freeCount: freeRooms.length,
+        busyCount: rooms.length - freeRooms.length,
+        freeRooms,
+        occupiedSessions,
+      };
+    }
+  }
+
+  cachedWeeklySummary = summary;
+  return summary;
+}
+

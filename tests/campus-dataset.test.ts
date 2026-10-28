@@ -14,6 +14,7 @@ import {
   transformRoomRow,
   transformScheduleSlotRow,
   clearCampusDataCache,
+  getWeeklyTimetableSummary,
   CAMPUS_FLOORS,
   CAMPUS_DAYS,
   CAMPUS_PERIODS,
@@ -423,5 +424,31 @@ room_101,1,1,free,True,free`;
       const groundFloor = filterRooms(rooms, { floor: '0' });
       expect(groundFloor).toHaveLength(0);
     });
+
+    it('generates accurate weekly timetable summary for all 6 days (Mon-Sat) and 7 periods (P1-P7)', () => {
+      const summary = getWeeklyTimetableSummary();
+
+      // Check all 6 days exist
+      for (let day = 1; day <= 6; day++) {
+        expect(summary[day]).toBeDefined();
+        for (let p = 1; p <= 7; p++) {
+          const slot = summary[day][p];
+          expect(slot).toBeDefined();
+          expect(slot.dayNumber).toBe(day);
+          expect(slot.periodNumber).toBe(p);
+          expect(slot.totalRooms).toBe(63);
+          expect(slot.freeCount + slot.busyCount).toBe(63);
+          expect(slot.freeRooms.length).toBe(slot.freeCount);
+        }
+      }
+
+      // Monday P1 should have exactly 7 free
+      expect(summary[1][1].freeCount).toBe(7);
+      // Monday P5 should have exactly 56 free
+      expect(summary[1][5].freeCount).toBe(56);
+      // Saturday P5 should have exactly 63 free
+      expect(summary[6][5].freeCount).toBe(63);
+    });
   });
 });
+

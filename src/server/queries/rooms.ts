@@ -97,11 +97,46 @@ function spacesRoomToLiveRoom(r: SpacesRoom): LiveRoom {
   };
 }
 
+export function getCurrentCampusDayAndPeriod(): { day: number; period: number; isSunday: boolean } {
+  const now = new Date();
+  const jsDay = now.getDay(); // 0 is Sunday, 1 is Monday, ..., 6 is Saturday
+  const isSunday = jsDay === 0;
+  // If Sunday, default schedule queries to Monday (1)
+  const day = isSunday ? 1 : jsDay;
+
+  const hours = now.getHours();
+  const minutes = now.getMinutes();
+  const totalMins = hours * 60 + minutes;
+
+  let period = 1;
+  if (totalMins >= 14 * 60 + 50) {
+    period = 7;
+  } else if (totalMins >= 13 * 60 + 50) {
+    period = 6;
+  } else if (totalMins >= 13 * 60) {
+    period = 5;
+  } else if (totalMins >= 12 * 60) {
+    period = 4;
+  } else if (totalMins >= 11 * 60) {
+    period = 3;
+  } else if (totalMins >= 9 * 60 + 45) {
+    period = 2;
+  } else {
+    period = 1;
+  }
+
+  return { day, period, isSunday };
+}
+
 /**
  * One query feeds explorer, map and dashboard — the single source of truth
  * the plan promises. RLS-scoped; anon reads work with no session.
  */
-export async function getLiveRooms(): Promise<LiveRoom[]> {
+export async function getLiveRooms(dayParam?: number, periodParam?: number): Promise<LiveRoom[]> {
+  const current = getCurrentCampusDayAndPeriod();
+  const activeDay = dayParam ?? current.day;
+  const activePeriod = periodParam ?? current.period;
+
   if (isSupabaseConfigured()) {
     try {
       const supabase = await createClient();
@@ -133,7 +168,7 @@ export async function getLiveRooms(): Promise<LiveRoom[]> {
   }
 
   // Graceful fallback to verified CAMPUS cleaned classroom dataset
-  const cleaned = getRoomsForDayAndPeriod(1, 1);
+  const cleaned = getRoomsForDayAndPeriod(activeDay, activePeriod);
   return cleaned.map(spacesRoomToLiveRoom);
 }
 
