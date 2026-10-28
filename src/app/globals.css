@@ -3,58 +3,89 @@
 @tailwind utilities;
 
 /* ============================================================================
-   JainSpace Design Tokens — Linear / Raycast / Apple Monochromatic Architecture
-   Strictly rejects generic AI-slop (no muddy purple glows, no loud neon pills)
+   CAMPUS Design Tokens — Editorial Warm Canvas & Forest Green Architecture
+   Warm cream/off-white canvas, charcoal typography, deep forest green actions,
+   thin neutral borders, subtle radii, and pastel category accents.
    ========================================================================== */
 
 :root {
-  --canvas: #fafafa;
-  --surface: #ffffff;
-  --surface-raised: #ffffff;
-  --surface-sunken: #f4f4f5;
-  --border: rgba(0, 0, 0, 0.08);
-  --border-strong: rgba(0, 0, 0, 0.16);
-  --ink: #09090b;
-  --ink-secondary: #71717a;
-  --ink-tertiary: #a1a1aa;
+  --canvas: #FAF8F5;
+  --surface: #FFFFFF;
+  --surface-raised: #FFFFFF;
+  --surface-sunken: #F2EFE9;
+  --surface-warm: #F7F4EE;
+  --border: #E8E4DD;
+  --border-strong: #D5CFC5;
+  --ink: #141413;
+  --ink-secondary: #575653;
+  --ink-tertiary: #8A8882;
 
-  --accent: #18181b;
-  --accent-hover: #27272a;
-  --accent-subtle: rgba(24, 24, 27, 0.06);
+  --accent: #1B4332;
+  --accent-hover: #143326;
+  --accent-subtle: #E8EFEA;
+  --accent-border: #2D5A44;
 
-  --status-free: #10b981;
-  --status-free-bg: rgba(16, 185, 129, 0.08);
-  --status-soon: #f59e0b;
-  --status-soon-bg: rgba(245, 158, 11, 0.08);
-  --status-busy: #f43f5e;
-  --status-busy-bg: rgba(244, 63, 94, 0.08);
-  --status-unknown: #71717a;
-  --status-unknown-bg: rgba(113, 113, 122, 0.08);
+  --status-free: #10B981;
+  --status-free-bg: #EAF7EE;
+  --status-soon: #D97706;
+  --status-soon-bg: #FEF7E6;
+  --status-busy: #E11D48;
+  --status-busy-bg: #FDF2F4;
+  --status-unknown: #78716C;
+  --status-unknown-bg: #F5F5F4;
+
+  --pastel-mint-bg: #EAF5EE;
+  --pastel-mint-text: #1B4332;
+  --pastel-butter-bg: #FEF7E6;
+  --pastel-butter-text: #8C590E;
+  --pastel-sky-bg: #EBF4FB;
+  --pastel-sky-text: #165A8A;
+  --pastel-lavender-bg: #F3EEF9;
+  --pastel-lavender-text: #5E3A8C;
+  --pastel-coral-bg: #FDF0EE;
+  --pastel-coral-text: #992B1F;
+  --pastel-sage-bg: #EFF3EE;
+  --pastel-sage-text: #2E4D38;
 }
 
 .dark {
-  --canvas: #09090b;
-  --surface: #111113;
-  --surface-raised: #18181b;
-  --surface-sunken: #141416;
+  --canvas: #121211;
+  --surface: #1A1918;
+  --surface-raised: #222120;
+  --surface-sunken: #161514;
+  --surface-warm: #1D1C1B;
   --border: rgba(255, 255, 255, 0.08);
-  --border-strong: rgba(255, 255, 255, 0.15);
-  --ink: #f4f4f5;
-  --ink-secondary: #a1a1aa;
-  --ink-tertiary: #71717a;
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --ink: #F7F5F0;
+  --ink-secondary: #A8A6A0;
+  --ink-tertiary: #75736E;
 
-  --accent: #f4f4f5;
-  --accent-hover: #ffffff;
-  --accent-subtle: rgba(255, 255, 255, 0.08);
+  --accent: #2D6A4F;
+  --accent-hover: #40916C;
+  --accent-subtle: rgba(45, 106, 79, 0.22);
+  --accent-border: #52B788;
 
-  --status-free: #34d399;
-  --status-free-bg: rgba(52, 211, 153, 0.1);
-  --status-soon: #fbbf24;
-  --status-soon-bg: rgba(251, 191, 36, 0.1);
-  --status-busy: #fb7185;
-  --status-busy-bg: rgba(251, 113, 133, 0.1);
-  --status-unknown: #a1a1aa;
-  --status-unknown-bg: rgba(161, 161, 170, 0.1);
+  --status-free: #34D399;
+  --status-free-bg: rgba(52, 211, 153, 0.12);
+  --status-soon: #FBBF24;
+  --status-soon-bg: rgba(251, 191, 36, 0.12);
+  --status-busy: #FB7185;
+  --status-busy-bg: rgba(251, 113, 133, 0.12);
+  --status-unknown: #A1A1AA;
+  --status-unknown-bg: rgba(161, 161, 170, 0.12);
+
+  --pastel-mint-bg: rgba(45, 106, 79, 0.24);
+  --pastel-mint-text: #74C69D;
+  --pastel-butter-bg: rgba(245, 158, 11, 0.18);
+  --pastel-butter-text: #FCD34D;
+  --pastel-sky-bg: rgba(14, 165, 233, 0.18);
+  --pastel-sky-text: #7DD3FC;
+  --pastel-lavender-bg: rgba(168, 85, 247, 0.18);
+  --pastel-lavender-text: #D8B4FE;
+  --pastel-coral-bg: rgba(244, 63, 94, 0.18);
+  --pastel-coral-text: #FDA4AF;
+  --pastel-sage-bg: rgba(82, 183, 136, 0.18);
+  --pastel-sage-text: #95D5B2;
 }
 
 @layer base {
@@ -101,7 +132,41 @@
     font-variant-numeric: tabular-nums;
   }
 
-  /* Linear-grade card highlight */
+  /* Editorial condensed heading */
+  .heading-editorial {
+    font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    text-transform: uppercase;
+    line-height: 0.95;
+  }
+
+  /* Thin-border warm campus card */
+  .campus-card {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+    transition: all 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .campus-card:hover {
+    border-color: var(--border-strong);
+    box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.05);
+  }
+
+  .dark .campus-card {
+    background-color: var(--surface);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  }
+
+  .dark .campus-card:hover {
+    border-color: rgba(255, 255, 255, 0.16);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+  }
+
+  /* Linear-grade card highlight compatibility */
   .linear-card {
     background-color: var(--surface);
     border: 1px solid var(--border);

@@ -5,9 +5,11 @@ import { cn } from '@/lib/utils';
 
 const VARIANTS = {
   primary:
-    'bg-zinc-900 text-white hover:bg-zinc-800 shadow-sm dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200',
+    'bg-[#1B4332] text-white hover:bg-[#143326] active:bg-[#0F261C] shadow-sm border border-[#2D5A44]/30 dark:bg-[#2D6A4F] dark:hover:bg-[#40916C] dark:text-white',
   secondary:
     'bg-surface text-ink border border-line hover:bg-surface-sunken dark:border-white/10 dark:bg-white/[0.04] dark:hover:bg-white/[0.08]',
+  accentSubtle:
+    'bg-[#E8EFEA] text-[#1B4332] hover:bg-[#DCE9DF] border border-[#C5DDD0] font-semibold dark:bg-[#2D6A4F]/20 dark:text-[#74C69D] dark:border-[#2D6A4F]/40',
   ghost:
     'text-ink-secondary hover:bg-surface-sunken hover:text-ink dark:hover:bg-white/[0.06]',
   danger:
@@ -15,9 +17,9 @@ const VARIANTS = {
 } as const;
 
 const SIZES = {
-  sm: 'h-8 px-3 text-xs rounded-lg',
-  md: 'h-9 px-4 text-sm rounded-lg',
-  lg: 'h-10 px-5 text-sm rounded-xl',
+  sm: 'h-8 px-3 text-xs rounded-md',
+  md: 'h-9 px-4 text-xs font-semibold rounded-md',
+  lg: 'h-10 px-5 text-sm font-semibold rounded-lg',
 } as const;
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {

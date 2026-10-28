@@ -8,22 +8,22 @@ const CONFIG = {
   free: {
     label: 'Free now',
     dot: 'bg-emerald-500',
-    cls: 'text-emerald-700 bg-emerald-500/10 border-emerald-500/20 dark:text-emerald-400',
+    cls: 'text-[#1B4332] bg-[#EAF7EE] border-[#C3D9CB] dark:text-[#74C69D] dark:bg-[#2D6A4F]/25 dark:border-[#2D6A4F]/40 font-medium',
   },
   soon: {
     label: 'Free soon',
     dot: 'bg-amber-500',
-    cls: 'text-amber-700 bg-amber-500/10 border-amber-500/20 dark:text-amber-400',
+    cls: 'text-[#8C590E] bg-[#FEF7E6] border-[#F9E4B5] dark:text-amber-300 dark:bg-amber-500/15 dark:border-amber-500/30 font-medium',
   },
   busy: {
     label: 'In session',
     dot: 'bg-rose-500',
-    cls: 'text-rose-700 bg-rose-500/10 border-rose-500/20 dark:text-rose-400',
+    cls: 'text-[#BE123C] bg-[#FDF2F4] border-[#FBCFE8] dark:text-rose-300 dark:bg-rose-500/15 dark:border-rose-500/30 font-medium',
   },
   unknown: {
     label: 'No data',
     dot: 'bg-zinc-400',
-    cls: 'text-zinc-600 bg-zinc-500/10 border-zinc-500/20 dark:text-zinc-400',
+    cls: 'text-ink-tertiary bg-surface-sunken border-line',
   },
 } as const;
 

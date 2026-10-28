@@ -6,18 +6,18 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: {
-    default: 'JainSpace — find a seat, not a fight',
-    template: '%s · JainSpace',
+    default: 'CAMPUS — Smart Campus Directory & Timetable',
+    template: '%s · CAMPUS',
   },
   description:
-    'Live availability for every classroom, lab and study space on campus — derived from the real timetable, confirmed by students.',
-  applicationName: 'JainSpace',
+    'Live availability for 63 classrooms, labs and study spaces across campus — derived from the official timetable with AC and socket telemetry.',
+  applicationName: 'CAMPUS',
 };
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#FAFAF9' },
-    { media: '(prefers-color-scheme: dark)', color: '#0C0A09' },
+    { media: '(prefers-color-scheme: light)', color: '#FAF8F5' },
+    { media: '(prefers-color-scheme: dark)', color: '#121211' },
   ],
 };
 
