@@ -3,13 +3,19 @@ import { Sidebar } from '@/components/app/sidebar';
 import { UserChip } from '@/components/app/user-chip';
 import { CommandPalette } from '@/components/app/command-palette';
 import { LiveRefresher } from '@/components/app/live-refresher';
-import { createClient } from '@/lib/supabase/server';
+import { createClient, isSupabaseConfigured } from '@/lib/supabase/server';
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  let user = null;
+  if (isSupabaseConfigured()) {
+    try {
+      const supabase = await createClient();
+      const res = await supabase.auth.getUser();
+      user = res.data.user;
+    } catch {
+      user = null;
+    }
+  }
 
   const formattedDate = new Intl.DateTimeFormat('en-IN', {
     weekday: 'short',

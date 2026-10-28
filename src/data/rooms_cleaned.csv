@@ -1,0 +1,64 @@
+room_id,room_code,display_name,room_type,floor_number,floor_inference_method,floor_confidence,seating_capacity,has_ac,has_charging_points,is_student_accessible,source_room_name,source_room_type,source_marked_free_in_room_list,data_quality_status
+room_101,101,101 [AC] Room,classroom,1,first_digit_of_room_code_user_rule,rule_based_from_room_code,52,True,True,,101 [AC] Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_102,102,102 [AC] Room,classroom,1,first_digit_of_room_code_user_rule,rule_based_from_room_code,48,True,True,,102 [AC] Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_103,103,103 Room,classroom,1,first_digit_of_room_code_user_rule,rule_based_from_room_code,54,False,False,,103 Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_105,105,105 Room,classroom,1,first_digit_of_room_code_user_rule,rule_based_from_room_code,66,False,False,,105 Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_106,106,106 Room,classroom,1,first_digit_of_room_code_user_rule,rule_based_from_room_code,56,False,False,,106 Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_107,107,107 Room,classroom,1,first_digit_of_room_code_user_rule,rule_based_from_room_code,54,False,False,,107 Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_108,108,108 Room,classroom,1,first_digit_of_room_code_user_rule,rule_based_from_room_code,66,False,False,,108 Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_110,110,110 Room,classroom,1,first_digit_of_room_code_user_rule,rule_based_from_room_code,54,False,False,,110 Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_111,111,111 Room,classroom,1,first_digit_of_room_code_user_rule,rule_based_from_room_code,54,False,False,,111 Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_112,112,112 Room,classroom,1,first_digit_of_room_code_user_rule,rule_based_from_room_code,54,False,False,,112 Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_114b,114B,114B [AC] Room,classroom,1,first_digit_of_room_code_user_rule,rule_based_from_room_code,60,True,True,,114B [AC] Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_114c,114C,114C [AC] Room,classroom,1,first_digit_of_room_code_user_rule,rule_based_from_room_code,60,True,True,,114C [AC] Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_115c,115C,115C [AC] Room,classroom,1,first_digit_of_room_code_user_rule,rule_based_from_room_code,60,True,True,,115C [AC] Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_116a,116A,116A [AC] Room,classroom,1,first_digit_of_room_code_user_rule,rule_based_from_room_code,60,True,True,,116A [AC] Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_116b,116B,116B [AC] Room,classroom,1,first_digit_of_room_code_user_rule,rule_based_from_room_code,60,True,True,,116B [AC] Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_116c,116C,116C [AC] Room,classroom,1,first_digit_of_room_code_user_rule,rule_based_from_room_code,60,True,True,,116C [AC] Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_123a,123A,123A [AC] Room,classroom,1,first_digit_of_room_code_user_rule,rule_based_from_room_code,60,True,True,,123A [AC] Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_123b,123B,123B [AC] Room,classroom,1,first_digit_of_room_code_user_rule,rule_based_from_room_code,60,True,True,,123B [AC] Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_123c,123C,123C [AC] Room,classroom,1,first_digit_of_room_code_user_rule,rule_based_from_room_code,66,True,True,,123C Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_127a,127A,127A [AC] Room,classroom,1,first_digit_of_room_code_user_rule,rule_based_from_room_code,60,True,True,,127A [AC] Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_127b,127B,127B [AC] Room,classroom,1,first_digit_of_room_code_user_rule,rule_based_from_room_code,66,True,True,,127B [AC] Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_127c,127C,127C [AC] Room,classroom,1,first_digit_of_room_code_user_rule,rule_based_from_room_code,60,True,True,,127C [AC] Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_201,201,201 [AC] Room,classroom,2,first_digit_of_room_code_user_rule,rule_based_from_room_code,56,True,True,,201 [AC] Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_202,202,202 [AC] Room,classroom,2,first_digit_of_room_code_user_rule,rule_based_from_room_code,60,True,True,,202 [AC] Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_203,203,203 Room,classroom,2,first_digit_of_room_code_user_rule,rule_based_from_room_code,48,False,False,,203 Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_204,204,204 Room,classroom,2,first_digit_of_room_code_user_rule,rule_based_from_room_code,45,False,False,,204 Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_205,205,205 Room,classroom,2,first_digit_of_room_code_user_rule,rule_based_from_room_code,36,False,False,,205 Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_209,209,209 Room,classroom,2,first_digit_of_room_code_user_rule,rule_based_from_room_code,53,False,False,,209 Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_210,210,210 Room,classroom,2,first_digit_of_room_code_user_rule,rule_based_from_room_code,56,False,False,,210 Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_211,211,211 Room,classroom,2,first_digit_of_room_code_user_rule,rule_based_from_room_code,66,False,False,,211 Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_212,212,212 Room,classroom,2,first_digit_of_room_code_user_rule,rule_based_from_room_code,66,False,False,,212 Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_214a,214A,214A [AC] Room,classroom,2,first_digit_of_room_code_user_rule,rule_based_from_room_code,60,True,True,,214A [AC] Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_214b,214B,214B [AC] Room,classroom,2,first_digit_of_room_code_user_rule,rule_based_from_room_code,60,True,True,,214B [AC] Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_214c,214C,214C [AC] Room,classroom,2,first_digit_of_room_code_user_rule,rule_based_from_room_code,60,True,True,,214C [AC] Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_215a,215A,215A [AC] Room,classroom,2,first_digit_of_room_code_user_rule,rule_based_from_room_code,60,True,True,,215A [AC] Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_215b,215B,215B [AC] Room,classroom,2,first_digit_of_room_code_user_rule,rule_based_from_room_code,60,True,True,,215B [AC] Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_215c,215C,215C [AC] Room,classroom,2,first_digit_of_room_code_user_rule,rule_based_from_room_code,60,True,True,,215C [AC] Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_301,301,301 Room,classroom,3,first_digit_of_room_code_user_rule,rule_based_from_room_code,56,False,False,,301-Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_302,302,302 Room,classroom,3,first_digit_of_room_code_user_rule,rule_based_from_room_code,56,False,False,,302-Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_303,303,303 Room,classroom,3,first_digit_of_room_code_user_rule,rule_based_from_room_code,45,False,False,,303-Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_304,304,304 Room,classroom,3,first_digit_of_room_code_user_rule,rule_based_from_room_code,53,False,False,,304-Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_305,305,305 Room,classroom,3,first_digit_of_room_code_user_rule,rule_based_from_room_code,66,False,False,,305-Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_306,306,306 Room,classroom,3,first_digit_of_room_code_user_rule,rule_based_from_room_code,66,False,False,,306-Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_307,307,307 Room,classroom,3,first_digit_of_room_code_user_rule,rule_based_from_room_code,66,False,False,,307-Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_308,308,308 Room,classroom,3,first_digit_of_room_code_user_rule,rule_based_from_room_code,66,False,False,,308-Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_309,309,309 Room,classroom,3,first_digit_of_room_code_user_rule,rule_based_from_room_code,45,False,False,,309 Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_310,310,310 Room,classroom,3,first_digit_of_room_code_user_rule,rule_based_from_room_code,45,False,False,,310 Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_311,311,311 Room,classroom,3,first_digit_of_room_code_user_rule,rule_based_from_room_code,66,False,False,,311 Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_312,312,312 Room,classroom,3,first_digit_of_room_code_user_rule,rule_based_from_room_code,66,False,False,,312-Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_313a,313A,313A [AC] Room,classroom,3,first_digit_of_room_code_user_rule,rule_based_from_room_code,72,True,True,,313A-Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_313b,313B,313B [AC] Room,classroom,3,first_digit_of_room_code_user_rule,rule_based_from_room_code,72,True,True,,313B-Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_314a,314A,314A [AC] Room,classroom,3,first_digit_of_room_code_user_rule,rule_based_from_room_code,72,True,True,,314A-Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_314b,314B,314B [AC] Room,classroom,3,first_digit_of_room_code_user_rule,rule_based_from_room_code,72,True,True,,314B-Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_321a,321A,321A [AC] Room,classroom,3,first_digit_of_room_code_user_rule,rule_based_from_room_code,66,True,True,,321A-Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_321b,321B,321B [AC] Room,classroom,3,first_digit_of_room_code_user_rule,rule_based_from_room_code,66,True,True,,321B-Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_322a,322A,322A [AC] Room,classroom,3,first_digit_of_room_code_user_rule,rule_based_from_room_code,66,True,True,,322A-Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_322b,322B,322B [AC] Room,classroom,3,first_digit_of_room_code_user_rule,rule_based_from_room_code,66,True,True,,322B-Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_322c,322C,322C [AC] Room,classroom,3,first_digit_of_room_code_user_rule,rule_based_from_room_code,64,True,True,,322C-Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_326a,326A,326A [AC] Room,classroom,3,first_digit_of_room_code_user_rule,rule_based_from_room_code,54,True,True,,326A-Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_326b,326B,326B [AC] Room,classroom,3,first_digit_of_room_code_user_rule,rule_based_from_room_code,54,True,True,,326B-Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_327a,327A,327A [AC] Room,classroom,3,first_digit_of_room_code_user_rule,rule_based_from_room_code,66,True,True,,327A-Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_327b,327B,327B [AC] Room,classroom,3,first_digit_of_room_code_user_rule,rule_based_from_room_code,66,True,True,,327B-Room,Class,No,rule_based_cleaned_floor_and_facilities
+room_411,411,411 Room,classroom,4,first_digit_of_room_code_user_rule,rule_based_from_room_code,30,False,False,,411 Room,Class,No,rule_based_cleaned_floor_and_facilities

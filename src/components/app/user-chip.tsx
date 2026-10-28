@@ -29,29 +29,38 @@ export function UserChip() {
 
   useEffect(() => {
     const supabase = createClient();
+    if (!supabase) {
+      setReady(true);
+      return;
+    }
+    const client = supabase;
 
     async function load() {
-      const { data } = await supabase.auth.getUser();
-      if (data.user) {
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('full_name, role, karma, usn')
-          .eq('id', data.user.id)
-          .single();
-        setUser({
-          email: emailToUsername(data.user.email) ?? data.user.email ?? null,
-          fullName: profile?.full_name ?? 'Student',
-          role: profile?.role ?? 'student',
-          karma: profile?.karma ?? 0,
-          usn: profile?.usn ?? null,
-        });
+      try {
+        const { data, error } = await client.auth.getUser();
+        if (!error && data?.user) {
+          const { data: profile } = await client
+            .from('profiles')
+            .select('full_name, role, karma, usn')
+            .eq('id', data.user.id)
+            .single();
+          setUser({
+            email: emailToUsername(data.user.email) ?? data.user.email ?? null,
+            fullName: profile?.full_name ?? 'Student',
+            role: profile?.role ?? 'student',
+            karma: profile?.karma ?? 0,
+            usn: profile?.usn ?? null,
+          });
+        }
+      } catch {
+        // Fall back gracefully
       }
       setReady(true);
     }
     void load();
 
-    const { data: sub } = supabase.auth.onAuthStateChange(() => void load());
-    return () => sub.subscription.unsubscribe();
+    const { data: sub } = client.auth.onAuthStateChange(() => void load());
+    return () => sub?.subscription?.unsubscribe();
   }, []);
 
   // Auto-close dropdown when clicking outside
@@ -73,7 +82,14 @@ export function UserChip() {
   }, [isOpen]);
 
   async function signOut() {
-    await createClient().auth.signOut();
+    const supabase = createClient();
+    if (supabase) {
+      try {
+        await supabase.auth.signOut();
+      } catch {
+        // Fall back gracefully
+      }
+    }
     setIsOpen(false);
     window.location.href = '/spaces';
   }

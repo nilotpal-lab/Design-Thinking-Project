@@ -119,16 +119,20 @@ export async function getCheckinFeed(limit = 12): Promise<FeedItem[]> {
 
 /** Reports for one room, newest first (anon-safe feed view). */
 export async function getRoomFeed(roomId: string, limit = 5): Promise<FeedItem[]> {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from('v_checkin_feed')
-    .select('*')
-    .eq('room_id', roomId)
-    .order('created_at', { ascending: false })
-    .limit(limit);
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from('v_checkin_feed')
+      .select('*')
+      .eq('room_id', roomId)
+      .order('created_at', { ascending: false })
+      .limit(limit);
 
-  if (error) throw new Error(`Room feed query failed: ${error.message}`);
-  return data as FeedItem[];
+    if (!error && data) return data as FeedItem[];
+  } catch {
+    // Fall back to empty feed if Supabase is offline
+  }
+  return [];
 }
 
 // Map room_id -> slug without a second query in the common path: slugs are

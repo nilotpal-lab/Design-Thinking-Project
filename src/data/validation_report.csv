@@ -1,0 +1,12 @@
+check,status,observed,expected,notes
+room_id_unique,PASS,63,63,Each room has one inventory record.
+schedule_slot_key_unique,PASS,0,0,No duplicate room/day/period rows.
+schedule_rooms_match_inventory,PASS,0,0,Schedule rows reference only selected inventory rooms.
+free_flag_matches_explicit_free,PASS,0,0,Only source_slot_type=free is treated as free; sametime stays occupied.
+ac_and_charging_rule_aligned,PASS,0,0,AC and charging-point flags follow the user-defined rule.
+display_label_matches_ac_flag,PASS,0,0,Display labels include [AC] exactly when has_ac is true.
+floor_matches_first_digit,PASS,0,0,"0=Ground, 1=First, 2=Second, etc."
+sametime_normalized,PASS,82,82,All source sametime rows are normalized as occupied class slots; original labels retained.
+no_free_slot_with_scheduled_text,PASS,0,0,No slot with a scheduled label is exposed as free.
+timetable_freshness,CONFIRMED_BY_USER,2026-09-14 snapshot,current timetable,User confirmed this is the current timetable.
+inventory_exceptions,REVIEW,6,0,Remaining room classification exclusions/uncertainties are documented; not timetable availability blockers.

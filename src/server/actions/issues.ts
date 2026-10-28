@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache';
 
 import { newIssueSchema, voteIssueSchema } from '@/lib/validations';
-import { createClient } from '@/lib/supabase/server';
+import { createClient, isSupabaseConfigured } from '@/lib/supabase/server';
 import type { ActionResult } from '@/server/actions/checkins';
 
 /**
@@ -22,6 +22,10 @@ export async function createIssue(formData: FormData): Promise<ActionResult> {
 
   if (!parsed.success) {
     return { ok: false, error: parsed.error.issues[0]?.message ?? 'Invalid report' };
+  }
+
+  if (!isSupabaseConfigured()) {
+    return { ok: false, error: 'Reporting is unavailable in offline demo mode.' };
   }
 
   const supabase = await createClient();
@@ -46,6 +50,10 @@ export async function createIssue(formData: FormData): Promise<ActionResult> {
 export async function upvoteIssue(formData: FormData): Promise<ActionResult> {
   const parsed = voteIssueSchema.safeParse({ issue_id: formData.get('issue_id') });
   if (!parsed.success) return { ok: false, error: 'Invalid issue reference' };
+
+  if (!isSupabaseConfigured()) {
+    return { ok: false, error: 'Voting is unavailable in offline demo mode.' };
+  }
 
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -107,23 +115,26 @@ export type IssueBoardItem = {
 
 /** Public board: open + recently-resolved issues with vote counts. */
 export async function getIssueBoard(limit = 30): Promise<IssueBoardItem[]> {
-  const supabase = await createClient();
+  if (!isSupabaseConfigured()) return [];
 
-  const { data: issues, error } = await supabase
-    .from('issues')
-    .select(
-      `id, ref, title, description, category, urgency, status, created_at,
-       rooms ( code, slug ),
-       v_public_profiles ( full_name ),
-       issue_votes ( user_id )`,
-    )
-    .in('status', ['open', 'acknowledged', 'assigned', 'in_progress'])
-    .order('created_at', { ascending: false })
-    .limit(limit);
+  try {
+    const supabase = await createClient();
 
-  if (error) throw new Error(`Issue board query failed: ${error.message}`);
+    const { data: issues, error } = await supabase
+      .from('issues')
+      .select(
+        `id, ref, title, description, category, urgency, status, created_at,
+         rooms ( code, slug ),
+         v_public_profiles ( full_name ),
+         issue_votes ( user_id )`,
+      )
+      .in('status', ['open', 'acknowledged', 'assigned', 'in_progress'])
+      .order('created_at', { ascending: false })
+      .limit(limit);
 
-  const { data: { user } } = await supabase.auth.getUser();
+    if (error) return [];
+
+    const { data: { user } } = await supabase.auth.getUser();
 
   return (issues ?? []).map((i) => {
     type Joined = {
@@ -150,4 +161,7 @@ export async function getIssueBoard(limit = 30): Promise<IssueBoardItem[]> {
       voted_by_me: user ? row.issue_votes.some((v) => v.user_id === user.id) : false,
     };
   });
+  } catch {
+    return [];
+  }
 }

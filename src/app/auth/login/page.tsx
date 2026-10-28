@@ -27,7 +27,14 @@ export default function LoginPage() {
       return;
     }
 
-    const { error } = await createClient().auth.signInWithPassword({
+    const supabase = createClient();
+    if (!supabase) {
+      setError('Supabase authentication is not configured in this environment.');
+      setLoading(false);
+      return;
+    }
+
+    const { error } = await supabase.auth.signInWithPassword({
       email: usernameToEmail(username),
       password: String(fd.get('password') ?? ''),
     });

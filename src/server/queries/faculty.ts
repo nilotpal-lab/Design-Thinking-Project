@@ -1,6 +1,6 @@
 import 'server-only';
 
-import { createClient } from '@/lib/supabase/server';
+import { createClient, isSupabaseConfigured } from '@/lib/supabase/server';
 
 export type FacultySlot = {
   start: string;
@@ -54,7 +54,10 @@ type SlotRow = {
  * "Now" uses campus time (Asia/Kolkata), matching the availability view.
  */
 export async function getFacultyTracker(): Promise<FacultyEntry[]> {
-  const supabase = await createClient();
+  if (!isSupabaseConfigured()) return [];
+
+  try {
+    const supabase = await createClient();
 
   // Campus-local "now" pieces, derived deterministically: en-CA yields ISO
   // YYYY-MM-DD, and the weekday comes from Date.UTC over those Y/M/D parts —
@@ -147,4 +150,7 @@ export async function getFacultyTracker(): Promise<FacultyEntry[]> {
       nextAt: upcoming ? { start: upcoming.start, roomCode: upcoming.roomCode } : null,
     };
   });
+  } catch {
+    return [];
+  }
 }

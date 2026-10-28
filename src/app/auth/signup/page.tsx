@@ -27,7 +27,14 @@ export default function SignupPage() {
       return;
     }
 
-    const { error } = await createClient().auth.signUp({
+    const supabase = createClient();
+    if (!supabase) {
+      setError('Supabase authentication is not configured in this environment.');
+      setLoading(false);
+      return;
+    }
+
+    const { error } = await supabase.auth.signUp({
       email: usernameToEmail(username),
       password: String(fd.get('password') ?? ''),
       options: {

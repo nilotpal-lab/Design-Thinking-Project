@@ -1,6 +1,6 @@
 import 'server-only';
 
-import { createClient } from '@/lib/supabase/server';
+import { createClient, isSupabaseConfigured } from '@/lib/supabase/server';
 
 export type CampusEvent = {
   id: string;
@@ -52,49 +52,67 @@ function normalize(e: EventRow): CampusEvent {
 
 /** Events whose *end* falls on/after `dayIso` and whose start before the next day. */
 export async function getEventsOnDay(dayIso: string): Promise<CampusEvent[]> {
-  const supabase = await createClient();
-  const nextDay = new Date(`${dayIso}T00:00:00+05:30`);
-  nextDay.setUTCDate(nextDay.getUTCDate() + 1);
-  const nextIso = nextDay.toISOString();
+  if (!isSupabaseConfigured()) return [];
 
-  const { data, error } = await supabase
-    .from('events')
-    .select('*, rooms (slug, code)')
-    .eq('is_cancelled', false)
-    .lt('starts_at', nextIso)
-    .or(`ends_at.is.null,ends_at.gte.${dayIso}T00:00:00+05:30`)
-    .order('starts_at');
+  try {
+    const supabase = await createClient();
+    const nextDay = new Date(`${dayIso}T00:00:00+05:30`);
+    nextDay.setUTCDate(nextDay.getUTCDate() + 1);
+    const nextIso = nextDay.toISOString();
 
-  if (error) throw new Error(`Events query failed: ${error.message}`);
-  return (data ?? []).map(normalize);
+    const { data, error } = await supabase
+      .from('events')
+      .select('*, rooms (slug, code)')
+      .eq('is_cancelled', false)
+      .lt('starts_at', nextIso)
+      .or(`ends_at.is.null,ends_at.gte.${dayIso}T00:00:00+05:30`)
+      .order('starts_at');
+
+    if (error) return [];
+    return (data ?? []).map(normalize);
+  } catch {
+    return [];
+  }
 }
 
 /** Next N events strictly after right now (campus time). */
 export async function getUpcomingEvents(limit = 20): Promise<CampusEvent[]> {
-  const supabase = await createClient();
-  const nowIso = new Date().toISOString();
+  if (!isSupabaseConfigured()) return [];
 
-  const { data, error } = await supabase
-    .from('events')
-    .select('*, rooms (slug, code)')
-    .eq('is_cancelled', false)
-    .gte('starts_at', nowIso)
-    .order('starts_at')
-    .limit(limit);
+  try {
+    const supabase = await createClient();
+    const nowIso = new Date().toISOString();
 
-  if (error) throw new Error(`Upcoming events query failed: ${error.message}`);
-  return (data ?? []).map(normalize);
+    const { data, error } = await supabase
+      .from('events')
+      .select('*, rooms (slug, code)')
+      .eq('is_cancelled', false)
+      .gte('starts_at', nowIso)
+      .order('starts_at')
+      .limit(limit);
+
+    if (error) return [];
+    return (data ?? []).map(normalize);
+  } catch {
+    return [];
+  }
 }
 
 /** All events (admin view, includes cancelled + past). */
 export async function getAllEvents(): Promise<CampusEvent[]> {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from('events')
-    .select('*, rooms (slug, code)')
-    .order('starts_at', { ascending: false })
-    .limit(100);
+  if (!isSupabaseConfigured()) return [];
 
-  if (error) throw new Error(`Events query failed: ${error.message}`);
-  return (data ?? []).map(normalize);
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from('events')
+      .select('*, rooms (slug, code)')
+      .order('starts_at', { ascending: false })
+      .limit(100);
+
+    if (error) return [];
+    return (data ?? []).map(normalize);
+  } catch {
+    return [];
+  }
 }

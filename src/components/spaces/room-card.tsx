@@ -14,6 +14,7 @@ export type RoomCardData = {
   capacity: number;
   sockets_working: number | null;
   has_ac: boolean | null;
+  has_charging_points?: boolean | null;
   status: RoomStatus;
   free_minutes: number | null;
   occupied_until: string | null;
@@ -62,10 +63,12 @@ export function RoomCard({ room, className }: { room: RoomCardData; className?: 
               <span className="font-mono-tabular font-medium text-ink">{room.capacity}</span>
             </span>
 
-            {room.sockets_working != null && room.sockets_working > 0 && (
-              <span className="flex items-center gap-1.5" title="Working sockets">
+            {(room.has_charging_points || (room.sockets_working != null && room.sockets_working > 0)) && (
+              <span className="flex items-center gap-1.5" title="Charging points available">
                 <Plug className="h-3.5 w-3.5 text-amber-500" />
-                <span className="font-mono-tabular font-medium text-ink">{room.sockets_working}</span>
+                <span className="font-mono-tabular font-medium text-ink">
+                  {room.sockets_working != null && room.sockets_working > 0 ? room.sockets_working : 'Power'}
+                </span>
               </span>
             )}
 
